@@ -22,8 +22,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  background-color: #f4f4f4;
 }
 
 * {
@@ -41,21 +39,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
-
-/* Add styles for the menu */
-.menu {
-  display: flex;
-  background-color: #333;
-  padding: 10px;
-}
-
-.menu a {
-  color: white;
-  text-decoration: none;
-  margin-right: 15px;
-}
-
-.menu a:hover {
-  text-decoration: underline;
 }

@@ -1,10 +1,12 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import React from 'react';
+import { Button } from 'antd';
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      Pagina Principal...
-    </div>
-  );
-}
+const Home = () => (
+  <div className="App">
+    this is the home page
+    <Button type="primary" onClick={()=>{console.log(`testes agora`)}}>Button</Button>
+  </div>
+);
+
+export default Home;
