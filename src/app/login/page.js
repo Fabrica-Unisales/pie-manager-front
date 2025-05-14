@@ -2,14 +2,27 @@
 import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import 'antd/dist/reset.css';
-
+import {buildMocks} from '@/mocks/mocksFactory';
 
 
 
 const LoginPage = () => {
     const onFinish = (values) => {
-        console.log('Success:', values);
+        const users = JSON.parse(localStorage.getItem('users'));
+
+        const user = users.find(user => user.username === values.username && user.password === values.password);
+        if (user) {
+            console.log('Login successful:', values);
+            // Redirect to the home page or perform any other action
+            window.location.href = '/home';
+        } else {
+            console.log('Login failed:', values);
+            alert('Invalid username or password');
+        }
     };
+     const loadMyMocks = () => {
+         buildMocks();
+     }
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
@@ -46,6 +59,11 @@ const LoginPage = () => {
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
                         Log in
+                    </Button>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="link" style={{ width: '100%' }} onClick={loadMyMocks}>
+                        Load Mocks
                     </Button>
                 </Form.Item>
             </Form>

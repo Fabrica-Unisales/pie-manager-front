@@ -1,13 +1,21 @@
 'use client';
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
-import { columns, data } from '@/statics/tableMocks';
+import { columns } from '@/statics/tableMocks';
 
 
 const App = () => {
   const handleAddItem = () => {
     window.location.href = '/itens/new';
   };
+
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const items = JSON.parse(localStorage.getItem('items')) || [];
+    if (items.length > 0) {
+      setData(items);
+    }
+  }, []);
 
   return (
     <div style={{ padding: 24 }}>
