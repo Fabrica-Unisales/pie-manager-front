@@ -13,7 +13,7 @@ const App = () => {
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem('items')) || [];
     if (items.length > 0) {
-      setData(items);
+      setData(items.data);
     }
   }, []);
 

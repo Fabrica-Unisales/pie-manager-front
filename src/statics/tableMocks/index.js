@@ -43,7 +43,7 @@ const columns = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <a>Edit</a>
+        <a href={`/itens/${record.key}`}>Edit</a>
         <a>Delete</a>
       </Space>
     ),

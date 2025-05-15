@@ -1,6 +1,6 @@
 export default class ItemsMocks {
     static build() {
-        const items = [
+        const data = [
             {
                 key: '1',
                 name: 'John Brown',
@@ -164,6 +164,8 @@ export default class ItemsMocks {
             }
         ];
 
+        const items = {data : data, nextId: 24, length: 23};
+        
         localStorage.setItem('items', JSON.stringify(items));
     }
 }
