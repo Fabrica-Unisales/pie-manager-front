@@ -1,4 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# Objetivos:
+
+Desenvolver um sistema de gestão de projetos integradores utilizando JavaScript, NextJS e ReactJS, com foco na criação de uma interface gráfica amigável e intuitiva. O sistema deve permitir o cadastro de usuários, organização de cursos, projetos e estandes, utilizando JSON no localStorage para armazenamento dos dados.
+
+# Descrição da Atividade:
+
+Criar um projeto de software com o tema "Sistema de Gestão de Projetos Integradores". Um sistema que permita o gerenciamento de projetos integradores, com funcionalidades como cadastro de usuários, organização de cursos, projetos e estandes.
+
+O sistema deve ter uma interface gráfica amigável e intuitiva, com Controles de cadastro, consulta e edição de dados. 
+
+A turma tera 7 squads, cada uma sera resposavel por desenvolver um sistema completo. Cada integrante da squad seara responsavel por uma parte do sistema.
+O sistema deversa ser desenvolvido em JavaScript usando NextJS e ReactJS. nao sera necessario desenvolver o backend e todo armazenamento sera feito em JSON no localStorage.
+
+# Requisitos:
+
+- 1 Controle de Cadastro de Usuario : 
+    ```
+    id: inteiro
+    nome: string
+    email: string
+    senha_hash: string
+    matricula: string
+    usuario: string
+    tipo: string {Aluno, Professor, Coordenador, AvaliadorExterno}
+    ```
+
+- 2 Controle de cadastro de Organização de Cursos e Turmas
+    ```
+    id: string
+    nome: string
+    coordenador_id : string
+    listaTurmas : inteiros[id: string
+    curso_id: string
+    periodo_id: string
+    ano: int
+    semestre: int
+    professor: Usuario
+    listaAlunos : Usuarios[]
+    ```
+
+- 3 Controle de cadastro de Projetos
+    ```
+    id: string
+    titulo: string
+    descricao: string
+    id_turma: string
+    id_Professor: Usuario
+    listaAlunos: Usuarios[]{2:5}
+    ```
+
+- 4 Controle de Estande de Apresentação
+
+    ```
+    id: string
+    localizacao: string
+    horaraio_projeto: {id:inteiro, horario: string ,projeto_id: string}:[]
+    ```
+
+- 5 Controle  de Avaliação
+    ```
+    id: string
+    projeto_id: string
+    avaliador_id: string
+    nota: float
+    comentario: string
+    ```
 
 ## Getting Started
 
@@ -28,9 +94,3 @@ To learn more about Next.js, take a look at the following resources:
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
