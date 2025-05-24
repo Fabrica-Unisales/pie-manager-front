@@ -50,4 +50,37 @@ const columns = [
   },
 ];
 
-export {columns};
+const avaliacoesColumns = [
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto_id',
+    key: 'projeto_id',
+  },
+  {
+    title: 'Avaliador',
+    dataIndex: 'avaliador_id',
+    key: 'avaliador_id',
+  },
+  {
+    title: 'Nota',
+    dataIndex: 'nota',
+    key: 'nota',
+  },
+  {
+    title: 'Comentário',
+    dataIndex: 'comentario',
+    key: 'comentario',
+  },
+  {
+    title: 'Ações',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a href={`/avaliacoes/${record.id}`}>Editar</a>
+        <a>Excluir</a>
+      </Space>
+    ),
+  },
+];
+
+export { columns, avaliacoesColumns };

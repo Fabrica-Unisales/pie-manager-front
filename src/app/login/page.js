@@ -13,7 +13,7 @@ const LoginPage = () => {
         const user = users.find(user => user.username === values.username && user.password === values.password);
         if (user) {
             console.log('Login successful:', values);
-            // Redirect to the home page or perform any other action
+            localStorage.setItem('usuarioLogado', JSON.stringify(user));
             window.location.href = '/home';
         } else {
             console.log('Login failed:', values);
