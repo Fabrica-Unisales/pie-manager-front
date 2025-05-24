@@ -80,7 +80,7 @@ const AvaliacoesPage = () => {
             Adicionar Avaliação
           </Button>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={columns} dataSource={data} rowKey="id" />
       </div>
     );
   }
