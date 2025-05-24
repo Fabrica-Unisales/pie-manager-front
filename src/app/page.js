@@ -10,7 +10,6 @@ const Home = () => {
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
 
-  // Inicializa os usuários mockados no localStorage se não existirem
   useEffect(() => {
     if (!localStorage.getItem('users')) {
       UserMocks.build();
@@ -25,7 +24,7 @@ const Home = () => {
     );
     if (user) {
       localStorage.setItem('usuarioLogado', JSON.stringify(user));
-      window.location.href = '/dashboard'; // Redireciona para dashboard
+      window.location.href = '/dashboard';
     } else {
       setErro('Usuário ou senha inválidos.');
     }
