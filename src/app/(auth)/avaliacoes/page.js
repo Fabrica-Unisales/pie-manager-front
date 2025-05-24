@@ -19,16 +19,6 @@ const avaliadoresNomes = {
   '204': 'Prof. João Mendes'
 };
 
-const columns = avaliacoesColumns.map(col => {
-  if (col.dataIndex === 'projeto_id') {
-    return { ...col, render: (id) => projetosNomes[id] || id };
-  }
-  if (col.dataIndex === 'avaliador_id') {
-    return { ...col, render: (id) => avaliadoresNomes[id] || id };
-  }
-  return col;
-});
-
 const AvaliacoesPage = () => {
     const handleAddItem = () => {
       window.location.href = '/avaliacoes/new';
@@ -41,6 +31,35 @@ const AvaliacoesPage = () => {
         setData(items.data);
       }
     }, []);
+  
+    const handleDelete = (id) => {
+      const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || { data: [] };
+      const novaLista = avaliacoes.data.filter(avaliacao => avaliacao.id !== id);
+      const novoObj = { ...avaliacoes, data: novaLista, length: novaLista.length };
+      localStorage.setItem('avaliacoes', JSON.stringify(novoObj));
+      setData(novaLista);
+    };
+  
+    const columns = avaliacoesColumns.map(col => {
+      if (col.dataIndex === 'projeto_id') {
+        return { ...col, render: (id) => projetosNomes[id] || id };
+      }
+      if (col.dataIndex === 'avaliador_id') {
+        return { ...col, render: (id) => avaliadoresNomes[id] || id };
+      }
+      if (col.key === 'action') {
+        return {
+          ...col,
+          render: (_, record) => (
+            <Space size="middle">
+              <a href={`/avaliacoes/${record.id}`}>Editar</a>
+              <a onClick={() => handleDelete(record.id)} style={{ color: 'red', cursor: 'pointer' }}>Excluir</a>
+            </Space>
+          ),
+        };
+      }
+      return col;
+    });
   
     return (
       <div style={{ padding: 24 }}>
