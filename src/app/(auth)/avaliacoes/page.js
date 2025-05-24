@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
-import { columns } from '@/statics/tableMocks';
+import { avaliacoesColumns } from '@/statics/tableMocks';
 
 const AvaliacoesPage = () => {
     const handleAddItem = () => {
@@ -35,7 +35,7 @@ const AvaliacoesPage = () => {
             Adicionar Avaliação
           </Button>
         </div>
-        <Table columns={columns} dataSource={data} />
+        <Table columns={avaliacoesColumns} dataSource={data} />
       </div>
     );
   }
