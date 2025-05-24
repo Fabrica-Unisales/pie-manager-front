@@ -1,0 +1,59 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: #f7f9fb;
+  color: #222;
+  min-height: 100vh;
+}
+
+:root {
+  --primary: #2979d9;
+  --primary-hover: #1861b3;
+  --gray-light: #f7f9fb;
+  --gray: #e5e7eb;
+  --gray-dark: #a0aec0;
+  --danger: #e53e3e;
+  --radius: 8px;
+}
+
+input, select, textarea {
+  border: 1px solid var(--gray);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border 0.2s;
+  outline: none;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary);
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  border-radius: var(--radius);
+  padding: 10px 24px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: var(--primary);
+  color: #fff;
+  transition: background 0.2s;
+}
+button:hover {
+  background: var(--primary-hover);
+}
+
+.card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 32px 24px;
+  margin: 16px 0;
+} 
