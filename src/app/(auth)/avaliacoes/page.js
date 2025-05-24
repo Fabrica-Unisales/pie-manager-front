@@ -3,8 +3,7 @@ import React, { use, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
 import { columns } from '@/statics/tableMocks';
 
-
-const App = () => {
+const AvaliacoesPage = () => {
     const handleAddItem = () => {
       window.location.href = '/avaliacoes/new';
     };
@@ -41,4 +40,4 @@ const App = () => {
     );
   }
   
-  export default App;
+  export default AvaliacoesPage;
