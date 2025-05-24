@@ -1,7 +1,33 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Button, Table } from 'antd';
+import { Button, Table, Space } from 'antd';
 import { avaliacoesColumns } from '@/statics/tableMocks';
+
+const projetosNomes = {
+  '101': 'Sistema de Gestão Escolar',
+  '102': 'App de Saúde Mental',
+  '103': 'Plataforma de E-commerce',
+  '104': 'Controle de Estoque',
+  '105': 'Rede Social Acadêmica',
+  '106': 'Gestão de Eventos'
+};
+
+const avaliadoresNomes = {
+  '201': 'Prof. Ana Paula',
+  '202': 'Prof. Carlos Silva',
+  '203': 'Prof. Beatriz Souza',
+  '204': 'Prof. João Mendes'
+};
+
+const columns = avaliacoesColumns.map(col => {
+  if (col.dataIndex === 'projeto_id') {
+    return { ...col, render: (id) => projetosNomes[id] || id };
+  }
+  if (col.dataIndex === 'avaliador_id') {
+    return { ...col, render: (id) => avaliadoresNomes[id] || id };
+  }
+  return col;
+});
 
 const AvaliacoesPage = () => {
     const handleAddItem = () => {
@@ -35,7 +61,7 @@ const AvaliacoesPage = () => {
             Adicionar Avaliação
           </Button>
         </div>
-        <Table columns={avaliacoesColumns} dataSource={data} />
+        <Table columns={columns} dataSource={data} />
       </div>
     );
   }
