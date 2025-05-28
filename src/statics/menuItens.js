@@ -15,4 +15,19 @@ export const items2 = [
     icon: React.createElement(NotificationOutlined),
     label: <a href="/itens" rel="itens">Itens</a>,
   },
+  {
+    key: "projetos",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/projetos" rel="projetos">Projetos</a>,
+  },
+  {
+    key: "users",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/users" rel="users">Usuários</a>,
+  },
+  {
+    key: "logout",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/logout" rel="logout">Sair</a>,
+  },
 ];
