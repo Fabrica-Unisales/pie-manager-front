@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Typography, Space, Tag, Row, Col, message, Modal, Select } from 'antd';
-
+import {buildMocks} from '@/mocks/mocksFactory';
 const { Title, Text } = Typography;
 const { Option } = Select;
 
@@ -22,6 +22,8 @@ const EstandePage = () => {
 
   useEffect(() => {
     try {
+      // Run the build function from MocksFactory
+
       const rawEstandes = localStorage.getItem('estandes');
       if (rawEstandes) {
         const parsed = JSON.parse(rawEstandes);
@@ -62,6 +64,10 @@ const EstandePage = () => {
       message.error('Erro ao excluir o estande.');
     }
   };
+
+ const loadMyMocks = () => {
+         buildMocks();
+     }
 
   const editarEstande = (estande) => {
     const [localizacao, estandeNum] = estande.localizacao.split(' - Estande ');
@@ -270,11 +276,13 @@ const EstandePage = () => {
   </Button>
 </Modal>
 
-
+      
       <Space style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
         <Button type="primary" onClick={() => window.location = "Estande/new"}>Adicionar Estande</Button>
       </Space>
-
+      <Space style={{ display: 'flex', justifyContent: 'center', marginBottom: 24 }}>
+        <Button type="primary" onClick={loadMyMocks} > CARREGAR PROJETOS</Button>
+      </Space>
       {estandes.length === 0 ? (
         <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginTop: 40 }}>
           Nenhum estande localizado.

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Card, Row, Col, Typography } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { Button, Input, Card, Row, Col, Typography, Flex  } from 'antd';
+import { CloseOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import dynamic from 'next/dynamic';
 const AdicionarApresentacao = dynamic(() => import('../../../components/Apresentacao/AdicionarApresentacao'), { ssr: false });
 
@@ -102,13 +102,21 @@ export default function EstandeAdmin() {
 
   return (
     <div style={{ padding: 24 }}>
-
-<Card style={{ margin : '16px 0', backgroundColor : '#d3d3d3' } }>
-  <AdicionarApresentacao
-    aberto={modalAberto}
-    aoFechar={() => setModalAberto(false)}
-  />
-</Card>
+      <Flex gap="large">
+        <Button
+          type="text"
+          size="large"
+          icon={<ArrowLeftOutlined style={{ fontSize: 24 }} />}
+          style={{ height: 48, width: 48, fontSize: 24, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          onClick={() => window.location.href = "/Estande"}
+        />
+      </Flex>
+      <Card style={{ margin : '16px 0', backgroundColor : '#d3d3d3' } }>
+        <AdicionarApresentacao
+          aberto={modalAberto}
+          aoFechar={() => setModalAberto(false)}
+        />
+      </Card>
       <div style={{ marginBottom: 16 }}>
         <Input
           placeholder="Nome da nova localização"
@@ -137,9 +145,9 @@ export default function EstandeAdmin() {
                   }))
                 }
               />
-        <Button type="primary" onClick={() => adicionarStand(local.id)}>
-  Adicionar Estande
-</Button>
+              <Button type="primary" onClick={() => adicionarStand(local.id)}>
+                Adicionar Estande
+              </Button>
             </div>
           ))}
         </div>
