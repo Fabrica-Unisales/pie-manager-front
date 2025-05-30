@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import { NotificationOutlined, UserOutlined } from "@ant-design/icons";
 
 export const items2 = [
@@ -7,27 +8,27 @@ export const items2 = [
     key: "home",
     icon: React.createElement(NotificationOutlined),
     label: (
-      <a href="/home" rel="home">
+      <Link href="/home" rel="home">
         Home
-      </a>
+      </Link>
     ),
   },
   {
-    key: "send",
+    key: "itens",
     icon: React.createElement(NotificationOutlined),
     label: (
-      <a href="/itens" rel="itens">
+      <Link href="/itens" rel="itens">
         Itens
-      </a>
+      </Link>
     ),
   },
   {
-    key: "send",
+    key: "usuarios",
     icon: React.createElement(UserOutlined),
     label: (
-      <a href="/users" rel="users">
+      <Link href="/usuarios" rel="usuarios">
         Usuarios
-      </a>
+      </Link>
     ),
   },
 ];

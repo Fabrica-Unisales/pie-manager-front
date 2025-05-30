@@ -6,8 +6,7 @@ import { items2 } from "@/statics/menuItens";
 
 const { Header, Content, Sider } = Layout;
 
-
-const App = ({children}) => {
+const App = ({ children }) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -18,7 +17,7 @@ const App = ({children}) => {
           <Layout>
             <Header style={{ display: "flex", alignItems: "center" }}>
               <div className="demo-logo" />
-                <div
+              <div
                 style={{
                   width: 120,
                   height: 31,
@@ -26,7 +25,7 @@ const App = ({children}) => {
                   borderRadius: "6px",
                   marginRight: "16px",
                 }}
-                />
+              />
             </Header>
             <Layout>
               <Sider width={200} style={{ background: colorBgContainer }}>
@@ -36,10 +35,15 @@ const App = ({children}) => {
                   defaultOpenKeys={["sub1"]}
                   style={{ height: "100%", borderRight: 0 }}
                   items={items2}
-                  onClick={(e) => {
-                    console.log(e);
-                  }
-                  }
+                  onClick={({ key }) => {
+                    if (key === "home") {
+                      window.location.href = "/home";
+                    } else if (key === "itens") {
+                      window.location.href = "/itens";
+                    } else if (key === "usuarios") {
+                      window.location.href = "/usuarios";
+                    }
+                  }}
                 />
               </Sider>
               <Layout style={{ padding: "0 24px 24px" }}>
