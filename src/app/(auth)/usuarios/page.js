@@ -1,7 +1,20 @@
 "use client";
-import React from "react";
+
+import React, { useState } from "react";
 
 export default function UsuariosLogin() {
+  const [usuario, setUsuario] = useState("");
+  const [senha, setSenha] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (usuario === "admin" && senha === "1234") {
+      alert("Login bem-sucedido!");
+    } else {
+      alert("Usuário ou senha incorretos!");
+    }
+  };
+
   return (
     <div
       style={{
@@ -12,13 +25,15 @@ export default function UsuariosLogin() {
         borderRadius: 8,
       }}
     >
-      <h2 style={{ textAlign: "center" }}>Pagina de Login</h2>
-      <form>
+      <h2 style={{ textAlign: "center" }}>Página de Login</h2>
+      <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 16 }}>
           <label>Usuário</label>
           <input
             type="text"
             name="usuario"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value)}
             style={{ width: "100%", padding: 8, marginTop: 4 }}
           />
         </div>
@@ -27,6 +42,8 @@ export default function UsuariosLogin() {
           <input
             type="password"
             name="senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
             style={{ width: "100%", padding: 8, marginTop: 4 }}
           />
         </div>
@@ -39,6 +56,7 @@ export default function UsuariosLogin() {
             color: "#fff",
             border: "none",
             borderRadius: 4,
+            cursor: "pointer",
           }}
         >
           Entrar
