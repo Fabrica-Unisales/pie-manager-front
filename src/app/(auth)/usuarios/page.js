@@ -1,39 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function UsuariosLogin() {
-  const [usuario, setUsuario] = useState("");
-  const [senha, setSenha] = useState("");
+export default function LoginPage() {
+  const router = useRouter();
+  const [login, setLogin] = useState({ usuario: "", senha: "" });
+  const [usuarios, setUsuarios] = useState([]);
+  const [erro, setErro] = useState("");
+
+  useEffect(() => {
+    const dados = localStorage.getItem("usuarios");
+    if (dados) {
+      setUsuarios(JSON.parse(dados));
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setLogin({ ...login, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (usuario === "admin" && senha === "1234") {
-      alert("Login bem-sucedido!");
+
+    const usuarioEncontrado = usuarios.find(
+      (u) => u.usuario === login.usuario && u.senha_hash === btoa(login.senha)
+    );
+
+    if (usuarioEncontrado) {
+      alert(`Bem-vindo, ${usuarioEncontrado.nome}!`);
+      setErro("");
     } else {
-      alert("Usuário ou senha incorretos!");
+      setErro("Usuário não cadastrado.");
     }
   };
 
   return (
-    <div
-      style={{
-        maxWidth: 320,
-        margin: "80px auto",
-        padding: 24,
-        border: "1px solid #ccc",
-        borderRadius: 8,
-      }}
-    >
-      <h2 style={{ textAlign: "center" }}>Página de Login</h2>
+    <div style={{ maxWidth: 320, margin: "80px auto", padding: 24 }}>
+      <h2 style={{ textAlign: "center" }}>Login</h2>
+
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 16 }}>
           <label>Usuário</label>
           <input
             type="text"
             name="usuario"
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
+            value={login.usuario}
+            onChange={handleChange}
             style={{ width: "100%", padding: 8, marginTop: 4 }}
           />
         </div>
@@ -42,8 +55,8 @@ export default function UsuariosLogin() {
           <input
             type="password"
             name="senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
+            value={login.senha}
+            onChange={handleChange}
             style={{ width: "100%", padding: 8, marginTop: 4 }}
           />
         </div>
@@ -56,12 +69,32 @@ export default function UsuariosLogin() {
             color: "#fff",
             border: "none",
             borderRadius: 4,
-            cursor: "pointer",
           }}
         >
           Entrar
         </button>
       </form>
+
+      {erro && (
+        <div style={{ marginTop: 16, color: "red", textAlign: "center" }}>
+          {erro}
+          <br />
+          <button
+            onClick={() => router.push("/usuarios/cadastrar")}
+            style={{
+              marginTop: 8,
+              background: "#ff4d4f",
+              color: "#fff",
+              border: "none",
+              borderRadius: 4,
+              padding: "8px 12px",
+              cursor: "pointer",
+            }}
+          >
+            Cadastrar
+          </button>
+        </div>
+      )}
     </div>
   );
 }
