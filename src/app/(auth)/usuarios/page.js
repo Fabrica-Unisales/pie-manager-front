@@ -1,15 +1,19 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Button, Table, Space } from 'antd';
+import UsuariosMocks from '@/mocks/UsuariosMocks';
 
 const UsuariosPage = () => {
   const [usuarios, setUsuarios] = useState([]);
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('usuarios')) || { data: [] };
-    setUsuarios(data.data || []);
-  }, []);
-
+useEffect(() => {
+  const usuarios = JSON.parse(localStorage.getItem('usuarios'));
+  if (!usuarios || !usuarios.data || usuarios.data.length === 0) {
+    UsuariosMocks.build();
+  }
+  const dados = JSON.parse(localStorage.getItem('usuarios'));
+  setUsuarios(dados.data || []);
+}, []);
   const handleAddUser = () => {
     window.location.href = '/usuarios/new';
   };
