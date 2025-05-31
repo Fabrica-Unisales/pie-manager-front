@@ -5,7 +5,7 @@ export default class UsuariosMocks {
                 id: '1',
                 nome: 'João Silva',
                 email: 'joao.silva@email.com',
-                senha_hash: '123456',
+                senha: '123456',
                 matricula: '2023001',
                 usuario: 'joao.silva',
                 tipo: 'aluno'
@@ -14,7 +14,7 @@ export default class UsuariosMocks {
                 id: '2',
                 nome: 'Maria Oliveira',
                 email: 'maria.oliveira@email.com',
-                senha_hash: 'abcdef',
+                senha: 'abcdef',
                 matricula: '2023002',
                 usuario: 'maria.oliveira',
                 tipo: 'Professor'
@@ -23,7 +23,7 @@ export default class UsuariosMocks {
                 id: '3',
                 nome: 'Carlos Souza',
                 email: 'carlos.souza@email.com',
-                senha_hash: 'senha789',
+                senha: 'senha789',
                 matricula: '2023003',
                 usuario: 'carlos.souza',
                 tipo: 'Coordenador'
@@ -32,13 +32,22 @@ export default class UsuariosMocks {
                 id: '4',
                 nome: 'Fernanda Lima',
                 email: 'fernanda.lima@email.com',
-                senha_hash: 'pass1234',
+                senha: 'pass1234',
                 matricula: '2023004',
                 usuario: 'fernanda.lima',
                 tipo: 'Avaliador externo'
-            }
+            },
+            {
+                id: '5',
+                nome: 'Ademir',
+                email: 'administrador@email.com',
+                senha: 'admin',
+                matricula: '000000',
+                usuario: 'admin',
+                tipo: 'Coordenador'
+            },
         ];
-        const usuarios = { data, nextId: 5, length: data.length };
+        const usuarios = { data, nextId: 6, length: data.length };
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
     }
 }

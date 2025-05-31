@@ -8,9 +8,12 @@ import {buildMocks} from '@/mocks/mocksFactory';
 
 const LoginPage = () => {
     const onFinish = (values) => {
-        const users = JSON.parse(localStorage.getItem('users'));
+        const usuariosObj = JSON.parse(localStorage.getItem('usuarios')) || { data: [] };
+        const usuarios = usuariosObj.data || [];
 
-        const user = users.find(user => user.username === values.username && user.password === values.password);
+        const user = usuarios.find(
+            user => user.usuario === values.username && user.senha === values.password
+        );
         if (user) {
             console.log('Login successful:', values);
             localStorage.setItem('usuarioLogado', JSON.stringify(user));
@@ -40,25 +43,25 @@ const LoginPage = () => {
                 <h2 style={{ textAlign: 'center' }}>Login</h2>
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    rules={[{ required: true, message: 'Por favor, insira o seu usuário!' }]}
                 >
-                    <Input placeholder="Username" />
+                    <Input placeholder="Usuário" />
                 </Form.Item>
 
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    rules={[{ required: true, message: 'Por favot. insira a sua senha!' }]}
                 >
-                    <Input.Password placeholder="Password" />
+                    <Input.Password placeholder="Senha" />
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked">
-                    <Checkbox>Remember me</Checkbox>
+                    <Checkbox>Lembrar login</Checkbox>
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                        Log in
+                        Entrar
                     </Button>
                 </Form.Item>
                 <Form.Item>

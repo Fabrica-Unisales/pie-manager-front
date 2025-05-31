@@ -1,9 +1,9 @@
 import ItemsMocks from './ItemsMocks.js';
-import UserMocks from './UserMocks.js';
+import UsuariosMocks from './UsuariosMocks.js';
 import AvaliacoesMocks from './AvaliacoesMocks.js';
 
 const builds = [];
-builds.push(UserMocks);
+builds.push(UsuariosMocks);
 builds.push(ItemsMocks);
 builds.push(AvaliacoesMocks);
 
