@@ -15,4 +15,12 @@ export const items2 = [
     icon: React.createElement(NotificationOutlined),
     label: <a href="/itens" rel="itens">Itens</a>,
   },
+<<<<<<< HEAD
+=======
+  {
+    key: "avaliacoes",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/avaliacoes" rel="avaliacoes">Avaliações</a>,
+  },
+>>>>>>> e935323 (commit incial)
 ];
