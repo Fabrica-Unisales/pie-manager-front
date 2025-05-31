@@ -55,7 +55,7 @@ const EditarUsuarioPage = () => {
         <Form.Item label="Matrícula" name="matricula" rules={[{ required: true, message: 'Informe a matrícula' }]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Senha" name="senha_hash" rules={[{ required: true, message: 'Informe a senha' }]}>
+        <Form.Item label="Senha" name="senha" rules={[{ required: true, message: 'Informe a senha' }]}>
           <Input.Password />
         </Form.Item>
         <Form.Item label="Tipo" name="tipo" rules={[{ required: true, message: 'Selecione o tipo' }]}>
