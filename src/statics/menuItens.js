@@ -2,7 +2,10 @@
 import React from "react";
 import {
   NotificationOutlined,
+  UserAddOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
+import UserRegisterMocks from "@/mocks/UserRegisterMocks";
 
 export const items2 = [
   {
@@ -18,7 +21,7 @@ export const items2 = [
 
   {
     key: "register",
-    icon: React.createElement(NotificationOutlined),
+    icon: React.createElement(UsergroupAddOutlined),
     label: <a href="/register" rel="register">Cadastro de Usuários</a>,
   }
 ];
