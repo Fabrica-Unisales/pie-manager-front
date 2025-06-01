@@ -5,10 +5,10 @@ import { Form, Input, Select, Button, message } from 'antd';
 import { useRouter } from 'next/navigation';
 
 const tiposDeUsuario = [
-  { value: 'aluno', label: 'Aluno' },
-  { value: 'professor', label: 'Professor' },
-  { value: 'coordenador', label: 'Coordenador' },
-  { value: 'avaliadorExterno', label: 'Avaliador Externo' },
+  { value: 'Aluno', label: 'Aluno' },
+  { value: 'Professor', label: 'Professor' },
+  { value: 'Coordenador', label: 'Coordenador' },
+  { value: 'Avaliador Externo', label: 'Avaliador Externo' },
 ];
 
 const NovoUsuario = () => {
@@ -49,47 +49,47 @@ const NovoUsuario = () => {
         <Form.Item
           label="Nome"
           name="nome"
-          rules={[{ required: true, message: 'Informe o nome' }]}
+          rules={[{ required: true, message: 'Por favor, insira seu nome.' }]}
         >
           <Input placeholder="Nome do usuário" />
         </Form.Item>
 
         <Form.Item
-          label="E-mail"
+          label="Email"
           name="email"
-          rules={[{ required: true, message: 'Informe o e-mail' }]}
+          rules={[{ required: true, message: 'Por favor, insira seu Email.' }]}
         >
-          <Input type="email" placeholder="exemplo@email.com" />
+          <Input type="email" placeholder="Exemplo: nomeusuario@gmail.com" />
         </Form.Item>
 
         <Form.Item
           label="Senha"
           name="senha_hash"
-          rules={[{ required: true, message: 'Informe a senha' }]}
+          rules={[{ required: true, message: 'Por favor, informe sua senha.' }]}
         >
-          <Input.Password placeholder="Senha" />
+          <Input.Password placeholder="Sua senha" />
         </Form.Item>
 
         <Form.Item
           label="Matrícula"
           name="matricula"
-          rules={[{ required: true, message: 'Informe a matrícula' }]}
+          rules={[{ required: true, message: 'Por favor, informe seu número de matrícula.' }]}
         >
-          <Input placeholder="ex: 12345" />
+          <Input placeholder="Exemplo: 00001" />
         </Form.Item>
 
         <Form.Item
           label="Usuário"
           name="usuario"
-          rules={[{ required: true, message: 'Informe o nome de usuário' }]}
+          rules={[{ required: true, message: 'Por favor, informe seu nome de usuário.' }]}
         >
-          <Input placeholder="ex: joao.silva" />
+          <Input placeholder="Exemplo: victor.m" />
         </Form.Item>
 
         <Form.Item
           label="Tipo"
           name="tipo"
-          rules={[{ required: true, message: 'Selecione o tipo' }]}
+          rules={[{ required: true, message: 'Por favor, escolha seu tipo de usuário.' }]}
         >
           <Select options={tiposDeUsuario} placeholder="Tipo de usuário" />
         </Form.Item>

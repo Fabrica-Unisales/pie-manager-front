@@ -46,10 +46,12 @@ const Usuarios = () => {
   const colunasTabela = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Nome', dataIndex: 'nome', key: 'nome' },
-    { title: 'E-mail', dataIndex: 'email', key: 'email' },
+    { title: 'Usuário', dataIndex: 'usuario', key: 'usuario'},
     { title: 'Matrícula', dataIndex: 'matricula', key: 'matricula' },
+    { title: 'E-mail', dataIndex: 'email', key: 'email' },
+    { title: 'Tipo de usuário', dataIndex: 'tipo', key: 'tipo'},
     {
-      title: 'Ações',
+      title: 'Ações de comando',
       key: 'action',
       render: (_, usuario) => (
         <Space>
