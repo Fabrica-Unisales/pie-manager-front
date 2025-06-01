@@ -8,12 +8,15 @@ import {buildMocks} from '@/mocks/mocksFactory';
 
 const LoginPage = () => {
     const onFinish = (values) => {
-        const users = JSON.parse(localStorage.getItem('users'));
+        const usuarios = JSON.parse(localStorage.getItem('users')) || {data:[]};
+        const users = usuarios.data || [];
 
-        const user = users.find(user => user.username === values.username && user.password === values.password);
+        const user = users.find(
+            user => user.usuario === values.username && user.senha === values.password
+        );
         if (user) {
             console.log('Login successful:', values);
-            // Redirect to the home page or perform any other action
+            localStorage.setItem('usuarioLogado', JSON.stringify(user));
             window.location.href = '/home';
         } else {
             console.log('Login failed:', values);
@@ -40,25 +43,25 @@ const LoginPage = () => {
                 <h2 style={{ textAlign: 'center' }}>Login</h2>
                 <Form.Item
                     name="username"
-                    rules={[{ required: true, message: 'Please input your username!' }]}
+                    rules={[{ required: true, message: 'Por favor, insira o seu usuário.' }]}
                 >
-                    <Input placeholder="Username" />
+                    <Input placeholder="Usuário" />
                 </Form.Item>
 
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Please input your password!' }]}
+                    rules={[{ required: true, message: 'Por favor. insira a sua senha.' }]}
                 >
-                    <Input.Password placeholder="Password" />
+                    <Input.Password placeholder="Senha" />
                 </Form.Item>
 
                 <Form.Item name="remember" valuePropName="checked">
-                    <Checkbox>Remember me</Checkbox>
+                    <Checkbox>Lembrar login</Checkbox>
                 </Form.Item>
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                        Log in
+                        Entrar
                     </Button>
                 </Form.Item>
                 <Form.Item>
