@@ -1,87 +1,53 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Table,
-  Space,
-  Popconfirm,
-  message,
-  Typography,
-  Select,
-  Card,
-  Flex
-} from 'antd';
+import { Form, Input, Button, Table, Space, Popconfirm, message, Typography, Select, Card, Flex } from 'antd';
 import { UserOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+
+import {
+  fetchUsersGrupo6,
+  addUserGrupo6,
+  editUserGrupo6,
+  removeUserGrupo6
+} from '@/services/UserServiceGrupo6';
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
-const USERS_STORAGE_KEY = 'pie-manager-users';
-const NEXT_USER_ID_KEY = 'pie-manager-next-user-id';
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [form] = Form.useForm();
 
-  useEffect(() => {
-    loadUsersFromLocalStorage();
-  }, []);
-
-  const loadUsersFromLocalStorage = () => {
+  const loadUsers = async () => {
     try {
-      const storedUsers = localStorage.getItem(USERS_STORAGE_KEY);
-      if (storedUsers) {
-        setUsers(JSON.parse(storedUsers));
-      }
+      const data = await fetchUsersGrupo6();
+      setUsers(data);
     } catch (error) {
-      console.error("Erro ao carregar usuários do localStorage:", error);
+      console.error("Erro ao carregar usuários:", error);
       message.error("Erro ao carregar dados dos usuários.");
     }
   };
 
-  const saveUsersToLocalStorage = (currentUsers) => {
-    try {
-      localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(currentUsers));
-    } catch (error) {
-      console.error("Erro ao salvar usuários no localStorage:", error);
-      message.error("Erro ao salvar dados dos usuários.");
-    }
-  };
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
-  const getNextUserId = () => {
-    let nextId = 1;
+  const onFinish = async (values) => {
     try {
-      const storedNextId = localStorage.getItem(NEXT_USER_ID_KEY);
-      if (storedNextId) {
-        nextId = parseInt(storedNextId, 10) + 1;
+      if (editingUser) {
+        await editUserGrupo6({ ...values, id: editingUser.id });
+        message.success('Usuário atualizado com sucesso!');
+        setEditingUser(null);
+      } else {
+        await addUserGrupo6(values);
+        message.success('Usuário registrado com sucesso!');
       }
+      form.resetFields();
+      loadUsers();
     } catch (error) {
-      console.error("Erro ao obter o próximo ID do usuário:", error);
+      console.error("Erro ao salvar usuário:", error);
+      message.error("Erro ao salvar dados do usuário.");
     }
-    localStorage.setItem(NEXT_USER_ID_KEY, nextId.toString());
-    return nextId;
-  };
-
-  const onFinish = (values) => {
-    if (editingUser) {
-      const updatedUsers = users.map((user) =>
-        user.id === editingUser.id ? { ...user, ...values } : user
-      );
-      setUsers(updatedUsers);
-      saveUsersToLocalStorage(updatedUsers);
-      message.success('Usuário atualizado com sucesso!');
-      setEditingUser(null);
-    } else {
-      const newId = getNextUserId();
-      const newUser = { id: newId, ...values };
-      const updatedUsers = [...users, newUser];
-      setUsers(updatedUsers);
-      saveUsersToLocalStorage(updatedUsers);
-      message.success('Usuário registrado com sucesso!');
-    }
-    form.resetFields();
   };
 
   const handleEdit = (user) => {
@@ -89,11 +55,15 @@ const UsersPage = () => {
     form.setFieldsValue(user);
   };
 
-  const handleDelete = (id) => {
-    const updatedUsers = users.filter((user) => user.id !== id);
-    setUsers(updatedUsers);
-    saveUsersToLocalStorage(updatedUsers);
-    message.success('Usuário excluído com sucesso!');
+  const handleDelete = async (id) => {
+    try {
+      await removeUserGrupo6(id);
+      message.success('Usuário excluído com sucesso!');
+      loadUsers();
+    } catch (error) {
+      console.error("Erro ao excluir usuário:", error);
+      message.error("Erro ao excluir usuário.");
+    }
   };
 
   const columns = [
