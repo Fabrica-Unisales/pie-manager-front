@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Button, Table, Modal, Form, Input, Select, Popconfirm, message } from "antd";
+import { LeftOutlined } from "@ant-design/icons";
+import { useRouter } from "next/navigation";
 import { usuarios } from "@/mocks/usuarios";
 
 const periodos = [
@@ -9,7 +11,7 @@ const periodos = [
 ];
 
 export default function CursoPage() {
-  
+  const router = useRouter();
   const [cursos, setCursos] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("cursos");
@@ -218,8 +220,23 @@ export default function CursoPage() {
   ];
 
   return (
-    <div style={{ maxWidth: 900, margin: "auto", padding: 24 }}>
-      <h1>Cursos</h1>
+    <div style={{ maxWidth: 900, margin: "auto", padding: 24, position: "relative" }}>
+
+      <Button
+        type="link"
+        icon={<LeftOutlined />}
+        onClick={() => router.push("/home")}
+        style={{
+          position: "absolute",
+          top: 24,
+          left: 24,
+          paddingLeft: 0,
+          zIndex: 10
+        }}
+      >
+        Voltar para Home
+      </Button>
+      <h1 style={{ textAlign: "center" }}>Cursos</h1>
       <Button type="primary" onClick={handleAddCurso} style={{ marginBottom: 16 }}>
         Adicionar Curso
       </Button>
