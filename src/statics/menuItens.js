@@ -2,6 +2,7 @@
 import React from "react";
 import {
   NotificationOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 
 export const items2 = [
@@ -11,8 +12,8 @@ export const items2 = [
     label: <a href="/home" rel="home">Home</a>,
   },
   {
-    key: "send",
-    icon: React.createElement(NotificationOutlined),
-    label: <a href="/itens" rel="itens">Itens</a>,
+    key: "cursos", // altere a key se desejar
+    icon: React.createElement(BookOutlined),
+    label: <a href="/curso" rel="cursos">Cursos e Turmas</a>,
   },
 ];
