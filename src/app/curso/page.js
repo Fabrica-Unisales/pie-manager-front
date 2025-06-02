@@ -1,32 +1,44 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Table, Modal, Form, Input, Select, Popconfirm, message } from "antd";
 import { usuarios } from "@/mocks/usuarios";
 
-// Mocks de períodos (adicione mais conforme necessário)
 const periodos = [
   { id: 1, nome: "2025/1" },
   { id: 2, nome: "2025/2" },
 ];
 
 export default function CursoPage() {
-  const [cursos, setCursos] = useState([]);
+  
+  const [cursos, setCursos] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("cursos");
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
+
+  
+  useEffect(() => {
+    localStorage.setItem("cursos", JSON.stringify(cursos));
+  }, [cursos]);
+
   const [modalCursoVisible, setModalCursoVisible] = useState(false);
   const [editingCurso, setEditingCurso] = useState(null);
   const [formCurso] = Form.useForm();
 
-  // Turmas
+
   const [modalTurmaVisible, setModalTurmaVisible] = useState(false);
   const [cursoSelecionado, setCursoSelecionado] = useState(null);
   const [editingTurma, setEditingTurma] = useState(null);
   const [formTurma] = Form.useForm();
 
-  // Filtros
+
   const coordenadores = usuarios.filter(u => u.tipo === "Coordenador");
   const professores = usuarios.filter(u => u.tipo === "Professor");
   const alunos = usuarios.filter(u => u.tipo === "Aluno");
 
-  // CRUD de Curso
+ 
   const handleAddCurso = () => {
     setEditingCurso(null);
     formCurso.resetFields();
@@ -72,7 +84,7 @@ export default function CursoPage() {
   const getCoordenadorNome = (id) =>
     coordenadores.find(c => c.id === id)?.nome || "Não encontrado";
 
-  // CRUD de Turmas
+
   const handleGerenciarTurmas = (curso) => {
     setCursoSelecionado(curso);
     setModalTurmaVisible(true);
@@ -98,14 +110,14 @@ export default function CursoPage() {
 
   const handleSaveTurma = (values) => {
     if (editingTurma) {
-      // Edição
+     
       const novasTurmas = cursoSelecionado.listaTurmas.map(t =>
         t.id === editingTurma.id ? { ...editingTurma, ...values } : t
       );
       atualizarCursoTurmas(novasTurmas);
       message.success("Turma editada!");
     } else {
-      // Novo
+   
       const novaTurma = {
         ...values,
         id: Date.now(),
@@ -135,11 +147,11 @@ export default function CursoPage() {
     );
   }
 
-  // Helpers
+
   const getProfessorNome = id => professores.find(p => p.id === id)?.nome || "Não encontrado";
   const getAlunoNomes = ids => alunos.filter(a => ids?.includes(a.id)).map(a => a.nome).join(", ");
 
-  // Colunas da tabela de cursos
+
   const columns = [
     { title: "Nome", dataIndex: "nome" },
     {
@@ -168,7 +180,7 @@ export default function CursoPage() {
     },
   ];
 
-  // Colunas da tabela de turmas
+
   const columnsTurmas = [
     { title: "Ano", dataIndex: "ano" },
     { title: "Semestre", dataIndex: "semestre" },
@@ -217,7 +229,6 @@ export default function CursoPage() {
         rowKey="id"
         locale={{ emptyText: "Nenhum curso cadastrado" }}
       />
-      {/* Modal de Curso */}
       <Modal
         title={editingCurso ? "Editar Curso" : "Novo Curso"}
         open={modalCursoVisible}
@@ -241,7 +252,6 @@ export default function CursoPage() {
           </Form.Item>
         </Form>
       </Modal>
-      {/* Modal de Turmas */}
       <Modal
         title={"Turmas do Curso: " + (cursoSelecionado?.nome || "")}
         open={modalTurmaVisible}
@@ -251,9 +261,6 @@ export default function CursoPage() {
         destroyOnClose
       >
         <div>
-          <Button type="primary" onClick={handleAddTurma} style={{ marginBottom: 16 }}>
-            Adicionar Turma
-          </Button>
           <Table
             dataSource={cursoSelecionado?.listaTurmas || []}
             columns={columnsTurmas}

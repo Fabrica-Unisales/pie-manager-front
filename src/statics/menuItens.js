@@ -12,7 +12,7 @@ export const items2 = [
     label: <a href="/home" rel="home">Home</a>,
   },
   {
-    key: "cursos", // altere a key se desejar
+    key: "cursos",
     icon: React.createElement(BookOutlined),
     label: <a href="/curso" rel="cursos">Cursos e Turmas</a>,
   },
