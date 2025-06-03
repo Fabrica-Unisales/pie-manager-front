@@ -17,7 +17,7 @@ export default function EditProjetoForm({ params }) {
         quantity: 0,
     };
     return (
-        <Form
+        <form.Projeto
             form={form}
             layout="vertical"
             initialValues={exampleItem}
@@ -38,7 +38,7 @@ export default function EditProjetoForm({ params }) {
             >
                 <Input.TextArea rows={3} />
             </Form.Projeto>
-            <Form.Item
+            <Form.Projeto
                 label="Preço"
                 name="price"
                 rules={[{ required: true, message: 'Por favor, insira o preço.' }]}
@@ -49,19 +49,19 @@ export default function EditProjetoForm({ params }) {
                     formatter={value => `R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                     parser={value => value.replace(/R\$\s?|(,*)/g, '')}
                 />
-            </Form.Item>
-            <Form.Item
+            </Form.Projeto>
+            <Form.Projeto
                 label="Quantidade"
                 name="quantity"
                 rules={[{ required: true, message: 'Por favor, insira a quantidade.' }]}
             >
                 <InputNumber min={0} style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item>
+            </Form.Projeto>
+            <Form.Projeto>
                 <Button type="primary" htmlType="submit" block>
                     Salvar
                 </Button>
-            </Form.Item>
+            </Form.Projeto>
             <Button
                 style={{ marginTop: 8 }}
                 block
@@ -69,6 +69,6 @@ export default function EditProjetoForm({ params }) {
             >
                 Cancelar
             </Button>
-        </Form>
+        </form.Projeto>
     );
 }
