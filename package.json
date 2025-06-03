@@ -12,6 +12,7 @@
     "@ant-design/nextjs-registry": "^1.0.2",
     "antd": "^5.25.1",
     "next": "15.1.6",
+    "pie-manager-front": "file:",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
