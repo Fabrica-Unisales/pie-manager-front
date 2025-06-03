@@ -6,7 +6,7 @@ const columns = [
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => {return(<a>{text}</a>)},
+    render: (text) => { return (<a>{text}</a>) },
   },
   {
     title: 'Age',
@@ -50,4 +50,32 @@ const columns = [
   },
 ];
 
-export {columns};
+const columnsEstandes = [
+  {
+    title: 'Localização',
+    dataIndex: 'localizacao',
+    key: 'localizacao',
+  },
+  {
+    title: 'Horário',
+    dataIndex: 'horario',
+    key: 'horario',
+  },
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto',
+    key: 'projeto',
+  },
+  {
+    title: 'Ações',
+    key: 'acoes',
+    render: (text, record, index, { onEdit, onDelete }) => (
+      <Space size="middle">
+        <a onClick={() => onEdit && onEdit(record)}>Editar</a>
+        <a onClick={() => onDelete && onDelete(record)}>Excluir</a>
+      </Space>
+    ),
+  },
+];
+
+export { columns, columnsEstandes };
