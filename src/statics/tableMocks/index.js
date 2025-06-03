@@ -50,9 +50,6 @@ const columns = [
   },
 ];
 
-<<<<<<< HEAD
-export {columns};
-=======
 const avaliacoesColumns = [
   {
     title: 'Projeto',
@@ -87,4 +84,3 @@ const avaliacoesColumns = [
 ];
 
 export { columns, avaliacoesColumns };
->>>>>>> e935323 (commit incial)
