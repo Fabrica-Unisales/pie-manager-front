@@ -34,7 +34,7 @@ let initialUsers = [
         email: 'ana.lima@example.com',
         senha_hash: 'hashabc',
         matricula: '2023004',
-        usuario: 'anal',
+        usuario: 'analima',
         tipo: 'AvaliadorExterno'
     }
 ];
@@ -76,7 +76,8 @@ const UserMocksGrupo6 = {
     },
 
     createUser: (user) => {
-        const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+        const currentUsers = loadAndInitializeUsers();
+        const newId = currentUsers.length > 0 ? Math.max(...currentUsers.map(u => u.id)) + 1 : 1;
         const newUser = { ...user, id: newId };
         users.push(newUser);
         saveUsers(users);

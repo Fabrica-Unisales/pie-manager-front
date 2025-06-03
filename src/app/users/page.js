@@ -1,14 +1,32 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Table, Space, Popconfirm, message, Typography, Select, Card, Flex } from 'antd';
-import { UserOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+  Form,
+  Input,
+  Button,
+  Table,
+  Space,
+  Popconfirm,
+  message,
+  Typography,
+  Select,
+  Card,
+  Flex
+} from 'antd';
+import {
+  UserOutlined,
+  EditOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
 
 import {
   fetchUsersGrupo6,
   addUserGrupo6,
   editUserGrupo6,
   removeUserGrupo6
-} from '@/services/UserServiceGrupo6';
+} from '../../services/UserServiceGrupo6';
+
+import UserMocksGrupo6 from '../../mocks/UserMocksGrupo6';
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -17,6 +35,13 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      UserMocksGrupo6.build();
+    }
+    loadUsers();
+  }, []);
 
   const loadUsers = async () => {
     try {
@@ -27,10 +52,6 @@ const UsersPage = () => {
       message.error("Erro ao carregar dados dos usuários.");
     }
   };
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
 
   const onFinish = async (values) => {
     try {
@@ -131,73 +152,76 @@ const UsersPage = () => {
   ];
 
   return (
-    <Flex vertical gap="middle" style={{ padding: '20px' }}>
-      <Title level={2}><UserOutlined /> Controle de Usuários</Title>
-      <Paragraph>
-        Esta é a página para gerenciar o registro, consulta e edição de usuários.
-      </Paragraph>
+    <div style={{ padding: 24 }}>
+      <Flex vertical gap="middle">
+        <Title level={2}><UserOutlined /> Controle de Usuários</Title>
+        <Paragraph>
+          Esta é a página para gerenciar o registro, consulta e edição de usuários.
+        </Paragraph>
 
-      <Card title={editingUser ? 'Editar Usuário' : 'Novo Usuário'} style={{ width: '100%' }}>
-        <Form
-          form={form}
-          name="user_form"
-          onFinish={onFinish}
-          layout="vertical"
-          initialValues={{ tipo: 'Aluno' }}
+        <Card
+          title={editingUser ? 'Editar Usuário' : 'Novo Usuário'}
+          style={{ maxWidth: 400, margin: '0 auto', marginTop: 32 }}
         >
-          <Form.Item
-            name="nome"
-            label="Nome Completo"
-            rules={[{ required: true, message: 'Por favor, insira o nome!' }]}
+          <Form
+            form={form}
+            name="user_form"
+            onFinish={onFinish}
+            layout="vertical"
+            initialValues={{ tipo: 'Aluno' }}
           >
-            <Input prefix={<UserOutlined />} placeholder="Nome Completo" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { required: true, message: 'Por favor, insira o email!' },
-              { type: 'email', message: 'Email inválido!' },
-            ]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            name="senha_hash"
-            label="Senha (Hash)"
-            rules={[{ required: true, message: 'Por favor, insira a senha!' }]}
-          >
-            <Input.Password prefix={<UserOutlined />} placeholder="Senha" />
-          </Form.Item>
-          <Form.Item
-            name="matricula"
-            label="Matrícula"
-            rules={[{ required: true, message: 'Por favor, insira a matrícula!' }]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="Matrícula" />
-          </Form.Item>
-          <Form.Item
-            name="usuario"
-            label="Nome de Usuário"
-            rules={[{ required: true, message: 'Por favor, insira o nome de usuário!' }]}
-          >
-            <Input prefix={<UserOutlined />} placeholder="Nome de Usuário" />
-          </Form.Item>
-          <Form.Item
-            name="tipo"
-            label="Tipo de Usuário"
-            rules={[{ required: true, message: 'Por favor, selecione o tipo de usuário!' }]}
-          >
-            <Select placeholder="Selecione o tipo">
-              <Option value="Aluno">Aluno</Option>
-              <Option value="Professor">Professor</Option>
-              <Option value="Coordenador">Coordenador</Option>
-              <Option value="AvaliadorExterno">Avaliador Externo</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item>
-            <Space>
-              <Button type="primary" htmlType="submit">
+            <Form.Item
+              name="nome"
+              label="Nome Completo"
+              rules={[{ required: true, message: 'Por favor, insira o nome!' }]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="Nome Completo" />
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                { required: true, message: 'Por favor, insira o email!' },
+                { type: 'email', message: 'Email inválido!' },
+              ]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="Email" />
+            </Form.Item>
+            <Form.Item
+              name="senha_hash"
+              label="Senha (Hash)"
+              rules={[{ required: true, message: 'Por favor, insira a senha!' }]}
+            >
+              <Input.Password prefix={<UserOutlined />} placeholder="Senha" />
+            </Form.Item>
+            <Form.Item
+              name="matricula"
+              label="Matrícula"
+              rules={[{ required: true, message: 'Por favor, insira a matrícula!' }]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="Matrícula" />
+            </Form.Item>
+            <Form.Item
+              name="usuario"
+              label="Nome de Usuário"
+              rules={[{ required: true, message: 'Por favor, insira o nome de usuário!' }]}
+            >
+              <Input prefix={<UserOutlined />} placeholder="Nome de Usuário" />
+            </Form.Item>
+            <Form.Item
+              name="tipo"
+              label="Tipo de Usuário"
+              rules={[{ required: true, message: 'Por favor, selecione o tipo de usuário!' }]}
+            >
+              <Select placeholder="Selecione o tipo">
+                <Option value="Aluno">Aluno</Option>
+                <Option value="Professor">Professor</Option>
+                <Option value="Coordenador">Coordenador</Option>
+                <Option value="AvaliadorExterno">Avaliador Externo</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block>
                 {editingUser ? 'Atualizar Usuário' : 'Registrar Usuário'}
               </Button>
               {editingUser && (
@@ -206,24 +230,26 @@ const UsersPage = () => {
                     setEditingUser(null);
                     form.resetFields();
                   }}
+                  block
+                  style={{ marginTop: 8 }}
                 >
                   Cancelar Edição
                 </Button>
               )}
-            </Space>
-          </Form.Item>
-        </Form>
-      </Card>
+            </Form.Item>
+          </Form>
+        </Card>
 
-      <Card title="Lista de Usuários" style={{ width: '100%' }}>
-        <Table
-          columns={columns}
-          dataSource={users}
-          rowKey="id"
-          pagination={{ pageSize: 10 }}
-        />
-      </Card>
-    </Flex>
+        <Card title="Lista de Usuários" style={{ width: '100%', marginTop: 32 }}>
+          <Table
+            columns={columns}
+            dataSource={users}
+            rowKey="id"
+            pagination={{ pageSize: 10 }}
+          />
+        </Card>
+      </Flex>
+    </div>
   );
 };
 

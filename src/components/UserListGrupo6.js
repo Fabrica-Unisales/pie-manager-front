@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchUsersGrupo6, removeUserGrupo6 } from '../services/userServiceGrupo6';
+import { fetchUsersGrupo6, removeUserGrupo6 } from '../services/UserServiceGrupo6';
 
 const UserListGrupo6 = ({ onEdit }) => {
     const [users, setUsers] = useState([]);

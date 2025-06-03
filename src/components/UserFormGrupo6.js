@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addUserGrupo6, editUserGrupo6 } from '../services/userServiceGrupo6';
+import { addUserGrupo6, editUserGrupo6 } from '../services/UserServiceGrupo6';
 
 const UserFormGrupo6 = ({ selectedUser, onSaved }) => {
     const [user, setUser] = useState({
