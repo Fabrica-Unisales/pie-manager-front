@@ -9,7 +9,15 @@ export default function NovoUsuarioForm() {
 
     const onFinish = (values) => {
         const usersRaw = localStorage.getItem('users');
-        const users = usersRaw ? JSON.parse(usersRaw) : { data: [], nextId: 1 };
+        let users;
+        try {
+            users = usersRaw ? JSON.parse(usersRaw) : { data: [], nextId: 1 };
+            if (!Array.isArray(users.data)) {
+            users.data = [];
+            }
+            } catch (e) {
+                users = { data: [], nextId: 1 };
+            }
 
         const errors = [];
 
