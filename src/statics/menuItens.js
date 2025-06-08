@@ -16,4 +16,10 @@ export const items2 = [
     icon: React.createElement(BookOutlined),
     label: <a href="/curso" rel="cursos">Cursos e Turmas</a>,
   },
+
+  {
+    key: "itens",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/itens" rel="itens">Itens</a>,
+  },
 ];

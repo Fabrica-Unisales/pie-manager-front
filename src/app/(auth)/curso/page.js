@@ -20,7 +20,6 @@ export default function CursoPage() {
     return [];
   });
 
-  
   useEffect(() => {
     localStorage.setItem("cursos", JSON.stringify(cursos));
   }, [cursos]);
@@ -29,18 +28,15 @@ export default function CursoPage() {
   const [editingCurso, setEditingCurso] = useState(null);
   const [formCurso] = Form.useForm();
 
-
   const [modalTurmaVisible, setModalTurmaVisible] = useState(false);
   const [cursoSelecionado, setCursoSelecionado] = useState(null);
   const [editingTurma, setEditingTurma] = useState(null);
   const [formTurma] = Form.useForm();
 
-
   const coordenadores = usuarios.filter(u => u.tipo === "Coordenador");
   const professores = usuarios.filter(u => u.tipo === "Professor");
   const alunos = usuarios.filter(u => u.tipo === "Aluno");
 
- 
   const handleAddCurso = () => {
     setEditingCurso(null);
     formCurso.resetFields();
@@ -86,7 +82,6 @@ export default function CursoPage() {
   const getCoordenadorNome = (id) =>
     coordenadores.find(c => c.id === id)?.nome || "Não encontrado";
 
-
   const handleGerenciarTurmas = (curso) => {
     setCursoSelecionado(curso);
     setModalTurmaVisible(true);
@@ -112,14 +107,12 @@ export default function CursoPage() {
 
   const handleSaveTurma = (values) => {
     if (editingTurma) {
-     
       const novasTurmas = cursoSelecionado.listaTurmas.map(t =>
         t.id === editingTurma.id ? { ...editingTurma, ...values } : t
       );
       atualizarCursoTurmas(novasTurmas);
       message.success("Turma editada!");
     } else {
-   
       const novaTurma = {
         ...values,
         id: Date.now(),
@@ -149,10 +142,8 @@ export default function CursoPage() {
     );
   }
 
-
   const getProfessorNome = id => professores.find(p => p.id === id)?.nome || "Não encontrado";
   const getAlunoNomes = ids => alunos.filter(a => ids?.includes(a.id)).map(a => a.nome).join(", ");
-
 
   const columns = [
     { title: "Nome", dataIndex: "nome" },
@@ -181,7 +172,6 @@ export default function CursoPage() {
       ),
     },
   ];
-
 
   const columnsTurmas = [
     { title: "Ano", dataIndex: "ano" },
@@ -220,32 +210,42 @@ export default function CursoPage() {
   ];
 
   return (
-    <div style={{ maxWidth: 900, margin: "auto", padding: 24, position: "relative" }}>
-
-      <Button
-        type="link"
-        icon={<LeftOutlined />}
-        onClick={() => router.push("/home")}
-        style={{
-          position: "absolute",
-          top: 24,
-          left: 24,
-          paddingLeft: 0,
-          zIndex: 10
-        }}
-      >
-        Voltar para Home
-      </Button>
-      <h1 style={{ textAlign: "center" }}>Cursos</h1>
-      <Button type="primary" onClick={handleAddCurso} style={{ marginBottom: 16 }}>
-        Adicionar Curso
-      </Button>
+    <div style={{ padding: 24 }}>
+      <div style={{ marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Button
+          type="link"
+          icon={<LeftOutlined />}
+          onClick={() => router.push("/home")}
+          style={{
+            paddingLeft: 0,
+            fontSize: 16,
+          }}
+        >
+          Voltar para Home
+        </Button>
+        <Button
+          type="primary"
+          style={{
+            background: "#1890ff",
+            color: "#fff",
+            border: "none",
+            borderRadius: 4,
+            padding: "8px 16px",
+            cursor: "pointer",
+            fontSize: 16,
+          }}
+          onClick={handleAddCurso}
+        >
+          Adicionar Curso
+        </Button>
+      </div>
       <Table
         dataSource={cursos}
         columns={columns}
         rowKey="id"
         locale={{ emptyText: "Nenhum curso cadastrado" }}
       />
+      {/* Modal de Curso */}
       <Modal
         title={editingCurso ? "Editar Curso" : "Novo Curso"}
         open={modalCursoVisible}
@@ -269,6 +269,7 @@ export default function CursoPage() {
           </Form.Item>
         </Form>
       </Modal>
+      {/* Modal de Turmas */}
       <Modal
         title={"Turmas do Curso: " + (cursoSelecionado?.nome || "")}
         open={modalTurmaVisible}
