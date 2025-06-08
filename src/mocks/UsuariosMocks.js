@@ -10,6 +10,18 @@ export default class UsersMocks {
         usuario: 'victor.m',
         tipo: 'aluno',
       },
+
+      {
+        id: '2',
+        nome: 'James',
+        email: 'james@unisales.com',
+        senha: 'james123',
+        matricula: '78523',
+        usuario: 'James.junior',
+        tipo: 'professor',
+      },
+
+
     ];
 
     const users = { data, nextId: 2, length: data.length };
