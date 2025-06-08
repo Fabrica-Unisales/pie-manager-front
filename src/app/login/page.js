@@ -50,7 +50,7 @@ const LoginPage = () => {
 
                 <Form.Item
                     name="password"
-                    rules={[{ required: true, message: 'Por favot. insira a sua senha!' }]}
+                    rules={[{ required: true, message: 'Por favor, insira a sua senha!' }]}
                 >
                     <Input.Password placeholder="Senha" />
                 </Form.Item>

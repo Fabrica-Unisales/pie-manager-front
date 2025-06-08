@@ -4,10 +4,10 @@ import { Form, Input, Select, Button, message } from 'antd';
 import { useRouter } from 'next/navigation';
 
 const tiposDeUsuario = [
-    { value: 'aluno', label: 'Aluno' },
-    { value: 'professor', label: 'Professor' },
-    { value: 'coordenador', label: 'Coordenador' },
-    { value: 'avaliadorExterno', label: 'Avaliador Externo' },
+    { value: 'Aluno', label: 'Aluno' },
+    { value: 'Professor', label: 'Professor' },
+    { value: 'Coordenador', label: 'Coordenador' },
+    { value: 'Avaliador Externo', label: 'Avaliador Externo' },
 ];
 
 const NovoUsuarioPage = () => {
@@ -42,7 +42,7 @@ const NovoUsuarioPage = () => {
                 <Form.Item label="E-mail" name="email" rules={[{ required: true, message: 'Informe o e-mail' }]}>
                     <Input type="email" placeholder="exemplo@email.com" />
                 </Form.Item>
-                <Form.Item label="Senha" name="senha_hash" rules={[{ required: true, message: 'Informe a senha' }]}>
+                <Form.Item label="Senha" name="senha" rules={[{ required: true, message: 'Informe a senha' }]}>
                     <Input.Password placeholder="Senha" />
                 </Form.Item>
                 <Form.Item label="Matrícula" name="matricula" rules={[{ required: true, message: 'Informe a matrícula' }]}>
