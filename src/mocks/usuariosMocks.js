@@ -8,7 +8,7 @@ export default class UsuariosMocks {
                 senha: '123456',
                 matricula: '2023001',
                 usuario: 'joao.silva',
-                tipo: 'aluno'
+                tipo: 'Aluno'
             },
             {
                 id: '2',
@@ -26,7 +26,7 @@ export default class UsuariosMocks {
                 senha: 'senha789',
                 matricula: '2023003',
                 usuario: 'carlos.souza',
-                tipo: 'Coordenador'
+                tipo: 'Avaliador externo'
             },
             {
                 id: '4',
