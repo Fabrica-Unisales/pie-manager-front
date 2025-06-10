@@ -6,7 +6,7 @@ localStorage.setItem("projetos", JSON.stringify(projetos));
 import { useRouter } from "next/navigation";
 import { usuarios } from "@/mocks/usuarios";
 
-// Helper para buscar dados relacionados
+
 const getProjetoTitulo = (id, projetos) =>
   projetos.find(p => String(p.id) === String(id))?.titulo || "—";
 const getAvaliadorNome = (id, usuarios) =>
