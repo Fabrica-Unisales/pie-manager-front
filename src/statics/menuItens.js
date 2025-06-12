@@ -2,6 +2,7 @@
 import React from "react";
 import {
   NotificationOutlined,
+  UserAddOutlined
 } from "@ant-design/icons";
 
 export const items2 = [
@@ -12,9 +13,10 @@ export const items2 = [
   },
   {
     key: "usuarios",
-    icon: React.createElement(NotificationOutlined),
+    icon: React.createElement(UserAddOutlined),
     label: <a href="/usuarios" rel="usuarios">Usuários</a>,
   },
+
   {
     key: "cursos",
     icon: React.createElement(NotificationOutlined),
