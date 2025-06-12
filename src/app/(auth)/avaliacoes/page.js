@@ -1,13 +1,22 @@
 'use client';
 import React, { useEffect, useState } from 'react';
+import AvaliacoesMocks from '@/mocks/AvaliacoesMocks';
 import { Button, Table, Space } from 'antd';
 
 const AvaliacaoPage = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const storedItems = JSON.parse(localStorage.getItem('avaliacoes')) || [];
-    setData(storedItems);
+    const stored = JSON.parse(localStorage.getItem('avaliacoes'));
+
+    // Se estiver vazio, criar os dados mocks
+    if (!stored || !stored.data || stored.data.length === 0) {
+      AvaliacoesMocks.build(); // Popula o localStorage com mock
+    }
+
+    // Recarrega os dados do localStorage
+    const updated = JSON.parse(localStorage.getItem('avaliacoes'));
+    setData(updated.data || []);
   }, []);
 
   const handleAddAvaliacao = () => {
@@ -15,11 +24,11 @@ const AvaliacaoPage = () => {
   };
 
   const handleDelete = (id) => {
-    const confirm = window.confirm('Tem certeza que deseja deletar esta avaliação?');
-    if (!confirm) return;
+    const confirmDelete = window.confirm('Tem certeza que deseja deletar esta avaliação?');
+    if (!confirmDelete) return;
 
     const updated = data.filter((item) => item.id !== id);
-    localStorage.setItem('avaliacoes', JSON.stringify(updated));
+    localStorage.setItem('avaliacoes', JSON.stringify({ data: updated, nextId: 999, length: updated.length }));
     setData(updated);
   };
 
@@ -62,7 +71,6 @@ const AvaliacaoPage = () => {
           >
             Editar
           </Button>
-    
           <Button
             type="primary"
             danger
@@ -83,27 +91,27 @@ const AvaliacaoPage = () => {
   return (
     <div style={{ padding: 24 }}>
       <div style={{ marginBottom: 16, textAlign: 'right' }}>
-      <Button
-      type="primary"
-      style={{
-          backgroundColor: '#1E90FF', // azul mais suave
-          color: '#fff',
+        <Button
+          type="primary"
+          style={{
+            backgroundColor: '#1E90FF',
+            color: '#fff',
             borderRadius: '6px',
-            padding: '8px 16px', // botão mais largo e alto
-              fontSize: '16px',
-              fontWeight: 'bold',
+            padding: '8px 16px',
+            fontSize: '16px',
+            fontWeight: 'bold',
             border: 'none',
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          transition: 'all 0.3s ease-in-out',
-        }}
-        onClick={handleAddAvaliacao}
-        onMouseEnter={(e) => (e.target.style.backgroundColor = '#007BFF')}
-        onMouseLeave={(e) => (e.target.style.backgroundColor = '#1E90FF')}
-      >
-      Adicionar Avaliação
-      </Button>
-
+            transition: 'all 0.3s ease-in-out',
+          }}
+          onClick={handleAddAvaliacao}
+          onMouseEnter={(e) => (e.target.style.backgroundColor = '#007BFF')}
+          onMouseLeave={(e) => (e.target.style.backgroundColor = '#1E90FF')}
+        >
+          Adicionar Avaliação
+        </Button>
       </div>
+
       <Table
         columns={columns}
         dataSource={data}
