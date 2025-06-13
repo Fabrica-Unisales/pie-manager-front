@@ -6,15 +6,26 @@ export default function NewAvaliacaoForm() {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
-
+    const stored = JSON.parse(localStorage.getItem('avaliacoes')) || {
+      data: [],
+      nextId: 1,
+      length: 0,
+    };
+  
     const novaAvaliacao = { id: Date.now(), ...values };
-
-    localStorage.setItem('avaliacoes', JSON.stringify([...avaliacoes, novaAvaliacao]));
-
+  
+    const atualizadas = [...stored.data, novaAvaliacao];
+  
+    const updatedData = {
+      data: atualizadas,
+      nextId: Date.now(), // opcional
+      length: atualizadas.length,
+    };
+  
+    localStorage.setItem('avaliacoes', JSON.stringify(updatedData));
     window.location.href = '/avaliacoes';
   };
-
+  
   return (
     <Form
       form={form}

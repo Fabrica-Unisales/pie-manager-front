@@ -1,15 +1,21 @@
 'use client';
 import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
-import { useRouter, useParams } from 'next/navigation'; 
+import { useRouter, useParams } from 'next/navigation';
 
 export default function EditAvaliacaoForm() {
   const [form] = Form.useForm();
   const router = useRouter();
-  const params = useParams(); 
-  const avaliacaoId = Number(params.id); 
+  const { id } = useParams();
+  const avaliacaoId = parseInt(id, 10); // conversão segura para número
 
   useEffect(() => {
+    if (!avaliacaoId || isNaN(avaliacaoId)) {
+      alert('ID inválido');
+      router.push('/avaliacoes');
+      return;
+    }
+
     const stored = JSON.parse(localStorage.getItem('avaliacoes'));
     const avaliacoes = stored?.data || [];
     const avaliacao = avaliacoes.find((a) => Number(a.id) === avaliacaoId);
@@ -22,14 +28,14 @@ export default function EditAvaliacaoForm() {
     }
   }, [avaliacaoId, form, router]);
 
-
   const onFinish = (values) => {
     const stored = JSON.parse(localStorage.getItem('avaliacoes')) || { data: [], nextId: 1, length: 0 };
     const avaliacoes = stored.data;
 
     const index = avaliacoes.findIndex((a) => Number(a.id) === avaliacaoId);
     if (index !== -1) {
-      avaliacoes[index] = { id: String(avaliacaoId), ...values };
+      // mantém campos antigos que não estão no formulário (como projeto_id e avaliador_id)
+      avaliacoes[index] = { ...avaliacoes[index], ...values, id: String(avaliacaoId) };
       localStorage.setItem('avaliacoes', JSON.stringify({ ...stored, data: avaliacoes }));
     }
 
