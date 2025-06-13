@@ -6,16 +6,12 @@ export default function NewAvaliacaoForm() {
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    // Recupera avaliações anteriores ou cria array vazio
     const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
 
-    // Adiciona um ID simples (timestamp) — ideal para chave única
     const novaAvaliacao = { id: Date.now(), ...values };
 
-    // Salva no localStorage
     localStorage.setItem('avaliacoes', JSON.stringify([...avaliacoes, novaAvaliacao]));
 
-    // Redireciona após salvar
     window.location.href = '/avaliacoes';
   };
 

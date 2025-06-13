@@ -1,29 +1,36 @@
 'use client';
 import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation'; 
 
-export default function EditAvaliacaoForm({ params }) {
+export default function EditAvaliacaoForm() {
   const [form] = Form.useForm();
   const router = useRouter();
-  const avaliacaoId = Number(params.id);
+  const params = useParams(); 
+  const avaliacaoId = Number(params.id); 
 
   useEffect(() => {
-    const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
-    const avaliacao = avaliacoes.find((a) => a.id === avaliacaoId);
+    const stored = JSON.parse(localStorage.getItem('avaliacoes'));
+    const avaliacoes = stored?.data || [];
+    const avaliacao = avaliacoes.find((a) => Number(a.id) === avaliacaoId);
 
     if (avaliacao) {
       form.setFieldsValue(avaliacao);
+    } else {
+      alert('Avaliação não encontrada');
+      router.push('/avaliacoes');
     }
-  }, [avaliacaoId, form]);
+  }, [avaliacaoId, form, router]);
+
 
   const onFinish = (values) => {
-    const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
+    const stored = JSON.parse(localStorage.getItem('avaliacoes')) || { data: [], nextId: 1, length: 0 };
+    const avaliacoes = stored.data;
 
-    const index = avaliacoes.findIndex((a) => a.id === avaliacaoId);
+    const index = avaliacoes.findIndex((a) => Number(a.id) === avaliacaoId);
     if (index !== -1) {
-      avaliacoes[index] = { id: avaliacaoId, ...values };
-      localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
+      avaliacoes[index] = { id: String(avaliacaoId), ...values };
+      localStorage.setItem('avaliacoes', JSON.stringify({ ...stored, data: avaliacoes }));
     }
 
     router.push('/avaliacoes');

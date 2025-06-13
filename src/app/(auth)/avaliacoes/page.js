@@ -9,12 +9,11 @@ const AvaliacaoPage = () => {
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem('avaliacoes'));
 
-    // Se estiver vazio, criar os dados mocks
+    
     if (!stored || !stored.data || stored.data.length === 0) {
-      AvaliacoesMocks.build(); // Popula o localStorage com mock
+      AvaliacoesMocks.build(); 
     }
 
-    // Recarrega os dados do localStorage
     const updated = JSON.parse(localStorage.getItem('avaliacoes'));
     setData(updated.data || []);
   }, []);
