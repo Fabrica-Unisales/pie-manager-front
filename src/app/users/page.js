@@ -1,40 +1,18 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Table,
-  Space,
-  Popconfirm,
-  message,
-  Typography,
-  Select,
-  Card,
-  Flex
-} from 'antd';
-import {
-  UserOutlined,
-  EditOutlined,
-  DeleteOutlined
-} from '@ant-design/icons';
+import { Button, Table, Space, Popconfirm, message, Typography, Card, Flex } from 'antd';
+import { UserOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-import {
-  fetchUsersGrupo6,
-  addUserGrupo6,
-  editUserGrupo6,
-  removeUserGrupo6
-} from '../../services/UserServiceGrupo6';
-
-import UserMocksGrupo6 from '../../mocks/UserMocksGrupo6';
+import { fetchUsersGrupo6, removeUserGrupo6 } from './services/UserServiceGrupo6';
+import UserMocksGrupo6 from '@/mocks/UserMocksGrupo6';
 
 const { Title, Paragraph } = Typography;
-const { Option } = Select;
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
-  const [editingUser, setEditingUser] = useState(null);
-  const [form] = Form.useForm();
+  const router = useRouter();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -53,29 +31,6 @@ const UsersPage = () => {
     }
   };
 
-  const onFinish = async (values) => {
-    try {
-      if (editingUser) {
-        await editUserGrupo6({ ...values, id: editingUser.id });
-        message.success('Usuário atualizado com sucesso!');
-        setEditingUser(null);
-      } else {
-        await addUserGrupo6(values);
-        message.success('Usuário registrado com sucesso!');
-      }
-      form.resetFields();
-      loadUsers();
-    } catch (error) {
-      console.error("Erro ao salvar usuário:", error);
-      message.error("Erro ao salvar dados do usuário.");
-    }
-  };
-
-  const handleEdit = (user) => {
-    setEditingUser(user);
-    form.setFieldsValue(user);
-  };
-
   const handleDelete = async (id) => {
     try {
       await removeUserGrupo6(id);
@@ -85,6 +40,10 @@ const UsersPage = () => {
       console.error("Erro ao excluir usuário:", error);
       message.error("Erro ao excluir usuário.");
     }
+  };
+
+  const handleAddNewUser = () => {
+    router.push('/users/new');
   };
 
   const columns = [
@@ -132,7 +91,7 @@ const UsersPage = () => {
           <Button
             type="primary"
             icon={<EditOutlined />}
-            onClick={() => handleEdit(record)}
+            onClick={() => router.push(`/users/${record.id}`)}
           >
             Editar
           </Button>
@@ -152,103 +111,30 @@ const UsersPage = () => {
   ];
 
   return (
-    <div style={{ padding: 24 }}>
-      <Flex vertical gap="middle">
-        <Title level={2}><UserOutlined /> Controle de Usuários</Title>
-        <Paragraph>
-          Esta é a página para gerenciar o registro, consulta e edição de usuários.
-        </Paragraph>
+    <div style={{ padding: 24, position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 24, left: 24 }}>
+        <Link href="/home">
+          <Button type="default">Voltar para Home</Button>
+        </Link>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Flex vertical gap="middle" style={{ width: '100%', maxWidth: 800 }}>
+          <Title level={2} style={{ textAlign: 'center' }}><UserOutlined /> Lista de Usuários</Title>
+          <Paragraph style={{ textAlign: 'center' }}>
+            Esta é a lista de todos os usuários cadastrados no sistema. Você pode adicionar, editar ou excluir usuários.
+          </Paragraph>
 
-        <Card
-          title={editingUser ? 'Editar Usuário' : 'Novo Usuário'}
-          style={{ maxWidth: 400, margin: '0 auto', marginTop: 32 }}
-        >
-          <Form
-            form={form}
-            name="user_form"
-            onFinish={onFinish}
-            layout="vertical"
-            initialValues={{ tipo: 'Aluno' }}
-          >
-            <Form.Item
-              name="nome"
-              label="Nome Completo"
-              rules={[{ required: true, message: 'Por favor, insira o nome!' }]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Nome Completo" />
-            </Form.Item>
-            <Form.Item
-              name="email"
-              label="Email"
-              rules={[
-                { required: true, message: 'Por favor, insira o email!' },
-                { type: 'email', message: 'Email inválido!' },
-              ]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Email" />
-            </Form.Item>
-            <Form.Item
-              name="senha_hash"
-              label="Senha (Hash)"
-              rules={[{ required: true, message: 'Por favor, insira a senha!' }]}
-            >
-              <Input.Password prefix={<UserOutlined />} placeholder="Senha" />
-            </Form.Item>
-            <Form.Item
-              name="matricula"
-              label="Matrícula"
-              rules={[{ required: true, message: 'Por favor, insira a matrícula!' }]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Matrícula" />
-            </Form.Item>
-            <Form.Item
-              name="usuario"
-              label="Nome de Usuário"
-              rules={[{ required: true, message: 'Por favor, insira o nome de usuário!' }]}
-            >
-              <Input prefix={<UserOutlined />} placeholder="Nome de Usuário" />
-            </Form.Item>
-            <Form.Item
-              name="tipo"
-              label="Tipo de Usuário"
-              rules={[{ required: true, message: 'Por favor, selecione o tipo de usuário!' }]}
-            >
-              <Select placeholder="Selecione o tipo">
-                <Option value="Aluno">Aluno</Option>
-                <Option value="Professor">Professor</Option>
-                <Option value="Coordenador">Coordenador</Option>
-                <Option value="AvaliadorExterno">Avaliador Externo</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit" block>
-                {editingUser ? 'Atualizar Usuário' : 'Registrar Usuário'}
-              </Button>
-              {editingUser && (
-                <Button
-                  onClick={() => {
-                    setEditingUser(null);
-                    form.resetFields();
-                  }}
-                  block
-                  style={{ marginTop: 8 }}
-                >
-                  Cancelar Edição
-                </Button>
-              )}
-            </Form.Item>
-          </Form>
-        </Card>
+          <div style={{ marginBottom: 16, textAlign: 'right' }}>
+            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddNewUser}>
+              Adicionar Novo Usuário
+            </Button>
+          </div>
 
-        <Card title="Lista de Usuários" style={{ width: '100%', marginTop: 32 }}>
-          <Table
-            columns={columns}
-            dataSource={users}
-            rowKey="id"
-            pagination={{ pageSize: 10 }}
-          />
-        </Card>
-      </Flex>
+          <Card title="Usuários Registrados" style={{ width: '100%' }}>
+            <Table columns={columns} dataSource={users} rowKey="id" pagination={{ pageSize: 10 }} />
+          </Card>
+        </Flex>
+      </div>
     </div>
   );
 };
