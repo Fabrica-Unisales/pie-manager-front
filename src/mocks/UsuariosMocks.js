@@ -24,7 +24,7 @@ export default class UsersMocks {
 
     ];
 
-    const users = { data, nextId: 2, length: data.length };
+    const users = { data, nextId: 3, length: data.length };
     localStorage.setItem('users', JSON.stringify(users));
   }
 }
