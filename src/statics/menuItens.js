@@ -11,8 +11,8 @@ export const items2 = [
     label: <a href="/home" rel="home">Home</a>,
   },
   {
-    key: "send",
+    key: "avaliacoes",
     icon: React.createElement(NotificationOutlined),
-    label: <a href="/itens" rel="itens">Itens</a>,
+    label: <a href="/avaliacoes" rel="avaliacoes">Avaliações</a>,
   },
 ];
