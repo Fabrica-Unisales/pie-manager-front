@@ -26,9 +26,9 @@ export const items2 = [
     key: "usuarios",
     icon: React.createElement(UserOutlined),
     label: (
-      <Link href="/usuarios" rel="usuarios">
-        Usuarios
-      </Link>
+      <a href="/usuarios" rel="usuarios">
+        Usuários
+      </a>
     ),
   },
 ];

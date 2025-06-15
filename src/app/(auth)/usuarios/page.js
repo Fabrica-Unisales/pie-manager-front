@@ -1,100 +1,94 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Table, Space, Tag } from "antd";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+const columns = [
+  {
+    title: "Nome",
+    dataIndex: "nome",
+    key: "nome",
+    render: (text) => <a>{text}</a>,
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Matrícula",
+    dataIndex: "matricula",
+    key: "matricula",
+  },
+  {
+    title: "Tipo",
+    key: "tipo",
+    dataIndex: "tipo",
+    render: (tipo) => {
+      let color;
+      switch (tipo) {
+        case "Professor":
+          color = "geekblue";
+          break;
+        case "Coordenador":
+          color = "volcano";
+          break;
+        case "AvaliadorExterno":
+          color = "gold";
+          break;
+        default:
+          color = "green";
+      }
+      return (
+        <Tag color={color} key={tipo}>
+          {tipo.toUpperCase()}
+        </Tag>
+      );
+    },
+  },
+  {
+    title: "Ação",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        {}
+        <a href={`/usuarios/${record.id}`}>Editar</a>
+        <a>Excluir</a>
+      </Space>
+    ),
+  },
+];
+
+const UsuariosPage = () => {
   const router = useRouter();
-  const [login, setLogin] = useState({ usuario: "", senha: "" });
-  const [usuarios, setUsuarios] = useState([]);
-  const [erro, setErro] = useState("");
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const dados = localStorage.getItem("usuarios");
-    if (dados) {
-      setUsuarios(JSON.parse(dados));
-    }
+    const storedUsers = JSON.parse(localStorage.getItem("users")) || {
+      data: [],
+    };
+
+    const processedData = storedUsers.data.map((user) => ({
+      ...user,
+      key: user.id,
+    }));
+    setUsers(processedData);
   }, []);
 
-  const handleChange = (e) => {
-    setLogin({ ...login, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const usuarioEncontrado = usuarios.find(
-      (u) => u.usuario === login.usuario && u.senha_hash === btoa(login.senha)
-    );
-
-    if (usuarioEncontrado) {
-      alert(`Bem-vindo, ${usuarioEncontrado.nome}!`);
-      setErro("");
-    } else {
-      setErro("Usuário não cadastrado.");
-    }
+  const handleAddItem = () => {
+    router.push("/usuarios/new");
   };
 
   return (
-    <div style={{ maxWidth: 320, margin: "80px auto", padding: 24 }}>
-      <h2 style={{ textAlign: "center" }}>Login</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: 16 }}>
-          <label>Usuário</label>
-          <input
-            type="text"
-            name="usuario"
-            value={login.usuario}
-            onChange={handleChange}
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </div>
-        <div style={{ marginBottom: 16 }}>
-          <label>Senha</label>
-          <input
-            type="password"
-            name="senha"
-            value={login.senha}
-            onChange={handleChange}
-            style={{ width: "100%", padding: 8, marginTop: 4 }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: 10,
-            background: "#1890ff",
-            color: "#fff",
-            border: "none",
-            borderRadius: 4,
-          }}
-        >
-          Entrar
-        </button>
-      </form>
-
-      {erro && (
-        <div style={{ marginTop: 16, color: "red", textAlign: "center" }}>
-          {erro}
-          <br />
-          <button
-            onClick={() => router.push("/usuarios/cadastrar")}
-            style={{
-              marginTop: 8,
-              background: "#ff4d4f",
-              color: "#fff",
-              border: "none",
-              borderRadius: 4,
-              padding: "8px 12px",
-              cursor: "pointer",
-            }}
-          >
-            Cadastrar
-          </button>
-        </div>
-      )}
+    <div style={{ padding: 24 }}>
+      <div style={{ marginBottom: 16, textAlign: "right" }}>
+        <Button type="primary" onClick={handleAddItem}>
+          Adicionar Usuário
+        </Button>
+      </div>
+      <Table columns={columns} dataSource={users} />
     </div>
   );
-}
+};
+
+export default UsuariosPage;
