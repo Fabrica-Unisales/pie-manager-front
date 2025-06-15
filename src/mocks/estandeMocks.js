@@ -2,19 +2,26 @@ export default class EstandesMock {
   static build() {
     const estandes = [
       {
-        id: "EST-001",
+        id: "EST-1",
         localizacao: "Quadra Principal",
-        projeto_horario: [
-          { id: 1, horario: "09:00", projeto_id: "PROJ-001" },
-          { id: 2, horario: "10:00", projeto_id: "PROJ-002" }
+        horario_projeto: [
+          { id: 1, horario: "09:00-10:00", projeto_id: "PROJ-1" },
+          { id: 2, horario: "10:30-11:30", projeto_id: "PROJ-2" }
         ]
       },
       {
-        id: "EST-002",
+        id: "EST-2", 
         localizacao: "Salesinho",
-        projeto_horario: [
-          { id: 3, horario: "11:00", projeto_id: "PROJ-003" },
-          { id: 4, horario: "12:00", projeto_id: "PROJ-004" }
+        horario_projeto: [
+          { id: 3, horario: "14:00-15:00", projeto_id: "PROJ-3" },
+          { id: 4, horario: "15:30-16:30", projeto_id: "PROJ-4" }
+        ]
+      },
+      {
+        id: "EST-3",
+        localizacao: "Auditório",
+        horario_projeto: [
+          { id: 5, horario: "08:00-09:00", projeto_id: "PROJ-5" }
         ]
       }
     ];
