@@ -48,6 +48,7 @@ const App = ({children}) => {
                     { title: "Home" },
                     { title: "List" },
                     { title: "App" },
+                    { title: "Controle Avaliação" },
                   ]}
                   style={{ margin: "16px 0" }}
                 />
