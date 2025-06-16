@@ -76,7 +76,7 @@ const UsuariosPage = () => {
   }, []);
 
   const handleAddItem = () => {
-    router.push("/usuarios/new");
+    router.push("/usuarios/cadastrar");
   };
 
   return (
