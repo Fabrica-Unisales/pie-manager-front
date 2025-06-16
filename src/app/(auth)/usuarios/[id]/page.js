@@ -1,52 +1,70 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Button, Select } from "antd";
 import { useRouter } from "next/navigation";
 
 const { Option } = Select;
 
-const NewUserForm = () => {
+const EditUserForm = ({ params }) => {
   const [form] = Form.useForm();
   const router = useRouter();
+  const { id } = params;
+
+  useEffect(() => {
+    if (id) {
+      const storedUsers = JSON.parse(localStorage.getItem("users")) || {
+        data: [],
+      };
+      const userToEdit = storedUsers.data.find((user) => user.id === id);
+
+      if (userToEdit) {
+        form.setFieldsValue({
+          ...userToEdit,
+          senha: userToEdit.senha_hash,
+        });
+      } else {
+        alert("Usuário não encontrado. Que pena.");
+        router.push("/usuarios");
+      }
+    }
+  }, [id, form, router]);
 
   const onFinish = (values) => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || {
-      data: [],
-      nextId: 1,
-    };
+    const storedUsers = JSON.parse(localStorage.getItem("users"));
 
-    const newUser = {
-      id: String(storedUsers.nextId),
+    const userIndex = storedUsers.data.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+      alert(
+        "Não foi possível encontrar o usuário para atualizar. Tente novamente."
+      );
+      return;
+    }
+
+    const updatedUser = {
+      ...storedUsers.data[userIndex],
       ...values,
       senha_hash: values.senha,
     };
 
-    const updatedUsers = {
-      data: [...storedUsers.data, newUser],
-      nextId: storedUsers.nextId + 1,
-    };
+    storedUsers.data[userIndex] = updatedUser;
+    localStorage.setItem("users", JSON.stringify(storedUsers));
 
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    const loginUsers = updatedUsers.data.map((u) => ({
+    const loginUsers = storedUsers.data.map((u) => ({
       username: u.email,
       password: u.senha_hash,
     }));
     localStorage.setItem("login_users", JSON.stringify(loginUsers));
 
-    alert("Usuário cadastrado!");
+    alert("Usuário atualizado com sucesso. Ficou... aceitável.");
     router.push("/usuarios");
   };
 
   return (
     <div style={{ maxWidth: 500, margin: "32px auto" }}>
-      <h2>Cadastro de Novo Usuário</h2>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-        initialValues={{ tipo: "Aluno" }}
-      >
+      <h2>Editando Usuário</h2>
+      <Form form={form} layout="vertical" onFinish={onFinish}>
+        {}
         <Form.Item
           label="Nome Completo"
           name="nome"
@@ -54,56 +72,40 @@ const NewUserForm = () => {
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Email"
           name="email"
           rules={[
-            {
-              required: true,
-              type: "email",
-              message: "Preciso de um email válido!",
-            },
+            { required: true, type: "email", message: "Email inválido." },
           ]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Usuário"
           name="usuario"
-          rules={[{ required: true, message: "Escolha um nome de usuário." }]}
+          rules={[{ required: true, message: "Usuário é obrigatório." }]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Senha"
           name="senha"
-          rules={[
-            {
-              required: true,
-              message: 'Uma senha, por favor. E que não seja "1234".',
-            },
-          ]}
+          rules={[{ required: true, message: "Senha é obrigatória." }]}
         >
           <Input.Password />
         </Form.Item>
-
         <Form.Item
           label="Matrícula"
           name="matricula"
-          rules={[{ required: true, message: "A matrícula é indispensável." }]}
+          rules={[{ required: true, message: "Matrícula é obrigatória." }]}
         >
           <Input />
         </Form.Item>
-
         <Form.Item
           label="Tipo de Usuário"
           name="tipo"
-          rules={[
-            { required: true, message: "Defina o papel deste pobre coitado." },
-          ]}
+          rules={[{ required: true, message: "Tipo é obrigatório." }]}
         >
           <Select>
             <Option value="Aluno">Aluno</Option>
@@ -112,10 +114,9 @@ const NewUserForm = () => {
             <Option value="AvaliadorExterno">Avaliador Externo</Option>
           </Select>
         </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
-            Salvar
+            Salvar Alterações
           </Button>
         </Form.Item>
         <Button
@@ -130,4 +131,4 @@ const NewUserForm = () => {
   );
 };
 
-export default NewUserForm;
+export default EditUserForm;
