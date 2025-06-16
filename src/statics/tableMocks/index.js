@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space, Tag } from 'antd';
 
-const columns = [
+ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',

@@ -7,7 +7,7 @@ export default function EditAvaliacaoForm() {
   const [form] = Form.useForm();
   const router = useRouter();
   const { id } = useParams();
-  const avaliacaoId = parseInt(id, 10); // conversão segura para número
+  const avaliacaoId = parseInt(id, 10); 
 
   useEffect(() => {
     if (!avaliacaoId || isNaN(avaliacaoId)) {
@@ -34,7 +34,6 @@ export default function EditAvaliacaoForm() {
 
     const index = avaliacoes.findIndex((a) => Number(a.id) === avaliacaoId);
     if (index !== -1) {
-      // mantém campos antigos que não estão no formulário (como projeto_id e avaliador_id)
       avaliacoes[index] = { ...avaliacoes[index], ...values, id: String(avaliacaoId) };
       localStorage.setItem('avaliacoes', JSON.stringify({ ...stored, data: avaliacoes }));
     }

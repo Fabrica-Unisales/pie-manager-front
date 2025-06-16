@@ -18,7 +18,7 @@ export default function NewAvaliacaoForm() {
   
     const updatedData = {
       data: atualizadas,
-      nextId: Date.now(), // opcional
+      nextId: Date.now(),
       length: atualizadas.length,
     };
   
