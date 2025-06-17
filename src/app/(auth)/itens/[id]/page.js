@@ -65,7 +65,7 @@ export default function EditItemForm({ params }) {
             <Button
                 style={{ marginTop: 8 }}
                 block
-                onClick={() => window.location.href = '/novoItem'}
+                onClick={() => window.location.href = '/itens'}
             >
                 Cancelar
             </Button>
