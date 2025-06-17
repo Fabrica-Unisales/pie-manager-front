@@ -5,8 +5,16 @@ import { Button, Form, Input, Select, message } from "antd";
 import { usuarios } from "@/mocks/usuarios";
 
 const periodos = [
-  { id: 1, nome: "2025/1" },
-  { id: 2, nome: "2025/2" },
+  { id: 1, nome: "1" },
+  { id: 2, nome: "2" },
+  { id: 3, nome: "3" },
+  { id: 4, nome: "4" },
+  { id: 5, nome: "5" },
+  { id: 6, nome: "6" },
+  { id: 7, nome: "7" },
+  { id: 8, nome: "8" },
+  { id: 9, nome: "9" },
+  { id: 10, nome: "10" },
 ];
 
 export default function EditarTurmaPage() {
