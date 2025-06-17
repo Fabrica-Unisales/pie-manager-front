@@ -10,7 +10,6 @@ const EstandePage = () => {
   const [estandes, setEstandes] = useState([]);
   const [projetos, setProjetos] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [modoEdicao, setModoEdicao] = useState(false);
   const [formulario, setFormulario] = useState({
     id: null,
     localizacao: '',
@@ -40,7 +39,7 @@ const EstandePage = () => {
     }
   }, []);
 
-
+// APAGA O ESTANDE FILTRANDO A LISTA DO LOCAL STOROAGE E SLAVANDO UMA NOVA LISTA SEM O ESTANDE EXCLUÍDO
   const excluirEstande = (id) => {
     try {
       const rawData = localStorage.getItem('estandes');
@@ -68,35 +67,26 @@ const EstandePage = () => {
  const loadMyMocks = () => {
          buildMocks();
      }
-
+     //ATIVA O FORMULARIO DE EDIÇÃO COM OS DADOS DO ESTANDE SELECIONADO
   const editarEstande = (estande) => {
     const [localizacao, estandeNum] = estande.localizacao.split(' - Estande ');
     setFormulario({
       id: estande.id,
       localizacao,
       estande: estandeNum,
+      //para cada projeto com horario no estande tem uma adição no array ph novo
       projeto_horario: estande.projeto_horario.map(ph => ({
         id: ph.id,
         horario: ph.horario,
         projeto_id: ph.projeto_id
       }))
     });
-    setModoEdicao(true);
     setModalVisible(true);
   };
-
+//FUNÇÃO PARA MOSTRAR O TITULO DO PROJETO NAS LISTAGENS
   const buscarTituloProjeto = (projetoId) => {
     const projeto = projetos.find(p => p.id === projetoId);
     return projeto?.titulo || 'Projeto não encontrado';
-  };
-
-  const resetFormulario = () => {
-    setFormulario({
-      id: null,
-      localizacao: '',
-      estande: '',
-      projeto_horario: [{ id: '', horario: '', projeto_id: '' }]
-    });
   };
 
   const handleSave = () => {
@@ -111,11 +101,17 @@ const EstandePage = () => {
       alert('Preencha todos os campos antes de salvar.');
       return;
     }
-    const conflito = estandesData.data
-  .filter(est => est.id !== formulario.id) // Ignora o próprio estande em edição
+   const conflito = estandesData.data
+  // Filtra todos os estandes, exceto o que está sendo editado atualmente
+  .filter(est => est.id !== formulario.id)
+
+  // Verifica se existe pelo menos um estande com conflito
   .some(est =>
+    // Para cada estande, verifica se algum dos projetos já agendados nele...
     est.projeto_horario.some(ph =>
+      // ...é igual a algum dos projetos sendo agendados agora no formulário
       formulario.projeto_horario.some(nph =>
+        // Compara se o horário e o projeto são exatamente os mesmos
         ph.horario === nph.horario && ph.projeto_id === nph.projeto_id
       )
     )
@@ -127,9 +123,15 @@ const EstandePage = () => {
       return;
     }
 
+    //pega todos os selects de horario do formulario e faz um map transformando-os em um array do mesmo tamanho 
+    //com os horarios de começo de apresentações
     const horariosNoMesmoEstande = formulario.projeto_horario.map(ph => ph.horario.split('-')[0]);
-    const horariosDuplicados = horariosNoMesmoEstande.some((horario, idx) =>
-      horariosNoMesmoEstande.indexOf(horario) !== idx
+    //idx é o index do array analisado pelas funções map some e filter, basicamente é um index temporario
+    //para cada elemento do array do qual a função esta executando
+   const horariosDuplicados = horariosNoMesmoEstande.some((horario, idx) =>
+    //para cada horario em horariosNoMesmoEstande, verifica se o index do valo do horario é diferente do index atual
+   // Exemplo se ja tem um horario 08:00 no array com index 0 e o index do horario atual é 1, com o valor 8 retorna true
+    horariosNoMesmoEstande.indexOf(horario) !== idx
     );
 
     if (horariosDuplicados) {
@@ -138,36 +140,31 @@ const EstandePage = () => {
     }
 
     const novaApresentacao = {
-      id: modoEdicao ? formulario.id : String(estandesData.nextIdE),
+      id: formulario.id,
       localizacao: `${formulario.localizacao} - Estande ${formulario.estande}`,
       projeto_horario: formulario.projeto_horario.map((ph, idx) => ({
-        id: modoEdicao ? ph.id : estandesData.nextIdH + idx,
+        id:ph.id,
         horario: ph.horario,
         projeto_id: ph.projeto_id
       }))
     };
 
     let novaLista;
-    if (modoEdicao) {
-      novaLista = estandes.map(e => e.id === formulario.id ? novaApresentacao : e);
-    } else {
-      novaLista = [...estandes, novaApresentacao];
-    }
+    novaLista = estandes.map(e => e.id === formulario.id ? novaApresentacao : e);
 
     const novoEstandes = {
       data: novaLista,
-      nextIdH: modoEdicao ? estandesData.nextIdH : estandesData.nextIdH + formulario.projeto_horario.length,
-      nextIdE: modoEdicao ? estandesData.nextIdE : estandesData.nextIdE + 1
+      nextIdH: estandesData.nextIdH ,
+      nextIdE:  estandesData.nextIdE
     };
 
     localStorage.setItem('estandes', JSON.stringify(novoEstandes));
     setEstandes(novaLista);
-    message.success(modoEdicao ? 'Estande editado com sucesso!' : 'Apresentação salva com sucesso!');
+    message.success('Estande editado com sucesso!');
     setModalVisible(false);
-    setModoEdicao(false);
-    resetFormulario();
   };
 
+  //Pagina JSX
   return (
     <div style={{ padding: '40px max(10px, 5%)' }}>
       <Title level={2} style={{ textAlign: 'center' }}>Estandes</Title>
@@ -175,13 +172,11 @@ const EstandePage = () => {
     <Modal
   open={modalVisible}
   onCancel={() => {
-    resetFormulario();
     setModalVisible(false);
-    setModoEdicao(false);
   }}
   onOk={handleSave}
-  title={modoEdicao ? 'Editar Estande' : 'Novo Estande'}
-  width={700}
+  title={'Editar Estande'}
+  width={700}   
 >
   {/* HORÁRIOS + PROJETOS */}
   <div style={{ maxHeight: '300px', overflowY: 'auto', marginBottom: 16 }}>
