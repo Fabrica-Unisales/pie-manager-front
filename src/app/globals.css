@@ -35,6 +35,39 @@ a {
   text-decoration: none;
 }
 
+.input-style {
+  border-radius: 5px;
+  margin-right: 20px;
+  font-size: larger;
+  background-color: #f5f5f5;
+  border: solid 2px rgb(200, 200, 200);
+  padding: 8px;
+  color: rgb(0, 0, 0);
+}
+.select-style {
+  border-radius: 5px;
+  margin-right: 20px;
+  font-size: larger;
+  background-color: #d3d3d3;
+  border: solid 2px rgb(200, 200, 200);
+  padding: 8px;
+  color: rgb(0, 0, 0);
+}
+.btn-style {
+  border-radius: 5px;
+  font-size: larger;
+  background-color: #1890ff;
+  border: none;
+  cursor: pointer;
+  color: white;
+  padding: 8px;
+}
+
+.container {
+  height: 100vh;
+  width: 100vw;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
