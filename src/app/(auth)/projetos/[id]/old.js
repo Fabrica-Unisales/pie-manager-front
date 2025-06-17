@@ -1,7 +1,8 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
 import { Form, Input, Select, Button, message } from 'antd';
+import { useParams, useRouter } from 'next/navigation';
 /*
 const turmaOptions = JSON.parse(localStorage.getItem('turmas')) || { data: [] };
 
@@ -15,15 +16,6 @@ const professor = array.forEach(option => {
 
 const professorOptions = professor;
 */
-
-const alunoNomes = {
-  '1': 'João Silva',
-  '6': 'Maria',
-  '7': 'Ana Paula',
-  '10': 'Carlos Silva',
-  '23': 'Beatriz Souza',
-  '24': 'João Mendes'
- };
 
 const turmaNomes = {
  '101': 'Medicina',
@@ -48,7 +40,7 @@ const alunoNomes = {
 
 const turmaOptions = Object.entries(turmaNomes).map(([id, nome]) => ({ value: id, label: nome }));
 const professorOptions = Object.entries(professorNomes).map(([id, nome]) => ({ value: id, label: nome }));
-const alunoOptions = Object.entries(alunoNomes).map(([id, nome]) => ({ value: id, label: nome }));
+const alunosOptions = Object.entries(alunoNomes).map(([id, nome]) => ({ value: id, label: nome }));
 
 const EditarProjetosPage = () => {
   const router = useRouter();
@@ -93,13 +85,12 @@ const EditarProjetosPage = () => {
         <Form.Item label="id_turma" name="id_turma" rules={[{ required: false, message: 'Informe o id da turma' }]}>
         <Select options={turmaOptions}></Select>
         </Form.Item>
-        <Form.Item label="id_Professor" name="id_Professor" rules={[{ required: false, message: 'Informe o id do professor' }]}>
+        <Form.Item label="id_Professor" name="id_professor" rules={[{ required: false, message: 'Informe o id do professor' }]}>
         <Select options={professorOptions}></Select>
         </Form.Item>
         <Form.Item label="Usuário" name="usuario" rules={[{ required: false, message: 'Informe o nome de usuário' }]}>
-          <Input placeholder="ex: joao silva" />
+        <Select options={alunosOptions}></Select>
         </Form.Item>
-        
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>Salvar</Button>
           <Button onClick={() => router.push('/projetos')} style={{ marginLeft: 8 }}>Cancelar</Button>
@@ -109,4 +100,4 @@ const EditarProjetosPage = () => {
   );
 };
 
-export default EditarProjetosPage;
+//export default EditarProjetosPage;

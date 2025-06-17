@@ -1,102 +1,153 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Form, Input, Select, Button, message } from 'antd';
-/*
-const turmaOptions = JSON.parse(localStorage.getItem('turmas')) || { data: [] };
-
-const option = JSON.parse(localStorage.getItem('usuarios')) || { data: [] };
-
-const professor = array.forEach(option => {
- if (option.tipo == 'Professor') {
-  professor.push(option);
- }
-});;
-
-const professorOptions = professor;
-*/
+import { Form, Input, Button, Select, message } from 'antd';
+import { useRouter, useParams } from 'next/navigation';
 
 const turmaNomes = {
- '101': 'Medicina',
- '102': 'Tecnico',
- '103': 'Engenhero',
- '104': 'Marckting',
-};
+  '101': 'Medicina',
+  '102': 'Tecnico',
+  '103': 'Engenhero',
+  '104': 'Marckting',
+ };
+ 
+ const professorNomes = {
+  '201': 'Prof. Ana Paula',
+  '202': 'Prof. Carlos Silva',
+  '203': 'Prof. Beatriz Souza',
+  '204': 'Prof. João Mendes'
+ };
 
-const professorNomes = {
- '201': 'Prof. Ana Paula',
- '202': 'Prof. Carlos Silva',
- '203': 'Prof. Beatriz Souza',
- '204': 'Prof. João Mendes'
-};
+ const turmaOptions = Object.entries(turmaNomes).map(([id, nome]) => ({ value: id, label: nome }));
+ const professorOptions = Object.entries(professorNomes).map(([id, nome]) => ({ value: id, label: nome }));
 
-const alunoNomes = {
- '7': 'Ana Paula',
- '10': 'Carlos Silva',
- '23': 'Beatriz Souza',
- '24': 'João Mendes'
-};
-
-const turmaOptions = Object.entries(turmaNomes).map(([id, nome]) => ({ value: id, label: nome }));
-const professorOptions = Object.entries(professorNomes).map(([id, nome]) => ({ value: id, label: nome }));
-const alunosOptions = Object.entries(alunoNomes).map(([id, nome]) => ({ value: id, label: nome }));
-
-const EditarProjetosPage = () => {
+const EditarProjeto = () => {
+  const [formulario] = Form.useForm();
   const router = useRouter();
-  const { id } = useParams();
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [projeto, setProjeto] = useState(null);
+  const params = useParams();
+  const projetoId = params.id;
+
+  const [alunosTodos, setAlunosTodos] = useState([]);
+  const [alunosFiltrados, setAlunosFiltrados] = useState([]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('projetos')) || { data: [] };
-    const encontrado = data.data.find((p) => p.id === id);
-    if (!encontrado) {
-      message.error('Projeto não encontrado');
-      router.push('/projetos');
-    } else {
-      setProjeto(encontrado);
-      form.setFieldsValue(encontrado);
-    }
-  }, [id, form, router]);
+    const usuariosJSON = localStorage.getItem('usuarios');
+    let usuarios = { data: [] };
 
-  const onFinish = (values) => {
-    setLoading(true);
-    const projetos = JSON.parse(localStorage.getItem('projetos')) || { data: [] };
-    const novaLista = projetos.data.map((p) => (p.id === id ? { ...p, ...values } : p));
-    const novoObj = { ...projetos, data: novaLista };
-    localStorage.setItem('projetos', JSON.stringify(novoObj));
-    //message.success('Projeto atualizado com sucesso!');
+    try {
+      if (usuariosJSON) {
+        usuarios = JSON.parse(usuariosJSON);
+      }
+    } catch (err) {
+      console.error('Erro ao ler usuários:', err);
+    }
+
+    const alunos = usuarios.data.filter((u) => u.tipo === 'Aluno');
+    setAlunosTodos(alunos);
+
+    const todosProjetos = JSON.parse(localStorage.getItem('projetos')) || { data: [] };
+    const projetoExistente = todosProjetos.data.find((proj) => proj.id === projetoId);
+////////////////////////////////////////////////////////////////////
+    if (projetoExistente) {
+      const alunosProjeto = alunos.filter((a) => projetoExistente.listaAlunos.includes(a.id));
+      setAlunosFiltrados(alunosProjeto);
+
+      formulario.setFieldsValue({
+        titulo: projetoExistente.titulo,
+        descricao: projetoExistente.descricao,
+        turma: projetoExistente.id_turma,
+        professor: projetoExistente.id_Professor,
+        participantes: projetoExistente.listaAlunos
+      });
+    }
+  }, [projetoId, formulario]);
+
+  const atualizarAlunosDaTurma = (turmaSelecionadaId) => {
+    const turma = turmasDisponiveis.find((t) => t.id === turmaSelecionadaId);
+    if (turma && turma.listaAlunos) {
+      setAlunosFiltrados(turma.listaAlunos);
+      formulario.setFieldValue('participantes', []);
+    } else {
+      setAlunosFiltrados([]);
+    }
+  };
+
+  const salvarProjeto = (valores) => {
+    if (!valores.participantes || valores.participantes.length < 2 || valores.participantes.length > 5) {
+      message.warning('Escolha entre 2 a 5 alunos para o projeto.');
+      return;
+    }
+
+    const todosProjetos = JSON.parse(localStorage.getItem('projetos')) || { data: [] };
+    const atualizado = {
+      id: projetoId,
+      titulo: valores.titulo,
+      descricao: valores.descricao,
+      id_turma: valores.turma,
+      id_Professor: valores.professor,
+      listaAlunos: valores.participantes
+    };
+
+    const novaLista = todosProjetos.data.map((p) =>
+      p.id === projetoId ? atualizado : p
+    );
+
+    localStorage.setItem('projetos', JSON.stringify({ data: novaLista }));
+    message.success('Projeto editado com sucesso!');
     router.push('/projetos');
   };
-//todo=============================================================================================
-  if (!projeto) return null;
+
   return (
-    <div style={{ maxWidth: 500, margin: '0 auto', padding: 24 }}>
-      <h2>Editar Usuário</h2>
-      <Form layout="vertical" form={form} onFinish={onFinish} initialValues={projeto}>
-        <Form.Item label="Titulo" name="titulo" rules={[{ required: true, message: 'Informe o titulo' }]}>
-          <Input />
+    <div style={{ maxWidth: 700, margin: '0 auto', padding: 24 }}>
+      <h2>Atualizar Dados do Projeto</h2>
+      <Form layout="vertical" form={formulario} onFinish={salvarProjeto}>
+        <Form.Item label="Nome do Projeto" name="titulo" rules={[{ required: true }]}>
+          <Input placeholder="Digite o título do projeto" />
         </Form.Item>
-        <Form.Item label="Descricao" name="descricao" rules={[{ required: false, message: 'Informe a descricao' }]}>
-          <Input />
+
+        <Form.Item label="Descrição" name="descricao" rules={[{ required: true }]}>
+          <Input.TextArea rows={3} placeholder="Digite uma descrição resumida" />
         </Form.Item>
-        <Form.Item label="id_turma" name="id_turma" rules={[{ required: false, message: 'Informe o id da turma' }]}>
-        <Select options={turmaOptions}></Select>
+
+        <Form.Item label="Turma" name="turma" rules={[{ required: true }]}>
+          <Select placeholder="Selecione uma turma" onChange={atualizarAlunosDaTurma}>
+            {turmasDisponiveis.map((turma) => (
+              <Select.Option key={turma.id} value={turma.id}>
+                {turma.curso_id} - {turma.ano}/{turma.semestre}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
-        <Form.Item label="id_Professor" name="id_professor" rules={[{ required: false, message: 'Informe o id do professor' }]}>
-        <Select options={professorOptions}></Select>
+
+        <Form.Item label="Professor Responsável" name="professor" rules={[{ required: true }]}>
+          <Select placeholder="Escolha o professor orientador">
+            {docentes.map((docente) => (
+              <Select.Option key={docente.id} value={docente.id}>
+                {docente.nome}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
-        <Form.Item label="Usuário" name="usuario" rules={[{ required: false, message: 'Informe o nome de usuário' }]}>
-        <Select options={alunosOptions}></Select>
+
+        <Form.Item label="Alunos Participantes (2 a 5)" name="participantes" rules={[{ required: true }]}>
+          <Select
+            mode="multiple"
+            placeholder="Selecione os alunos"
+            options={(alunosFiltrados || []).map((a) => ({
+              label: a.nome,
+              value: a.id
+            }))}
+          />
         </Form.Item>
+
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>Salvar</Button>
-          <Button onClick={() => router.push('/projetos')} style={{ marginLeft: 8 }}>Cancelar</Button>
+          <Button type="primary" htmlType="submit">
+            Salvar Projeto
+          </Button>
         </Form.Item>
       </Form>
     </div>
   );
 };
 
-export default EditarProjetosPage;
+export default EditarProjeto;
