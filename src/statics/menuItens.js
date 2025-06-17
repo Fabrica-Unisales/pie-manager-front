@@ -11,7 +11,7 @@ export const items2 = [
     label: <a href="/home" rel="home">Home</a>,
   },
   {
-    key: "itens",
+    key: "send",
     icon: React.createElement(NotificationOutlined),
     label: <a href="/itens" rel="itens">Itens</a>,
   },
