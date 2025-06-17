@@ -26,7 +26,7 @@ export const items2 = [
     {
     key: "turma",
     icon: React.createElement(BookOutlined),
-    label: <a href="/turma" rel="turmas">Turmas</a>,
+    label: <a href="/turmas" rel="turmas">Turmas</a>,
   },
   
 ];

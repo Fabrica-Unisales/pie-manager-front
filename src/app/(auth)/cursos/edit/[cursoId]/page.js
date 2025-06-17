@@ -1,39 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
-export default function NewCursoPage() {
+export default function EditCursoPage() {
+    const { cursoId } = useParams();
     const [nome, setNome] = useState('');
     const [coordenadorId, setCoordenadorId] = useState('');
     const [coordenadores, setCoordenadores] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
+        const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}').data || [];
+        const curso = storedCursos.find(c => c.id === cursoId);
+        if (curso) {
+            setNome(curso.nome);
+            setCoordenadorId(curso.coordenador_id);
+        }
         const storedUsuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
         setCoordenadores(storedUsuarios.filter(u => u.tipo === 'Coordenador'));
-    }, []);
+    }, [cursoId]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}');
-        const newCurso = {
-            id: String(storedCursos.nextId || 1),
-            nome,
-            coordenador_id: coordenadorId,
-            listaTurmas: []
-        };
-        storedCursos.data = storedCursos.data || [];
-        storedCursos.data.push(newCurso);
-        storedCursos.nextId = (storedCursos.nextId || 1) + 1;
-        storedCursos.length = storedCursos.data.length;
+        storedCursos.data = storedCursos.data.map(curso =>
+            curso.id === cursoId ? { ...curso, nome, coordenador_id: coordenadorId } : curso
+        );
         localStorage.setItem('cursos', JSON.stringify(storedCursos));
         router.push('/cursos');
     };
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Adicionar Novo Curso</h1>
+            <h1 className="text-2xl font-bold mb-4">Editar Curso</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block mb-1">Nome</label>
