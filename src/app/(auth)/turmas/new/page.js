@@ -1,19 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { Form, Select, Input, Checkbox, Button, message } from 'antd';
+
+const { Option } = Select;
 
 export default function NewTurmaPage() {
-    const [cursoId, setCursoId] = useState('');
-    const [periodoId, setPeriodoId] = useState('');
-    const [ano, setAno] = useState('');
-    const [semestre, setSemestre] = useState('');
-    const [professorId, setProfessorId] = useState('');
-    const [selectedAlunos, setSelectedAlunos] = useState([]);
     const [cursos, setCursos] = useState([]);
     const [professores, setProfessores] = useState([]);
     const [alunos, setAlunos] = useState([]);
-    const router = useRouter();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}').data || [];
@@ -23,121 +19,129 @@ export default function NewTurmaPage() {
         setAlunos(storedUsuarios.filter(u => u.tipo === 'Aluno'));
     }, []);
 
-    const handleAlunoToggle = (alunoId) => {
-        setSelectedAlunos(prev =>
-            prev.includes(alunoId) ? prev.filter(id => id !== alunoId) : [...prev, alunoId]
-        );
-    };
+    const handleSubmit = async (values) => {
+        try {
+            const storedTurmas = JSON.parse(localStorage.getItem('turmas') || '{}');
+            const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}');
+            const storedUsuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const storedTurmas = JSON.parse(localStorage.getItem('turmas') || '{}');
-        const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}');
-        const storedUsuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
-        const professor = storedUsuarios.find(u => u.id === professorId) || { id: professorId, nome: 'Desconhecido' };
-        const selectedAlunosData = storedUsuarios.filter(u => selectedAlunos.includes(u.id));
+            const professor = storedUsuarios.find(u => u.id === values.professorId) || {
+                id: values.professorId,
+                nome: 'Desconhecido',
+            };
+            const selectedAlunosData = storedUsuarios.filter(u => values.alunos?.includes(u.id) || []);
 
-        const newTurma = {
-            id: String(storedTurmas.nextId || 1),
-            curso_id: cursoId,
-            periodo_id: periodoId,
-            ano: parseInt(ano),
-            semestre: parseInt(semestre),
-            professor,
-            listaAlunos: selectedAlunosData
-        };
+            const newTurmaId = String(storedTurmas.nextId || 1);
+            const newTurma = {
+                id: newTurmaId,
+                curso_id: values.cursoId,
+                periodo_id: values.periodoId,
+                ano: parseInt(values.ano),
+                semestre: parseInt(values.semestre),
+                professor,
+                listaAlunos: selectedAlunosData,
+            };
 
-        storedTurmas.data = storedTurmas.data || [];
-        storedTurmas.data.push(newTurma);
-        storedTurmas.nextId = (storedTurmas.nextId || 1) + 1;
-        storedTurmas.length = storedTurmas.data.length;
+            storedTurmas.data = storedTurmas.data || [];
+            storedTurmas.data.push(newTurma);
+            storedTurmas.nextId = (storedTurmas.nextId || 1) + 1;
+            storedTurmas.length = storedTurmas.data.length;
 
-        const curso = storedCursos.data.find(c => c.id === cursoId);
-        if (curso) curso.listaTurmas.push(newTurma.id);
+            const curso = storedCursos.data.find(c => c.id === values.cursoId);
+            if (curso) curso.listaTurmas.push(newTurmaId);
 
-        localStorage.setItem('turmas', JSON.stringify(storedTurmas));
-        localStorage.setItem('cursos', JSON.stringify(storedCursos));
-        router.push('/turmas');
+            
+            localStorage.setItem('turmas', JSON.stringify(storedTurmas));
+            localStorage.setItem('cursos', JSON.stringify(storedCursos));
+
+            message.success('Turma criada com sucesso');
+            
+            setTimeout(() => {
+                window.location.href = `/turmas/edit/${newTurmaId}`;
+            }, 100);
+        } catch (error) {
+            message.error('Erro ao criar turma');
+            console.error('Error creating turma:', error);
+        }
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Adicionar Nova Turma</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block mb-1">Curso</label>
-                    <select
-                        value={cursoId}
-                        onChange={(e) => setCursoId(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    >
-                        <option value="">Selecione um Curso</option>
+        <div style={{ padding: 24 }}>
+            <h2 style={{ marginBottom: 16 }}>Adicionar Nova Turma</h2>
+            <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                <Form.Item
+                    label="Curso"
+                    name="cursoId"
+                    rules={[{ required: true, message: 'Por favor, selecione um curso' }]}
+                >
+                    <Select placeholder="Selecione um curso">
                         {cursos.map(curso => (
-                            <option key={curso.id} value={curso.id}>{curso.nome}</option>
+                            <Option key={curso.id} value={curso.id}>
+                                {curso.nome}
+                            </Option>
                         ))}
-                    </select>
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Período ID</label>
-                    <input
-                        type="text"
-                        value={periodoId}
-                        onChange={(e) => setPeriodoId(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Ano</label>
-                    <input
-                        type="number"
-                        value={ano}
-                        onChange={(e) => setAno(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Semestre</label>
-                    <input
-                        type="number"
-                        value={semestre}
-                        onChange={(e) => setSemestre(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Professor</label>
-                    <select
-                        value={professorId}
-                        onChange={(e) => setProfessorId(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    >
-                        <option value="">Selecione um Professor</option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    label="Período ID"
+                    name="periodoId"
+                    rules={[{ required: true, message: 'Por favor, insira o período ID' }]}
+                >
+                    <Input placeholder="Digite o período ID" />
+                </Form.Item>
+                <Form.Item
+                    label="Ano"
+                    name="ano"
+                    rules={[{ required: true, message: 'Por favor, insira o ano' }]}
+                >
+                    <Input type="number" placeholder="Digite o ano" />
+                </Form.Item>
+                <Form.Item
+                    label="Semestre"
+                    name="semestre"
+                    rules={[{ required: true, message: 'Por favor, insira o semestre' }]}
+                >
+                    <Input type="number" placeholder="Digite o semestre" />
+                </Form.Item>
+                <Form.Item
+                    label="Professor"
+                    name="professorId"
+                    rules={[{ required: true, message: 'Por favor, selecione um professor' }]}
+                >
+                    <Select placeholder="Selecione um professor">
                         {professores.map(professor => (
-                            <option key={professor.id} value={professor.id}>{professor.nome}</option>
+                            <Option key={professor.id} value={professor.id}>
+                                {professor.nome}
+                            </Option>
                         ))}
-                    </select>
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Alunos</label>
-                    {alunos.map(aluno => (
-                        <div key={aluno.id} className="flex items-center">
-                            <input
-                                type="checkbox"
-                                checked={selectedAlunos.includes(aluno.id)}
-                                onChange={() => handleAlunoToggle(aluno.id)}
-                                className="mr-2"
-                            />
-                            <span>{aluno.nome}</span>
-                        </div>
-                    ))}
-                </div>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
-            </form>
+                    </Select>
+                </Form.Item>
+                <Form.Item label="Alunos" name="alunos">
+                    <Checkbox.Group>
+                        {alunos.map(aluno => (
+                            <Checkbox key={aluno.id} value={aluno.id} style={{ display: 'block', marginBottom: 8 }}>
+                                {aluno.nome}
+                            </Checkbox>
+                        ))}
+                    </Checkbox.Group>
+                </Form.Item>
+                <Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                            background: '#1890ff',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 4,
+                            padding: '8px 16px',
+                            fontSize: 16,
+                        }}
+                    >
+                        Salvar
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
     );
 }

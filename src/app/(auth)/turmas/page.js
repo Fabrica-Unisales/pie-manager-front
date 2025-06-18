@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Table, Button, Space } from 'antd';
 
 export default function TurmasPage() {
     const [turmas, setTurmas] = useState([]);
+    const [cursos, setCursos] = useState([]);
 
     useEffect(() => {
         const storedTurmas = JSON.parse(localStorage.getItem('turmas') || '{}').data || [];
+        const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}').data || [];
         setTurmas(storedTurmas);
+        setCursos(storedCursos);
     }, []);
 
     const handleDelete = (id) => {
@@ -18,50 +21,98 @@ export default function TurmasPage() {
         storedTurmas.length = storedTurmas.data.length;
         storedCursos.data = storedCursos.data.map(curso => ({
             ...curso,
-            listaTurmas: curso.listaTurmas.filter(turmaId => turmaId !== id)
+            listaTurmas: curso.listaTurmas.filter(turmaId => turmaId !== id),
         }));
         localStorage.setItem('turmas', JSON.stringify(storedTurmas));
         localStorage.setItem('cursos', JSON.stringify(storedCursos));
         setTurmas(storedTurmas.data);
     };
 
+    const getCursoNome = (cursoId) => {
+        const curso = cursos.find(c => c.id === cursoId);
+        return curso ? curso.nome : 'Desconhecido';
+    };
+
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Curso',
+            key: 'curso',
+            render: (_, record) => getCursoNome(record.curso_id),
+        },
+        {
+            title: 'Período',
+            dataIndex: 'periodo_id',
+            key: 'periodo_id',
+        },
+        {
+            title: 'Ano',
+            dataIndex: 'ano',
+            key: 'ano',
+        },
+        {
+            title: 'Semestre',
+            dataIndex: 'semestre',
+            key: 'semestre',
+        },
+        {
+            title: 'Professor',
+            key: 'professor',
+            render: (_, record) => record.professor?.name || 'Desconhecido',
+        },
+        {
+            title: 'Alunos',
+            key: 'alunos',
+            render: (_, record) => record.listaAlunos?.length || 0,
+        },
+        {
+            title: 'Ações',
+            key: 'action',
+            render: (_, record) => {
+                console.log('Navigating to edit turma with ID:', record.id); // Debug
+                if (!record.id) {
+                    return <span>ID inválido</span>;
+                }
+                return (
+                    <Space size="middle">
+                        <a href={`/turmas/edit/${record.id}`}>Editar</a>
+                        <a onClick={() => handleDelete(record.id)} style={{ color: 'red', cursor: 'pointer' }}>
+                            Excluir
+                        </a>
+                    </Space>
+                );
+            },
+        },
+    ];
+
+    const handleAddTurma = () => {
+        window.location.href = '/turmas/new';
+    };
+
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Turmas</h1>
-            <Link href="/turmas/new" className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-                Adicionar Nova Turma
-            </Link>
-            <table className="w-full border-collapse">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border p-2">ID</th>
-                        <th className="border p-2">Curso</th>
-                        <th className="border p-2">Período</th>
-                        <th className="border p-2">Ano</th>
-                        <th className="border p-2">Semestre</th>
-                        <th className="border p-2">Professor</th>
-                        <th className="border p-2">Alunos</th>
-                        <th className="border p-2">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {turmas.map(turma => (
-                        <tr key={turma.id}>
-                            <td className="border p-2">{turma.id}</td>
-                            <td className="border p-2">{turma.curso_id}</td>
-                            <td className="border p-2">{turma.periodo_id}</td>
-                            <td className="border p-2">{turma.ano}</td>
-                            <td className="border p-2">{turma.semestre}</td>
-                            <td className="border p-2">{turma.professor.nome}</td>
-                            <td className="border p-2">{turma.listaAlunos.length}</td>
-                            <td className="border p-2">
-                                <Link href={`/turmas/edit/${turma.id}`} className="text-blue-500 mr-2">Editar</Link>
-                                <button onClick={() => handleDelete(turma.id)} className="text-red-500">Excluir</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div style={{ padding: 24 }}>
+            <div style={{ marginBottom: 16, textAlign: 'right' }}>
+                <Button
+                    type="primary"
+                    onClick={handleAddTurma}
+                    style={{
+                        background: '#1890ff',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        padding: '8px 16px',
+                        cursor: 'pointer',
+                        fontSize: 16,
+                    }}
+                >
+                    Adicionar Turma
+                </Button>
+            </div>
+            <Table columns={columns} dataSource={turmas} rowKey="id" />
         </div>
     );
 }

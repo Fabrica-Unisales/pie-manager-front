@@ -1,14 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Table, Button, Space } from 'antd';
 import Link from 'next/link';
 
 export default function CursosPage() {
     const [cursos, setCursos] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
 
     useEffect(() => {
         const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}').data || [];
+        const storedUsuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
         setCursos(storedCursos);
+        setUsuarios(storedUsuarios);
     }, []);
 
     const handleDelete = (id) => {
@@ -19,37 +23,70 @@ export default function CursosPage() {
         setCursos(storedCursos.data);
     };
 
+    const getCoordenadorNome = (coordenadorId) => {
+        const coordenador = usuarios.find(u => u.id === coordenadorId);
+        return coordenador ? coordenador.nome : 'Desconhecido';
+    };
+
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: 'Nome',
+            dataIndex: 'nome',
+            key: 'nome',
+        },
+        {
+            title: 'Coordenador',
+            key: 'coordenador',
+            render: (_, record) => getCoordenadorNome(record.coordenador_id),
+        },
+        {
+            title: 'Turmas',
+            key: 'turmas',
+            render: (_, record) => record.listaTurmas.length,
+        },
+        {
+            title: 'Ações',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <a href={`/cursos/edit/${record.id}`}>Editar</a>
+                    <a onClick={() => handleDelete(record.id)} style={{ color: 'red', cursor: 'pointer' }}>
+                        Excluir
+                    </a>
+                </Space>
+            ),
+        },
+    ];
+
+    const handleAddCurso = () => {
+        window.location.href = '/cursos/new';
+    };
+
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Cursos</h1>
-            <Link href="/cursos/new" className="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">
-                Adicionar Novo Curso
-            </Link>
-            <table className="w-full border-collapse">
-                <thead>
-                    <tr className="bg-gray-100">
-                        <th className="border p-2">ID</th>
-                        <th className="border p-2">Nome</th>
-                        <th className="border p-2">Coordenador</th>
-                        <th className="border p-2">Turmas</th>
-                        <th className="border p-2">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {cursos.map(curso => (
-                        <tr key={curso.id}>
-                            <td className="border p-2">{curso.id}</td>
-                            <td className="border p-2">{curso.nome}</td>
-                            <td className="border p-2">{curso.coordenador_id}</td>
-                            <td className="border p-2">{curso.listaTurmas.length}</td>
-                            <td className="border p-2">
-                                <Link href={`/cursos/edit/${curso.id}`} className="text-blue-500 mr-2">Editar</Link>
-                                <button onClick={() => handleDelete(curso.id)} className="text-red-500">Excluir</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+        <div style={{ padding: 24 }}>
+            <div style={{ marginBottom: 16, textAlign: 'right' }}>
+                <Button
+                    type="primary"
+                    onClick={handleAddCurso}
+                    style={{
+                        background: '#1890ff',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        padding: '8px 16px',
+                        cursor: 'pointer',
+                        fontSize: 16,
+                    }}
+                >
+                    Adicionar Curso
+                </Button>
+            </div>
+            <Table columns={columns} dataSource={cursos} rowKey="id" />
         </div>
     );
 }

@@ -2,7 +2,7 @@ import UserMocks from './UserMocks.js';
 
 export default class CursoMocks {
     static build() {
-        const users = JSON.parse(localStorage.getItem('users') || '{}').data || [];
+        const users = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
         const cursos = [
             {
                 id: '1',

@@ -1,66 +1,79 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { Form, Input, Select, Button } from 'antd';
+
+const { Option } = Select;
 
 export default function EditCursoPage() {
     const { cursoId } = useParams();
-    const [nome, setNome] = useState('');
-    const [coordenadorId, setCoordenadorId] = useState('');
     const [coordenadores, setCoordenadores] = useState([]);
-    const router = useRouter();
+    const [form] = Form.useForm();
 
     useEffect(() => {
         const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}').data || [];
         const curso = storedCursos.find(c => c.id === cursoId);
         if (curso) {
-            setNome(curso.nome);
-            setCoordenadorId(curso.coordenador_id);
+            form.setFieldsValue({
+                nome: curso.nome,
+                coordenadorId: curso.coordenador_id,
+            });
         }
         const storedUsuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
         setCoordenadores(storedUsuarios.filter(u => u.tipo === 'Coordenador'));
-    }, [cursoId]);
+    }, [cursoId, form]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (values) => {
         const storedCursos = JSON.parse(localStorage.getItem('cursos') || '{}');
         storedCursos.data = storedCursos.data.map(curso =>
-            curso.id === cursoId ? { ...curso, nome, coordenador_id: coordenadorId } : curso
+            curso.id === cursoId ? { ...curso, nome: values.nome, coordenador_id: values.coordenadorId } : curso
         );
         localStorage.setItem('cursos', JSON.stringify(storedCursos));
-        router.push('/cursos');
+        window.location.href = '/cursos';
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Editar Curso</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                    <label className="block mb-1">Nome</label>
-                    <input
-                        type="text"
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    />
-                </div>
-                <div className="mb-4">
-                    <label className="block mb-1">Coordenador</label>
-                    <select
-                        value={coordenadorId}
-                        onChange={(e) => setCoordenadorId(e.target.value)}
-                        className="border p-2 w-full"
-                        required
-                    >
-                        <option value="">Selecione um Coordenador</option>
+        <div style={{ padding: 24 }}>
+            <h2 style={{ marginBottom: 16 }}>Editar Curso</h2>
+            <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                <Form.Item
+                    label="Nome"
+                    name="nome"
+                    rules={[{ required: true, message: 'Por favor, insira o nome do curso' }]}
+                >
+                    <Input placeholder="Digite o nome do curso" />
+                </Form.Item>
+                <Form.Item
+                    label="Coordenador"
+                    name="coordenadorId"
+                    rules={[{ required: true, message: 'Por favor, selecione um coordenador' }]}
+                >
+                    <Select placeholder="Selecione um coordenador">
                         {coordenadores.map(coordenador => (
-                            <option key={coordenador.id} value={coordenador.id}>{coordenador.nome}</option>
+                            <Option key={coordenador.id} value={coordenador.id}>
+                                {coordenador.nome}
+                            </Option>
                         ))}
-                    </select>
-                </div>
-                <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
-            </form>
+                    </Select>
+                </Form.Item>
+                <Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                            background: '#1890ff',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: 4,
+                            padding: '8px 16px',
+                            fontSize: 16,
+                        }}
+                    >
+                        Salvar
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
     );
 }

@@ -2,7 +2,7 @@ import UserMocks from './UserMocks.js';
 
 export default class TurmaMocks {
     static build() {
-        const users = JSON.parse(localStorage.getItem('users') || '{}').data || [];
+        const usuarios = JSON.parse(localStorage.getItem('usuarios') || '{}').data || [];
         const turmas = [
             {
                 id: '1',
@@ -10,17 +10,17 @@ export default class TurmaMocks {
                 periodo_id: '1',
                 ano: 2025,
                 semestre: 1,
-                professor: users[3] || { id: '4', name: 'Prof. Ana' },
-                listaAlunos: [users[4], users[5]]
+                professor: usuarios[5] || { id: '5', nome: 'Fernanda Torres' },
+                listaAlunos: [usuarios[4] || { id: '5', nome: 'Aluno A' }, usuarios[5] || { id: '6', nome: 'Aluno B' }]
             },
             {
                 id: '2',
                 curso_id: '1',
                 periodo_id: '2',
-                ano: 2025,
+                ano: '2025',
                 semestre: 2,
-                professor: users[6] || { id: '7', name: 'Prof. Carlos' },
-                listaAlunos: [users[7], users[8]]
+                professor: usuarios[6] || { id: '2', nome: 'Prof. Maria' },
+                listaAlunos: [usuarios[7] || { id: '8', nome: 'Aluno C' }, usuarios[8] || { id: '9', nome: 'Aluno D' }]
             },
             {
                 id: '3',
@@ -28,8 +28,8 @@ export default class TurmaMocks {
                 periodo_id: '1',
                 ano: 2025,
                 semestre: 1,
-                professor: users[9] || { id: '10', name: 'Prof. Maria' },
-                listaAlunos: [users[10]]
+                professor: usuarios[9] || { id: '2', nome: 'Prof. Maria' },
+                listaAlunos: [usuarios[10] || { id: '11', nome: 'Aluno E' }]
             },
             {
                 id: '4',
@@ -37,8 +37,8 @@ export default class TurmaMocks {
                 periodo_id: '1',
                 ano: 2025,
                 semestre: 1,
-                professor: users[11] || { id: '12', name: 'Prof. João' },
-                listaAlunos: [users[12], users[13]]
+                professor: usuarios[11] || { id: '2', nome: 'Prof. Maria' },
+                listaAlunos: [usuarios[12] || { id: '13', nome: 'Aluno F' }, usuarios[13] || { id: '14', nome: 'Aluno G' }]
             },
             {
                 id: '5',
@@ -46,8 +46,8 @@ export default class TurmaMocks {
                 periodo_id: '2',
                 ano: 2025,
                 semestre: 2,
-                professor: users[14] || { id: '15', name: 'Prof. Lucas' },
-                listaAlunos: [users[15]]
+                professor: usuarios[14] || { id: '5', nome: 'Prof. Fernanda' },
+                listaAlunos: [usuarios[15] || { id: '16', nome: 'Aluno H' }]
             }
         ];
         const data = { data: turmas, nextId: 6, length: 5 };
