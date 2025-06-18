@@ -10,7 +10,7 @@ export default function ControleEstandePage() {
   const [editingId, setEditingId] = useState(null);
   const [projetos, setProjetos] = useState([]);
   const [avaliadores, setAvaliadores] = useState([]);
-  const [nextId, setNextId] = useState(1); // novo estado para controle do ID
+  const [nextId, setNextId] = useState(1); 
 
   useEffect(() => {
     const armazenado = localStorage.getItem('estandes');
@@ -24,7 +24,7 @@ export default function ControleEstandePage() {
       setDataSource(estandesData.data || []);
       setProjetos(estandesData.projetos || []);
       setAvaliadores(estandesData.avaliadores || []);
-      setNextId(estandesData.nextId || 1); // carrega o próximo ID se existir
+      setNextId(estandesData.nextId || 1); 
     }
   }, []);
 
@@ -54,13 +54,13 @@ export default function ControleEstandePage() {
       setEditingId(null);
     } else {
       const novo = {
-        id: String(currentId).padStart(2, '0'), // Gera ID tipo "01", "02", ...
+        id: String(currentId).padStart(2, '0'), 
         ...values,
       };
       const novosDados = [...(dataSource || []), novo];
       setDataSource(novosDados);
-      salvarLocal(novosDados, currentId + 1); // Atualiza contador
-      setNextId(currentId + 1); // Atualiza estado
+      salvarLocal(novosDados, currentId + 1); 
+      setNextId(currentId + 1); 
     }
 
     form.resetFields();
@@ -74,7 +74,7 @@ export default function ControleEstandePage() {
   const handleDelete = (id) => {
     const filtrado = dataSource.filter((item) => item.id !== id);
     setDataSource(filtrado);
-    salvarLocal(filtrado, nextId); // Mantém o contador
+    salvarLocal(filtrado, nextId); 
   };
 
   const columns = [
