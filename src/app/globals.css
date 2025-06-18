@@ -73,3 +73,130 @@ a {
     color-scheme: dark;
   }
 }
+
+
+/* Container centralizado e com espaçamento */
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px 30px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Inputs e selects com visual uniforme */
+.input-style,
+.select-style {
+  padding: 10px 14px;
+  margin: 8px 8px 16px 0;
+  border: 1.8px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline-color: #4a90e2;
+  transition: border-color 0.3s ease;
+  width: 250px;
+  box-sizing: border-box;
+}
+
+.input-style:focus,
+.select-style:focus {
+  border-color: #4a90e2;
+}
+
+/* Botão principal */
+.btn-style {
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 26px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-style:hover {
+  background-color: #357ABD;
+}
+
+/* Botão de edição */
+.btn-edit {
+  background-color: #ffc107;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+  color: #222;
+}
+
+/* Botão de exclusão */
+.btn-delete {
+  background-color: #dc3545;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-delete:hover {
+  background-color: #b02a37;
+}
+
+/* Botão de cancelar edição */
+.btn-cancel {
+  background-color: #6c757d;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+/* Tabela com espaçamento e bordas */
+.table-style {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 0.95rem;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table-style th,
+.table-style td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table-style th {
+  background-color: #4a90e2;
+  color: white;
+  font-weight: 600;
+}
+
+.table-style tr:hover {
+  background-color: #f1f7ff;
+}
