@@ -17,24 +17,39 @@ const EditarProjeto = () => {
 
   useEffect(() => {
     const cursosArmazenados = JSON.parse(localStorage.getItem('cursos')) || [];
-    const usuariosJSON = localStorage.getItem('users');
-    let usuarios = { data: [] };
 
-    try {
-      if (usuariosJSON) {
-        usuarios = JSON.parse(usuariosJSON);
-      }
-    } catch (err) {
-      console.error('Erro ao ler usuários:', err);
+   const usuariosJSON = localStorage.getItem('users');
+let usuarios = { data: [] };
+
+try {
+  if (usuariosJSON) {
+    const parsed = JSON.parse(usuariosJSON);
+
+    if (Array.isArray(parsed)) {
+      // Caso o conteúdo seja um array direto
+      usuarios.data = parsed;
+    } else if (parsed && Array.isArray(parsed.data)) {
+      // Caso esteja no formato esperado
+      usuarios = parsed;
+    } else {
+      console.warn('Formato inesperado para os dados de usuários:', parsed);
     }
+  }
+} catch (err) {
+  console.error('Erro ao processar usuários:', err);
+}
+
 
     const turmasExtraidas = cursosArmazenados.flatMap((curso) => curso.listaTurmas || []);
     setTurmasDisponiveis(turmasExtraidas);
+    console.log('Usuários carregados:', usuarios);
 
-    const professores = usuarios.data.filter((u) => u.tipo === 'Professor');
-    setDocentes(professores);
+    const usuariosValidos = Array.isArray(usuarios?.data) ? usuarios.data : [];
 
-    const alunos = usuarios.data.filter((u) => u.tipo === 'Aluno');
+     const profs = usuariosValidos.filter(u => u.tipo === 'Professor');
+    setDocentes(profs);
+
+     const alunos = usuariosValidos.filter(u => u.tipo === 'Aluno');
     setAlunosTodos(alunos);
 
     const todosProjetos = JSON.parse(localStorage.getItem('projetos')) || { data: [] };

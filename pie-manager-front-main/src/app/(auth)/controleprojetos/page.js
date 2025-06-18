@@ -3,21 +3,20 @@
 import { useEffect, useState } from 'react';
 import { Table, Button, Tag, Space } from 'antd';
 import { useRouter } from 'next/navigation';
-
-const professoresNomes = {
-  'prof-joao': 'João da Silva',
-  'prof-ana': 'Ana Lima',
-  'prof-carlos': 'Carlos Mendes',
-  'prof-helena': 'Helena Souza',
-  'prof-marcos': 'Marcos Rocha'
-};
+import ProjetoMocks from '@/mocks/projetomocks'; // ou '@/mocks/TrabalhosMocks'
 
 const GerenciarProjetos = () => {
   const [projetos, setProjetos] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
-    const armazenado = localStorage.getItem('projetos');
+    let armazenado = localStorage.getItem('trabalhos');
+
+    if (!armazenado) {
+      ProjetoMocks.build();
+      armazenado = localStorage.getItem('trabalhos');
+    }
+
     if (armazenado) {
       const obj = JSON.parse(armazenado);
       setProjetos(obj.data || []);
@@ -26,12 +25,19 @@ const GerenciarProjetos = () => {
 
   const excluirProjeto = (id) => {
     const atualizado = projetos.filter((proj) => proj.id !== id);
-    localStorage.setItem('projetos', JSON.stringify({ data: atualizado }));
+    localStorage.setItem(
+      'trabalhos',
+      JSON.stringify({
+        data: atualizado,
+        nextId: atualizado.length + 1,
+        length: atualizado.length
+      })
+    );
     setProjetos(atualizado);
   };
 
   const irParaNovoProjeto = () => {
-    router.push('/projetos/novo');
+    router.push('/controleprojetos/novo');
   };
 
   const colunas = [
@@ -41,13 +47,13 @@ const GerenciarProjetos = () => {
       key: 'id'
     },
     {
-      title: 'Projeto',
+      title: 'Título',
       dataIndex: 'titulo',
       key: 'titulo',
       render: (texto) => <a>{texto}</a>
     },
     {
-      title: 'Resumo',
+      title: 'Descrição',
       dataIndex: 'descricao',
       key: 'descricao'
     },
@@ -60,24 +66,24 @@ const GerenciarProjetos = () => {
       title: 'Orientador',
       dataIndex: 'id_Professor',
       key: 'id_Professor',
-      render: (id) => professoresNomes[id] || id
+      render: (professor) => professor?.nome || 'Desconhecido'
     },
     {
-      title: 'Participantes',
+      title: 'Alunos',
       dataIndex: 'listaAlunos',
       key: 'listaAlunos',
       render: (lista) => (
         <>
-          {(lista || []).map((aluno, idx) => (
-            <Tag color="geekblue" key={idx}>
-              {aluno.toUpperCase()}
+          {(lista || []).map((aluno) => (
+            <Tag key={aluno.id} color="geekblue">
+              {aluno.nome.toUpperCase()}
             </Tag>
           ))}
         </>
       )
     },
     {
-      title: 'Opções',
+      title: 'Ações',
       key: 'acoes',
       render: (_, registro) => (
         <Space size="middle">
@@ -108,7 +114,7 @@ const GerenciarProjetos = () => {
           }}
         >
           Novo Projeto
-        </Button>   
+        </Button>
       </div>
       <Table
         columns={colunas}
