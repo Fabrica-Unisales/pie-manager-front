@@ -1,138 +1,172 @@
-'use client';
+"use client";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Modal, Form, Input, Select, Space, message } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
-import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Input, Space, Modal } from 'antd';
+const { Option } = Select;
+const ORGANIZACOES_KEY = "organizacoes";
 
-export default function OrganizacaoPage() {
-  const [organizacoes, setOrganizacoes] = useState<any[]>([]);
-  const [editando, setEditando] = useState<number | null>(null);
+// ✅ Tipagem da Organização
+interface Organizacao {
+  id: string;
+  nome: string;
+  curso_id: string;
+  semestre: string;
+  ano: string;
+  coordenador_id: string;
+  periodo_id: string;
+  professor: string;
+  listaAlunos: string[];
+}
+
+// ✅ Mock simplificado para professores e alunos
+const usuariosMock = [
+  { id: "1", nome: "Wilson" },
+  { id: "2", nome: "Maria" },
+  { id: "3", nome: "Carlos" },
+];
+
+const alunosMock = [
+  { id: "4", nome: "João" },
+  { id: "5", nome: "Ana" },
+  { id: "6", nome: "Pedro" },
+];
+
+const PageOrganizacao = () => {
+  const [organizacoes, setOrganizacoes] = useState<Organizacao[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editando, setEditando] = useState<Organizacao | null>(null);
+  const [form] = Form.useForm();
 
-  const handleFinish = (values: any) => {
-    console.log('Valores recebidos do formulário:', values);
-    let newData;
-    if (editando !== null) {
-      // Editar registro existente
-      newData = organizacoes.map((org, idx) =>
-        idx === editando
-          ? { ...org, ...values, id: org.id, key: org.key }
-          : org
-      );
-      setModalVisible(false);
-      setEditando(null);
-      editForm.resetFields();
-    } else {
-      // Novo registro
-      const nova = {
-        id: String(Date.now()),
-        key: String(Date.now()),
-        nome: values.nome || '',
-        curso_id: values.curso_id || '',
-        semestre: values.semestre || '',
-        ano: values.ano || '',
-        professor: values.professor || '',
-        coordenador_id: values.coordenador_id || '',
-        periodo_id: values.periodo_id || '',
-      };
-      newData = [...organizacoes, nova];
-      form.resetFields();
-    }
-    setOrganizacoes(newData);
-    localStorage.setItem('organizacoes', JSON.stringify(newData));
+  // Carrega do localStorage
+  useEffect(() => {
+    const dataString = localStorage.getItem(ORGANIZACOES_KEY);
+    const data: Organizacao[] = dataString ? JSON.parse(dataString) : [];
+    setOrganizacoes(data);
+  }, []);
+
+  const salvarOrganizacoes = (data: Organizacao[]) => {
+    localStorage.setItem(ORGANIZACOES_KEY, JSON.stringify(data));
+    setOrganizacoes(data);
   };
 
-  const handleEdit = (record: any, idx: number) => {
-    setEditando(idx);
+  const handleDelete = (id: string) => {
+    const atualizadas = organizacoes.filter((org) => org.id !== id);
+    salvarOrganizacoes(atualizadas);
+    message.success("Organização excluída!");
+  };
+
+  const handleEdit = (record: Organizacao) => {
+    setEditando(record);
+    form.setFieldsValue(record);
     setModalVisible(true);
-    editForm.setFieldsValue(record);
   };
 
-  const handleDelete = (idx: number) => {
-    const newData = organizacoes.filter((_, i) => i !== idx);
-    setOrganizacoes(newData);
-    localStorage.setItem('organizacoes', JSON.stringify(newData));
-    if (editando === idx) setEditando(null);
+  const handleAdd = () => {
+    setEditando(null);
+    form.resetFields();
+    setModalVisible(true);
+  };
+
+  const handleOk = () => {
+    form.validateFields().then((values) => {
+      if (editando) {
+        const atualizadas = organizacoes.map((org) =>
+          org.id === editando.id ? { ...editando, ...values } : org
+        );
+        salvarOrganizacoes(atualizadas);
+        message.success("Organização editada!");
+      } else {
+        const nova: Organizacao = {
+          ...values,
+          id: Date.now().toString(), // gera ID único
+        };
+        salvarOrganizacoes([...organizacoes, nova]);
+        message.success("Organização adicionada!");
+      }
+      setModalVisible(false);
+    });
   };
 
   const columns = [
-    { title: 'Nome', dataIndex: 'nome', key: 'nome', render: (text: string) => text || '-' },
-    { title: 'Curso', dataIndex: 'curso_id', key: 'curso_id', render: (text: string) => text || '-' },
-    { title: 'Semestre', dataIndex: 'semestre', key: 'semestre', render: (text: string) => text || '-' },
-    { title: 'Ano', dataIndex: 'ano', key: 'ano', render: (text: string) => text || '-' },
-    { title: 'Professor', dataIndex: 'professor', key: 'professor', render: (text: string) => text || '-' },
+    { title: "Nome", dataIndex: "nome" },
+    { title: "Curso ID", dataIndex: "curso_id" },
+    { title: "Ano", dataIndex: "ano" },
+    { title: "Semestre", dataIndex: "semestre" },
+    { title: "Período", dataIndex: "periodo_id" },
+    { title: "Professor", dataIndex: "professor" },
     {
-      title: 'Ações',
-      key: 'acoes',
-      render: (_: any, record: any, idx: number) => (
+      title: "Alunos",
+      dataIndex: "listaAlunos",
+      render: (alunos: string[]) => alunos?.join(", "),
+    },
+    {
+      title: "Ações",
+      render: (_: any, record: Organizacao) => (
         <Space>
-          <Button size="small" onClick={() => handleEdit(record, idx)}>Editar</Button>
-          <Button size="small" danger onClick={() => handleDelete(idx)}>Excluir</Button>
+          <Button type="link" onClick={() => handleEdit(record)}>Editar</Button>
+          <Button type="link" danger onClick={() => handleDelete(record.id)}>Excluir</Button>
         </Space>
       ),
     },
   ];
 
-  const [form] = Form.useForm();
-  const [editForm] = Form.useForm();
-
-  useEffect(() => {
-    let orgs = [];
-    try {
-      const raw = localStorage.getItem('organizacoes');
-      const parsed = JSON.parse(raw || '[]');
-      if (Array.isArray(parsed)) {
-        orgs = parsed;
-      } else if (parsed && Array.isArray(parsed.data)) {
-        orgs = parsed.data;
-      }
-    } catch {
-      orgs = [];
-      localStorage.removeItem('organizacoes');
-    }
-    setOrganizacoes(orgs);
-  }, []);
-
   return (
-    <div style={{ padding: 24, maxWidth: 500, margin: '0 auto' }}>
-      <h2>Nova Organização de Curso e Turma</h2>
-      <Form layout="vertical" onFinish={handleFinish} form={form}>
-        <Form.Item name="nome" label="Nome da Organização"><Input /></Form.Item>
-        <Form.Item name="coordenador_id" label="ID Coordenador"><Input /></Form.Item>
-        <Form.Item name="curso_id" label="ID Curso"><Input /></Form.Item>
-        <Form.Item name="periodo_id" label="ID Período"><Input /></Form.Item>
-        <Form.Item name="ano" label="Ano"><Input /></Form.Item>
-        <Form.Item name="semestre" label="Semestre"><Input /></Form.Item>
-        <Form.Item name="professor" label="Nome do Professor"><Input /></Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>Salvar</Button>
-        </Form.Item>
-      </Form>
-      <Table
-        dataSource={organizacoes}
-        columns={columns}
-        pagination={{ pageSize: 5 }}
-        style={{ marginTop: 24 }}
-      />
-      <Modal
-        title="Editar Organização"
-        open={modalVisible}
-        onCancel={() => { setModalVisible(false); setEditando(null); editForm.resetFields(); }}
-        footer={null}
-        width={400}
+    <>
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        onClick={handleAdd}
+        style={{ marginBottom: 16 }}
       >
-        <Form layout="vertical" form={editForm} onFinish={handleFinish}>
-          <Form.Item name="nome" label="Nome da Organização"><Input /></Form.Item>
-          <Form.Item name="coordenador_id" label="ID Coordenador"><Input /></Form.Item>
-          <Form.Item name="curso_id" label="ID Curso"><Input /></Form.Item>
-          <Form.Item name="periodo_id" label="ID Período"><Input /></Form.Item>
-          <Form.Item name="ano" label="Ano"><Input /></Form.Item>
-          <Form.Item name="semestre" label="Semestre"><Input /></Form.Item>
-          <Form.Item name="professor" label="Nome do Professor"><Input /></Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" block>Salvar Alteração</Button>
+        Adicionar Organização
+      </Button>
+
+      <Table dataSource={organizacoes} columns={columns} rowKey="id" />
+
+      <Modal
+        title={editando ? "Editar Organização" : "Nova Organização"}
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        onOk={handleOk}
+      >
+        <Form form={form} layout="vertical">
+          <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="curso_id" label="Curso ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="ano" label="Ano" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="semestre" label="Semestre" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="periodo_id" label="Período ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="coordenador_id" label="Coordenador ID" rules={[{ required: true }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item name="professor" label="Professor" rules={[{ required: true }]}>
+            <Select>
+              {usuariosMock.map((u) => (
+                <Option key={u.id} value={u.nome}>{u.nome}</Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="listaAlunos" label="Alunos">
+            <Select mode="multiple">
+              {alunosMock.map((a) => (
+                <Option key={a.id} value={a.nome}>{a.nome}</Option>
+              ))}
+            </Select>
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </>
   );
-} 
+};
+
+export default PageOrganizacao;
