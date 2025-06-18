@@ -3,7 +3,7 @@ export default class TrabalhosMocks {
     const data = [
       {
         id: '1',
-        titulo: 'Plataforma de Aprendizado Interativo',
+        titulo: 'Plataforma e-ESCOLA',
         descricao: 'Ambiente digital para aulas, exercícios e quizzes educacionais.',
         id_turma: 'turma1',
         id_Professor: { id: 'prof-lucas', nome: 'Lucas Mendes' },
@@ -14,8 +14,8 @@ export default class TrabalhosMocks {
       },
       {
         id: '2',
-        titulo: 'App de Monitoramento de Atividades Físicas',
-        descricao: 'Aplicativo para registrar atividades.',
+        titulo: 'App NewRace',
+        descricao: 'Aplicativo para registrar atividades Esportivas.',
         id_turma: 'turma2',
         id_Professor: { id: 'prof-marcos', nome: 'Marcos Lima' },
         listaAlunos: [
@@ -26,7 +26,7 @@ export default class TrabalhosMocks {
       },
       {
         id: '3',
-        titulo: 'Gestor de Tarefas para Escritórios',
+        titulo: 'App TaskIA',
         descricao: 'Sistema de organização e produtividade para equipes pequenas.',
         id_turma: 'turma3',
         id_Professor: { id: 'prof-andre', nome: 'André Figueiredo' },
@@ -39,10 +39,10 @@ export default class TrabalhosMocks {
       },
       {
         id: '4',
-        titulo: 'Portal de Consulta Jurídica',
+        titulo: 'App Portal Jurídico',
         descricao: 'Sistema para agendamento de atendimentos e consultas com advogados.',
         id_turma: 'turma4',
-        id_Professor: { id: 'prof-james', nome: 'James Oliveira' },
+        id_Professor: { id: 'prof-james', nome: 'James Silva' },
         listaAlunos: [
           { id: 'aluno-rafael', nome: 'Rafael Torres' },
           { id: 'aluno-natalia', nome: 'Natália Martins' }
@@ -50,10 +50,10 @@ export default class TrabalhosMocks {
       },
       {
         id: '5',
-        titulo: 'Sistema de Catálogo para Biblioteca',
+        titulo: 'NewLibrary App',
         descricao: 'Plataforma online para busca e reserva de livros.',
         id_turma: 'turma5',
-        id_Professor: { id: 'prof-romulo', nome: 'Rômulo Nogueira' },
+        id_Professor: { id: 'prof-romulo', nome: 'Romulo Silva' },
         listaAlunos: [
           { id: 'aluna-perla', nome: 'Perla Soares' },
           { id: 'aluno-diego', nome: 'Diego Barbosa' },

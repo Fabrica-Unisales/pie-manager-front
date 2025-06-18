@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Table, Button, Tag, Space } from 'antd';
 import { useRouter } from 'next/navigation';
-import ProjetoMocks from '@/mocks/projetomocks'; // ou '@/mocks/TrabalhosMocks'
+import ProjetoMocks from '@/mocks/projetomocks'; 
 
 const GerenciarProjetos = () => {
   const [projetos, setProjetos] = useState([]);

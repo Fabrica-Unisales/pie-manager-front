@@ -106,7 +106,7 @@ try {
 
   return (
     <div style={{ maxWidth: 700, margin: '0 auto', padding: 24 }}>
-      <h2>Atualizar Dados do Projeto</h2>
+      <h2>Dados do Novo Projeto</h2>
       <Form layout="vertical" form={formulario} onFinish={salvarProjeto}>
         <Form.Item label="Nome do Projeto" name="titulo" rules={[{ required: true }]}>
           <Input placeholder="Digite o título do projeto" />

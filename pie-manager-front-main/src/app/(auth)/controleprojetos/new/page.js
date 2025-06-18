@@ -89,12 +89,14 @@ const CriarProjeto = () => {
         </Form.Item>
 
         <Form.Item label="Turma" name="turma" rules={[{ required: true }]}>
-          <Select placeholder="Selecione a turma" onChange={aoSelecionarTurma}>
-            {listaTurmas.map(t => (
-              <Select.Option key={t.id} value={t.id}>
-                {t.curso_id} - {t.ano}/{t.semestre}
-              </Select.Option>
-            ))}
+         <Select placeholder="Selecione uma turma" onChange={atualizarAlunosDaTurma}> 
+      {turmasDisponiveis
+      .filter(turma => turma.ativo) 
+        .map((turma) => (
+        <Select.Option key={turma.id} value={turma.id}>
+          {turma.curso_id} - {turma.ano}/{turma.semestre}
+        </Select.Option>
+      ))}
           </Select>
         </Form.Item>
 
