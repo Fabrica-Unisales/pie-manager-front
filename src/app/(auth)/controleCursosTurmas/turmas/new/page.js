@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { listarCursos } from '../../cursos/storageCursos';
-import { addTurma } from '../storageTurmas';
+import { salvarTurma } from '../storageTurmas';
 
 export default function NovaTurma() {
   const router = useRouter();
@@ -35,7 +35,7 @@ export default function NovaTurma() {
       return;
     }
 
-    addTurma(turma);
+    salvarTurma(turma);
     router.push('/controleCursosTurmas/turmas');
   };
 

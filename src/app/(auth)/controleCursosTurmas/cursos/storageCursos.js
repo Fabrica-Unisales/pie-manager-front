@@ -1,27 +1,35 @@
-const KEY = "cursos";
+import { MOCK_CURSOS } from "@/mocks/mockCursos";
 
-// 🔍 Listar cursos
+const STORAGE_KEY = "cursos";
+
+// Listar cursos
 export function listarCursos() {
-  if (typeof window !== "undefined") {
-    return JSON.parse(localStorage.getItem(KEY)) || [];
+  if (typeof window === "undefined") return [];
+
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_CURSOS));
+    return MOCK_CURSOS;
   }
-  return [];
 }
 
-// 💾 Salvar ou atualizar curso
+// Salvar curso
 export function salvarCurso(curso) {
   const cursos = listarCursos();
   const index = cursos.findIndex((c) => c.id === curso.id);
-  if (index >= 0) {
-    cursos[index] = curso; // Atualiza
+  if (index !== -1) {
+    cursos[index] = curso;
   } else {
-    cursos.push(curso); // Cria novo
+    cursos.push(curso);
   }
-  localStorage.setItem(KEY, JSON.stringify(cursos));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(cursos));
 }
 
-// 🗑️ Deletar curso
-export function excluirCurso(id) {
-  const cursos = listarCursos().filter((c) => c.id !== id);
-  localStorage.setItem(KEY, JSON.stringify(cursos));
+// Remover curso
+export function removerCurso(id) {
+  const cursos = listarCursos();
+  const atualizados = cursos.filter((c) => c.id !== id);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(atualizados));
 }

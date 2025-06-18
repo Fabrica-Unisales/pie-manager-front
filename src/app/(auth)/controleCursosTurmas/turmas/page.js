@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getTurmas, deleteTurma } from './storageTurmas';
+import { listarTurmas, removerTurma } from './storageTurmas';
 
 export default function ListaTurmas() {
   const router = useRouter();
   const [turmas, setTurmas] = useState([]);
 
   useEffect(() => {
-    const turmasArmazenadas = getTurmas();
+    const turmasArmazenadas = listarTurmas();
     setTurmas(turmasArmazenadas);
   }, []);
 
@@ -20,8 +20,8 @@ export default function ListaTurmas() {
   const handleExcluir = (id) => {
     const confirmar = confirm('Tem certeza que deseja excluir esta turma?');
     if (confirmar) {
-      deleteTurma(id);
-      const turmasAtualizadas = getTurmas();
+      removerTurma(id);
+      const turmasAtualizadas = listarTurmas();
       setTurmas(turmasAtualizadas);
     }
   };
@@ -33,29 +33,14 @@ export default function ListaTurmas() {
       <div style={{ marginBottom: '20px' }}>
         <button
           onClick={() => router.push('/controleCursosTurmas')}
-          style={{
-            marginRight: '10px',
-            padding: '8px 12px',
-            backgroundColor: '#888',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
+          style={buttonStyle('#888')}
         >
           Voltar para Menu
         </button>
 
         <button
           onClick={() => router.push('/controleCursosTurmas/turmas/new')}
-          style={{
-            padding: '8px 12px',
-            backgroundColor: '#0070f3',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-          }}
+          style={buttonStyle('#0070f3')}
         >
           Nova Turma
         </button>
@@ -64,13 +49,7 @@ export default function ListaTurmas() {
       {turmas.length === 0 ? (
         <p>Nenhuma turma cadastrada.</p>
       ) : (
-        <table
-          style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            backgroundColor: '#fff',
-          }}
-        >
+        <table style={tableStyle}>
           <thead>
             <tr style={{ backgroundColor: '#f5f5f5' }}>
               <th style={thStyle}>ID</th>
@@ -105,6 +84,13 @@ export default function ListaTurmas() {
   );
 }
 
+// Estilos
+const tableStyle = {
+  width: '100%',
+  borderCollapse: 'collapse',
+  backgroundColor: '#fff',
+};
+
 const thStyle = {
   border: '1px solid #ddd',
   padding: '10px',
@@ -115,3 +101,13 @@ const tdStyle = {
   border: '1px solid #ddd',
   padding: '10px',
 };
+
+const buttonStyle = (bgColor) => ({
+  marginRight: '10px',
+  padding: '8px 12px',
+  backgroundColor: bgColor,
+  color: '#fff',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+});
