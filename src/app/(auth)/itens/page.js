@@ -1,7 +1,7 @@
 'use client';
 import React, { use, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
-import { columns } from '@/statics/tableMocks';
+import { columns } from '../../../statics/tableMocks';
 
 
 const App = () => {
