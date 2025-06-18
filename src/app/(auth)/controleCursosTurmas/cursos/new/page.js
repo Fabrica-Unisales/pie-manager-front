@@ -1,16 +1,18 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { salvarCurso } from "../storageCursos";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { salvarCurso } from '../storageCursos';
 
-export default function Page() {
+export default function NovoCurso() {
   const router = useRouter();
-
   const [curso, setCurso] = useState({
-    id: "",
-    nome: "",
-    coordenador: "",
+    id: '',
+    nome: '',
+    coordenador: '',
+    area: 'TI',
+    cargaHoraria: '',
+    status: 'ativo',
   });
 
   const handleChange = (e) => {
@@ -20,48 +22,100 @@ export default function Page() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!curso.id || !curso.nome) {
-      alert("ID e Nome são obrigatórios.");
-      return;
-    }
     salvarCurso(curso);
-    router.push("/controleCursosTurmas/cursos");
+    router.push('/controleCursosTurmas/cursos');
   };
 
   return (
-    <div>
-      <h1>➕ Cadastrar Curso</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>ID:</label>
+    <div style={{ padding: '20px' }}>
+      <h1>Novo Curso</h1>
+      <form 
+        onSubmit={handleSubmit} 
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '15px', 
+          maxWidth: '500px' 
+        }}
+      >
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Tag (ID):
           <input
+            type="text"
             name="id"
             value={curso.id}
             onChange={handleChange}
             required
+            style={{ flex: '1', marginLeft: '10px' }}
           />
-        </div>
-        <div>
-          <label>Nome:</label>
+        </label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Nome do Curso:
           <input
+            type="text"
             name="nome"
             value={curso.nome}
             onChange={handleChange}
             required
+            style={{ flex: '1', marginLeft: '10px' }}
           />
-        </div>
-        <div>
-          <label>Coordenador:</label>
+        </label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Coordenador:
           <input
+            type="text"
             name="coordenador"
             value={curso.coordenador}
             onChange={handleChange}
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
           />
-        </div>
-        <br />
-        <button type="submit">💾 Salvar</button>
-        <button type="button" onClick={() => router.push("/controleCursosTurmas/cursos")}>
-          ↩️ Voltar
+        </label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Área:
+          <select 
+            name="area" 
+            value={curso.area} 
+            onChange={handleChange} 
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
+          >
+            <option value="TI">TI</option>
+            <option value="Saúde">Saúde</option>
+            <option value="Engenharia">Engenharia</option>
+            <option value="Gestão">Gestão</option>
+            <option value="Direito">Direito</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Carga Horária:
+          <input
+            type="number"
+            name="cargaHoraria"
+            value={curso.cargaHoraria}
+            onChange={handleChange}
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
+          />
+        </label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Status:
+          <select 
+            name="status" 
+            value={curso.status} 
+            onChange={handleChange} 
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
+          >
+            <option value="ativo">Ativo</option>
+            <option value="inativo">Inativo</option>
+          </select>
+        </label>
+
+        <button type="submit">Salvar</button>
+        <button type="button" onClick={() => router.push('/controleCursosTurmas/cursos')}>
+          Cancelar
         </button>
       </form>
     </div>

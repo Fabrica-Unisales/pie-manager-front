@@ -1,29 +1,27 @@
 const KEY = "cursos";
 
-export function getCursos() {
-  const data = localStorage.getItem(KEY);
-  return data ? JSON.parse(data) : [];
-}
-
-export function getCurso(id) {
-  const cursos = getCursos();
-  return cursos.find((curso) => curso.id === id);
-}
-
-export function salvarCurso(curso) {
-  const cursos = getCursos();
-  const index = cursos.findIndex((c) => c.id === curso.id);
-
-  if (index === -1) {
-    cursos.push(curso);
-  } else {
-    cursos[index] = curso;
+// 🔍 Listar cursos
+export function listarCursos() {
+  if (typeof window !== "undefined") {
+    return JSON.parse(localStorage.getItem(KEY)) || [];
   }
+  return [];
+}
 
+// 💾 Salvar ou atualizar curso
+export function salvarCurso(curso) {
+  const cursos = listarCursos();
+  const index = cursos.findIndex((c) => c.id === curso.id);
+  if (index >= 0) {
+    cursos[index] = curso; // Atualiza
+  } else {
+    cursos.push(curso); // Cria novo
+  }
   localStorage.setItem(KEY, JSON.stringify(cursos));
 }
 
-export function deletarCurso(id) {
-  const cursos = getCursos().filter((curso) => curso.id !== id);
+// 🗑️ Deletar curso
+export function excluirCurso(id) {
+  const cursos = listarCursos().filter((c) => c.id !== id);
   localStorage.setItem(KEY, JSON.stringify(cursos));
 }
