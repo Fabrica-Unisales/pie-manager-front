@@ -1,7 +1,7 @@
 import React from 'react';
 import { Space, Tag } from 'antd';
 
-const columns = [
+ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -78,4 +78,38 @@ const columnsEstandes = [
   },
 ];
 
+const avaliacoesColumns = [
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto_id',
+    key: 'projeto_id',
+  },
+  {
+    title: 'Avaliador',
+    dataIndex: 'avaliador_id',
+    key: 'avaliador_id',
+  },
+  {
+    title: 'Nota',
+    dataIndex: 'nota',
+    key: 'nota',
+  },
+  {
+    title: 'Comentário',
+    dataIndex: 'comentario',
+    key: 'comentario',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a href={`/avaliacoes/${record.id}`}>Edit</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+
 export { columns, columnsEstandes };
+export { columns, avaliacoesColumns };
