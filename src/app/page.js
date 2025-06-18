@@ -1,12 +1,11 @@
 'use client';
-import React from 'react';
-import { Button } from 'antd';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
-const Home = () => (
-  <div className="App">
-    this is the home page
-    <Button type="primary" onClick={()=>{console.log(`testes agora`)}}>Button</Button>
-  </div>
-);
-
-export default Home;
+export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace('/login');
+  }, [router]);
+  return null;
+}
