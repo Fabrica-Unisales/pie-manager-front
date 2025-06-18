@@ -17,7 +17,7 @@ export const items2 = [
     icon: React.createElement(NotificationOutlined),
     label: <a href="/itens" rel="itens">Itens</a>,
   },
-
+  
   {
     key: "cursos",
     icon: React.createElement(BookOutlined),
@@ -30,4 +30,14 @@ export const items2 = [
     label: <a href="/turma" rel="turmas">Turmas</a>,
   },
 
+  {
+    key: "apresentacoes",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/estandes" rel="itens">Apresentações</a>,
+  },
+  {
+    key: "avaliacoes",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/avaliacoes" rel="avaliacoes">Avaliações</a>,
+  },
 ];

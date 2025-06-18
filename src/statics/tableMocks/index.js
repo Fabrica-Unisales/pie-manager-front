@@ -1,12 +1,12 @@
 import React from 'react';
 import { Space, Tag } from 'antd';
 
-const columns = [
+ const columns = [
   {
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => {return(<a>{text}</a>)},
+    render: (text) => { return (<a>{text}</a>) },
   },
   {
     title: 'Age',
@@ -50,4 +50,66 @@ const columns = [
   },
 ];
 
-export {columns};
+const columnsEstandes = [
+  {
+    title: 'Localização',
+    dataIndex: 'localizacao',
+    key: 'localizacao',
+  },
+  {
+    title: 'Horário',
+    dataIndex: 'horario',
+    key: 'horario',
+  },
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto',
+    key: 'projeto',
+  },
+  {
+    title: 'Ações',
+    key: 'acoes',
+    render: (text, record, index, { onEdit, onDelete }) => (
+      <Space size="middle">
+        <a onClick={() => onEdit && onEdit(record)}>Editar</a>
+        <a onClick={() => onDelete && onDelete(record)}>Excluir</a>
+      </Space>
+    ),
+  },
+];
+
+const avaliacoesColumns = [
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto_id',
+    key: 'projeto_id',
+  },
+  {
+    title: 'Avaliador',
+    dataIndex: 'avaliador_id',
+    key: 'avaliador_id',
+  },
+  {
+    title: 'Nota',
+    dataIndex: 'nota',
+    key: 'nota',
+  },
+  {
+    title: 'Comentário',
+    dataIndex: 'comentario',
+    key: 'comentario',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a href={`/avaliacoes/${record.id}`}>Edit</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+
+export { columns, columnsEstandes };
+export { columns, avaliacoesColumns };
