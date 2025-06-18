@@ -23,17 +23,20 @@ const EditEstandePage = () => {
         const estandesData = JSON.parse(localStorage.getItem('estandes')) || [];
         
         setProjetos(projetosData);
-        setProjetoOptions(projetosData.map(p => ({ value: p.id, label: p.titulo })));
+        setProjetoOptions(projetosData.map(p => ({ value: p.titulo, label: p.titulo })));
         
         const estandeAtual = estandesData.find(e => e.id === id);
         if (estandeAtual) {
             setEstande(estandeAtual);
             form.setFieldsValue({
                 localizacao: estandeAtual.localizacao,
-                horarios: estandeAtual.horario_projeto?.map(hp => ({
-                    horario: hp.horario,
-                    projeto_id: hp.projeto_id
-                })) || []
+                horarios: estandeAtual.horario_projeto?.map(hp => {
+                    const projeto = projetosData.find(p => p.id === hp.projeto_id);
+                    return {
+                        horario: hp.horario,
+                        projeto_id: projeto?.titulo || hp.projeto_id
+                    };
+                }) || []
             });
         }
         setLoading(false);
@@ -48,11 +51,14 @@ const EditEstandePage = () => {
                 estandes[index] = {
                     ...estandes[index],
                     localizacao: values.localizacao,
-                    horario_projeto: values.horarios?.map((h, idx) => ({
-                        id: estandes[index].horario_projeto[idx]?.id || Date.now() + idx,
-                        horario: h.horario,
-                        projeto_id: h.projeto_id
-                    })) || []
+                    horario_projeto: values.horarios?.map((h, idx) => {
+                        const projeto = projetos.find(p => p.titulo === h.projeto_id);
+                        return {
+                            id: estandes[index].horario_projeto[idx]?.id || Date.now() + idx,
+                            horario: h.horario,
+                            projeto_id: projeto?.id || h.projeto_id
+                        };
+                    }) || []
                 };
                 
                 localStorage.setItem('estandes', JSON.stringify(estandes));
@@ -77,7 +83,13 @@ const EditEstandePage = () => {
     };
 
     if (loading) {
-        return <Spin tip="Carregando..." />;
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+                <Spin tip="Carregando..." size="large">
+                    <div />
+                </Spin>
+            </div>
+        );
     }
 
     if (!estande) {

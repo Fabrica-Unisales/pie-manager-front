@@ -128,7 +128,7 @@ const PaginaEstandes = () => {
                         const projeto = projetos.find(p => p.id === hp.projeto_id);
                         return (
                             <Tag key={index} color="blue">
-                                {hp.horario} - {projeto?.nome || hp.projeto_id}
+                                {hp.horario} - {projeto?.titulo || hp.projeto_id}
                             </Tag>
                         );
                     })}
