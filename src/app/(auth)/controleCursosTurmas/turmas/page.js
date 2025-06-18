@@ -1,73 +1,95 @@
-"use client";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getTurmas, deleteTurma } from "./storageTurmas";
+'use client';
 
-export default function Turmas() {
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getTurmas, deleteTurma } from './storageTurmas';
+
+export default function ListaTurmas() {
+  const router = useRouter();
   const [turmas, setTurmas] = useState([]);
 
   useEffect(() => {
-    setTurmas(getTurmas());
+    const turmasArmazenadas = getTurmas();
+    setTurmas(turmasArmazenadas);
   }, []);
 
-  const handleDelete = (id) => {
-    const confirmDelete = confirm("Tem certeza que deseja excluir esta turma?");
-    if (confirmDelete) {
+  const handleEditar = (id) => {
+    router.push(`/controleCursosTurmas/turmas/${id}`);
+  };
+
+  const handleExcluir = (id) => {
+    const confirmar = confirm('Tem certeza que deseja excluir esta turma?');
+    if (confirmar) {
       deleteTurma(id);
-      setTurmas(getTurmas());
+      const turmasAtualizadas = getTurmas();
+      setTurmas(turmasAtualizadas);
     }
   };
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-bold mb-6">Gerenciar Turmas</h1>
+    <div style={{ padding: '20px' }}>
+      <h1>Lista de Turmas</h1>
 
-      <Link href="/controleCursosTurmas/turmas/new">
-        <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
-          Nova Turma
-        </button>
-      </Link>
+      <button
+        onClick={() => router.push('/controleCursosTurmas/turmas/new')}
+        style={{ marginBottom: '20px' }}
+      >
+        Nova Turma
+      </button>
 
-      <div className="mt-8">
-        {turmas.length === 0 ? (
-          <p className="text-gray-600">Nenhuma turma cadastrada.</p>
-        ) : (
-          <table className="w-full border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border p-2">ID</th>
-                <th className="border p-2">Período</th>
-                <th className="border p-2">Turno</th>
-                <th className="border p-2">Curso</th>
-                <th className="border p-2">Ações</th>
+      {turmas.length === 0 ? (
+        <p>Nenhuma turma cadastrada.</p>
+      ) : (
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            backgroundColor: '#fff',
+          }}
+        >
+          <thead>
+            <tr style={{ backgroundColor: '#f5f5f5' }}>
+              <th style={thStyle}>ID</th>
+              <th style={thStyle}>Período</th>
+              <th style={thStyle}>Turno</th>
+              <th style={thStyle}>Curso</th>
+              <th style={thStyle}>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {turmas.map((turma) => (
+              <tr key={turma.id}>
+                <td style={tdStyle}>{turma.id}</td>
+                <td style={tdStyle}>{turma.periodo}</td>
+                <td style={tdStyle}>{turma.turno}</td>
+                <td style={tdStyle}>{turma.curso}</td>
+                <td style={tdStyle}>
+                  <button
+                    onClick={() => handleEditar(turma.id)}
+                    style={{ marginRight: '8px' }}
+                  >
+                    Editar
+                  </button>
+                  <button onClick={() => handleExcluir(turma.id)}>
+                    Excluir
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {turmas.map((turma) => (
-                <tr key={turma.id}>
-                  <td className="border p-2">{turma.id}</td>
-                  <td className="border p-2">{turma.periodo}</td>
-                  <td className="border p-2">{turma.turno}</td>
-                  <td className="border p-2">{turma.curso}</td>
-                  <td className="border p-2 space-x-2">
-                    <Link href={`/controleCursosTurmas/turmas/${turma.id}`}>
-                      <button className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500">
-                        Editar
-                      </button>
-                    </Link>
-                    <button
-                      onClick={() => handleDelete(turma.id)}
-                      className="bg-red-600 px-3 py-1 rounded text-white hover:bg-red-700"
-                    >
-                      Excluir
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
+
+const thStyle = {
+  border: '1px solid #ddd',
+  padding: '10px',
+  textAlign: 'left',
+};
+
+const tdStyle = {
+  border: '1px solid #ddd',
+  padding: '10px',
+};

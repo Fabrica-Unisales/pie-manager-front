@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { listarCursos } from "../../cursos/storageCursos";
-import { getTurmaById, updateTurma } from "./storageTurmas"; // ✅ caminho ajustado
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { listarCursos } from '../../cursos/storageCursos';
+import { getTurmaById, updateTurma } from '../storageTurmas';
 
 export default function EditarTurma() {
   const router = useRouter();
@@ -11,23 +11,26 @@ export default function EditarTurma() {
   const { id } = params;
 
   const [turma, setTurma] = useState({
-    id: "",
-    periodo: "",
-    turno: "",
-    curso: "",
+    id: '',
+    periodo: '',
+    turno: '',
+    curso: '',
   });
 
   const [cursos, setCursos] = useState([]);
 
   useEffect(() => {
+    const lista = listarCursos();
+    setCursos(lista);
+
     const turmaEncontrada = getTurmaById(id);
     if (turmaEncontrada) {
       setTurma(turmaEncontrada);
+    } else {
+      alert('Turma não encontrada!');
+      router.push('/controleCursosTurmas/turmas');
     }
-
-    const listaCursos = listarCursos();
-    setCursos(listaCursos);
-  }, [id]);
+  }, [id, router]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,65 +40,71 @@ export default function EditarTurma() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!turma.id || !turma.periodo || !turma.turno || !turma.curso) {
-      alert("Preencha todos os campos!");
-      return;
-    }
-
     updateTurma(id, turma);
-    router.push("/controleCursosTurmas/turmas");
+    router.push('/controleCursosTurmas/turmas');
   };
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold mb-6">Editar Turma</h1>
+    <div style={{ padding: '20px' }}>
+      <h1>Editar Turma</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">ID da Turma (Número)</label>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          maxWidth: '500px',
+        }}
+      >
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          ID da Turma:
           <input
             type="text"
             name="id"
             value={turma.id}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
-            disabled // 🚫 Desabilita o ID para edição (boa prática)
+            disabled
+            style={{ flex: '1', marginLeft: '10px' }}
           />
-        </div>
+        </label>
 
-        <div>
-          <label className="block mb-1">Período</label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Período:
           <input
             type="text"
             name="periodo"
             value={turma.periodo}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
           />
-        </div>
+        </label>
 
-        <div>
-          <label className="block mb-1">Turno</label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Turno:
           <select
             name="turno"
             value={turma.turno}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
           >
             <option value="">Selecione</option>
             <option value="Matutino">Matutino</option>
             <option value="Vespertino">Vespertino</option>
             <option value="Noturno">Noturno</option>
           </select>
-        </div>
+        </label>
 
-        <div>
-          <label className="block mb-1">Curso</label>
+        <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+          Curso:
           <select
             name="curso"
             value={turma.curso}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            required
+            style={{ flex: '1', marginLeft: '10px' }}
           >
             <option value="">Selecione</option>
             {cursos.map((curso) => (
@@ -104,21 +113,35 @@ export default function EditarTurma() {
               </option>
             ))}
           </select>
-        </div>
+        </label>
 
-        <div className="space-x-4">
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button
             type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#0070f3',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
           >
             Salvar
           </button>
           <button
             type="button"
-            onClick={() => router.back()}
-            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+            onClick={() => router.push('/controleCursosTurmas/turmas')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#666',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
           >
-            Voltar
+            Cancelar
           </button>
         </div>
       </form>
