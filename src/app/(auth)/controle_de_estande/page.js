@@ -10,11 +10,12 @@ export default function ControleEstandePage() {
   const [editingId, setEditingId] = useState(null);
   const [projetos, setProjetos] = useState([]);
   const [avaliadores, setAvaliadores] = useState([]);
+  const [nextId, setNextId] = useState(1); // novo estado para controle do ID
 
   useEffect(() => {
     const armazenado = localStorage.getItem('estandes');
     if (!armazenado) {
-      EstandeMocks.build(); 
+      EstandeMocks.build();
     }
 
     const estandesData = JSON.parse(localStorage.getItem('estandes'));
@@ -23,39 +24,45 @@ export default function ControleEstandePage() {
       setDataSource(estandesData.data || []);
       setProjetos(estandesData.projetos || []);
       setAvaliadores(estandesData.avaliadores || []);
+      setNextId(estandesData.nextId || 1); // carrega o próximo ID se existir
     }
   }, []);
 
-  const salvarLocal = (dados) => {
+  const salvarLocal = (dados, nextIdAtual = 1) => {
     localStorage.setItem(
       'estandes',
       JSON.stringify({
         data: dados,
         projetos,
         avaliadores,
-        nextId: dados.length + 1,
+        nextId: nextIdAtual,
         length: dados.length,
       })
     );
   };
 
   const onFinish = (values) => {
+    const estandesData = JSON.parse(localStorage.getItem('estandes'));
+    const currentId = estandesData?.nextId || nextId;
+
     if (editingId) {
       const atualizados = dataSource.map((item) =>
         item.id === editingId ? { ...item, ...values, id: editingId } : item
       );
       setDataSource(atualizados);
-      salvarLocal(atualizados);
+      salvarLocal(atualizados, currentId);
       setEditingId(null);
     } else {
       const novo = {
-        id: crypto.randomUUID(),
+        id: String(currentId).padStart(2, '0'), // Gera ID tipo "01", "02", ...
         ...values,
       };
       const novosDados = [...(dataSource || []), novo];
       setDataSource(novosDados);
-      salvarLocal(novosDados);
+      salvarLocal(novosDados, currentId + 1); // Atualiza contador
+      setNextId(currentId + 1); // Atualiza estado
     }
+
     form.resetFields();
   };
 
@@ -67,10 +74,11 @@ export default function ControleEstandePage() {
   const handleDelete = (id) => {
     const filtrado = dataSource.filter((item) => item.id !== id);
     setDataSource(filtrado);
-    salvarLocal(filtrado);
+    salvarLocal(filtrado, nextId); // Mantém o contador
   };
 
   const columns = [
+    { title: 'ID', dataIndex: 'id' },
     { title: 'Projeto ID', dataIndex: 'projeto_id' },
     { title: 'Avaliador ID', dataIndex: 'avaliador_id' },
     { title: 'Nota', dataIndex: 'nota' },
