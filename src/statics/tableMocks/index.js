@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Tag } from 'antd';
+import { Space, Tag,  } from 'antd';
 
 const columns = [
   {
@@ -49,5 +49,46 @@ const columns = [
     ),
   },
 ];
+const projetosColumns = [
+  {
+    title: 'Título',
+    dataIndex: 'titulo',
+    key: 'titulo',
+  },
+  {
+    title: 'Descrição',
+    dataIndex: 'descricao',
+    key: 'descricao',
+  },
+  {
+    title: 'Turma',
+    dataIndex: 'id_turma',
+    key: 'id_turma',
+  },
+  {
+    title: 'Professor',
+    dataIndex: 'id_Professor',
+    key: 'id_Professor',
+  },
+  {
+    title: 'Alunos',
+    dataIndex: 'listaAlunos',
+    key: 'listaAlunos',
+    render: (_, record) => (
+      <span>{Array.isArray(record.listaAlunos) ? record.listaAlunos.join(', ') : '-'}</span>
+    )
+  },
+  {
+    title: 'Ações',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a href={`/projetos/edit/${record.id}`}>Editar</a>
+        <a>Excluir</a>
+      </Space>
+    ),
+  },
+];
 
-export {columns};
+
+export {columns, projetosColumns};

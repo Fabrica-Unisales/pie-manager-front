@@ -15,4 +15,9 @@ export const items2 = [
     icon: React.createElement(NotificationOutlined),
     label: <a href="/itens" rel="itens">Itens</a>,
   },
+  {
+    key: "projeto",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/projetos" rel="projetos">Projetos</a>,
+  }
 ];
