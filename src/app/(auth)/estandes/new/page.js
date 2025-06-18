@@ -3,34 +3,38 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Space, message, Card, TimePicker, InputNumber } from 'antd';
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { v4 as uuidv4 } from 'uuid'; // Para gerar IDs únicos
-import dayjs from 'dayjs'; // Para trabalhar com horários
+import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 export default function NovoEstandePage() {
     const [form] = Form.useForm();
+    const router = useRouter();
 
     const onFinish = (values) => {
-        // Obtenha os estandes existentes do localStorage
         const existingEstandes = JSON.parse(localStorage.getItem('estandes')) || [];
 
-        // Mapear os horários para o formato necessário
         const projetosHorariosFormatados = values.projeto_horario?.map((item, index) => ({
-            id: index, // Ou gere um ID único aqui também, se necessário
-            horario: item.horario ? item.horario.format('HH:mm') : '', // Formata o dayjs para string
+            id: index,
+            horario: item.horario ? item.horario.format('HH:mm') : '',
             projeto_id: item.projeto_id,
         })) || [];
 
         const novoEstande = {
-            id: uuidv4(), // Gera um ID único para o estande
+            id: uuidv4(),
             localizacao: values.localizacao,
             projeto_horario: projetosHorariosFormatados,
         };
 
-        // Adicione o novo estande e salve no localStorage
         localStorage.setItem('estandes', JSON.stringify([...existingEstandes, novoEstande]));
 
         message.success('Estande cadastrado com sucesso!');
-        form.resetFields(); // Limpa o formulário
+        form.resetFields();
+        router.push('/estandes');
+    };
+
+    const handleCancel = () => {
+        router.push('/estandes');
     };
 
     return (
@@ -41,7 +45,7 @@ export default function NovoEstandePage() {
                 name="novoEstande"
                 onFinish={onFinish}
                 layout="vertical"
-                initialValues={{ projeto_horario: [{}] }} // Garante que há pelo menos um campo para projeto/horário
+                initialValues={{ projeto_horario: [{}] }}
             >
                 <Form.Item
                     label="Localização do Estande"
@@ -94,9 +98,14 @@ export default function NovoEstandePage() {
                 </Form.List>
 
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Cadastrar Estande
-                    </Button>
+                    <Space>
+                        <Button type="primary" htmlType="submit">
+                            Cadastrar Estande
+                        </Button>
+                        <Button onClick={handleCancel}>
+                            Cancelar
+                        </Button>
+                    </Space>
                 </Form.Item>
             </Form>
         </div>
