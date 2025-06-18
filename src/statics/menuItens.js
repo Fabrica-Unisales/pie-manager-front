@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {
+  FileSearchOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
 
