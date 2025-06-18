@@ -30,12 +30,36 @@ export default function ListaTurmas() {
     <div style={{ padding: '20px' }}>
       <h1>Lista de Turmas</h1>
 
-      <button
-        onClick={() => router.push('/controleCursosTurmas/turmas/new')}
-        style={{ marginBottom: '20px' }}
-      >
-        Nova Turma
-      </button>
+      <div style={{ marginBottom: '20px' }}>
+        <button
+          onClick={() => router.push('/controleCursosTurmas')}
+          style={{
+            marginRight: '10px',
+            padding: '8px 12px',
+            backgroundColor: '#888',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Voltar para Menu
+        </button>
+
+        <button
+          onClick={() => router.push('/controleCursosTurmas/turmas/new')}
+          style={{
+            padding: '8px 12px',
+            backgroundColor: '#0070f3',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Nova Turma
+        </button>
+      </div>
 
       {turmas.length === 0 ? (
         <p>Nenhuma turma cadastrada.</p>
@@ -70,9 +94,7 @@ export default function ListaTurmas() {
                   >
                     Editar
                   </button>
-                  <button onClick={() => handleExcluir(turma.id)}>
-                    Excluir
-                  </button>
+                  <button onClick={() => handleExcluir(turma.id)}>Excluir</button>
                 </td>
               </tr>
             ))}

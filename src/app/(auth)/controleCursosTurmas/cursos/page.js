@@ -18,20 +18,48 @@ export default function ListaCursos() {
   };
 
   const handleExcluir = (id) => {
-    excluirCurso(id);
-    const cursosAtualizados = listarCursos();
-    setCursos(cursosAtualizados);
+    const confirmar = confirm('Tem certeza que deseja excluir este curso?');
+    if (confirmar) {
+      excluirCurso(id);
+      const cursosAtualizados = listarCursos();
+      setCursos(cursosAtualizados);
+    }
   };
 
   return (
     <div style={{ padding: '20px' }}>
       <h1>Lista de Cursos</h1>
-      <button
-        onClick={() => router.push('/controleCursosTurmas/cursos/new')}
-        style={{ marginBottom: '20px' }}
-      >
-        Novo Curso
-      </button>
+
+      <div style={{ marginBottom: '20px' }}>
+        <button
+          onClick={() => router.push('/controleCursosTurmas')}
+          style={{
+            marginRight: '10px',
+            padding: '8px 12px',
+            backgroundColor: '#888',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Voltar para Menu
+        </button>
+
+        <button
+          onClick={() => router.push('/controleCursosTurmas/cursos/new')}
+          style={{
+            padding: '8px 12px',
+            backgroundColor: '#0070f3',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Novo Curso
+        </button>
+      </div>
 
       {cursos.length === 0 ? (
         <p>Nenhum curso cadastrado.</p>
@@ -66,7 +94,12 @@ export default function ListaCursos() {
                   {curso.status === 'ativo' ? 'Ativo' : 'Inativo'}
                 </td>
                 <td style={tdStyle}>
-                  <button onClick={() => handleEditar(curso.id)}>Editar</button>{' '}
+                  <button
+                    onClick={() => handleEditar(curso.id)}
+                    style={{ marginRight: '8px' }}
+                  >
+                    Editar
+                  </button>
                   <button onClick={() => handleExcluir(curso.id)}>Excluir</button>
                 </td>
               </tr>
