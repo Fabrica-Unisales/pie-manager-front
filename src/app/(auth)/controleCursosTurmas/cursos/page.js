@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { excluirCurso, listarCursos } from './storageCursos';
+import { removerCurso, listarCursos } from './storageCursos';
 
 export default function ListaCursos() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function ListaCursos() {
   const handleExcluir = (id) => {
     const confirmar = confirm('Tem certeza que deseja excluir este curso?');
     if (confirmar) {
-      excluirCurso(id);
+      removerCurso(id);
       const cursosAtualizados = listarCursos();
       setCursos(cursosAtualizados);
     }
