@@ -16,6 +16,11 @@ export const items2 = [
     label: <a href="/itens" rel="itens">Itens</a>,
   },
   {
+    key: "apresentacoes",
+    icon: React.createElement(NotificationOutlined),
+    label: <a href="/estandes" rel="itens">Apresentações</a>,
+  },
+  {
     key: "avaliacoes",
     icon: React.createElement(NotificationOutlined),
     label: <a href="/avaliacoes" rel="avaliacoes">Avaliações</a>,

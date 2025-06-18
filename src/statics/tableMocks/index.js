@@ -6,7 +6,7 @@ import { Space, Tag } from 'antd';
     title: 'Name',
     dataIndex: 'name',
     key: 'name',
-    render: (text) => {return(<a>{text}</a>)},
+    render: (text) => { return (<a>{text}</a>) },
   },
   {
     title: 'Age',
@@ -50,6 +50,34 @@ import { Space, Tag } from 'antd';
   },
 ];
 
+const columnsEstandes = [
+  {
+    title: 'Localização',
+    dataIndex: 'localizacao',
+    key: 'localizacao',
+  },
+  {
+    title: 'Horário',
+    dataIndex: 'horario',
+    key: 'horario',
+  },
+  {
+    title: 'Projeto',
+    dataIndex: 'projeto',
+    key: 'projeto',
+  },
+  {
+    title: 'Ações',
+    key: 'acoes',
+    render: (text, record, index, { onEdit, onDelete }) => (
+      <Space size="middle">
+        <a onClick={() => onEdit && onEdit(record)}>Editar</a>
+        <a onClick={() => onDelete && onDelete(record)}>Excluir</a>
+      </Space>
+    ),
+  },
+];
+
 const avaliacoesColumns = [
   {
     title: 'Projeto',
@@ -83,4 +111,5 @@ const avaliacoesColumns = [
   },
 ];
 
+export { columns, columnsEstandes };
 export { columns, avaliacoesColumns };
