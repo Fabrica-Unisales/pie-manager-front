@@ -2,6 +2,7 @@
 import React from "react";
 import {
   NotificationOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
 
 export const items2 = [
@@ -18,7 +19,7 @@ export const items2 = [
 
   {
     key: "avaliacao",
-    icon: React.createElement(NotificationOutlined),
+    icon: React.createElement(FormOutlined),
     label: <a href="/avaliacao" rel="avaliacao">Avaliação</a>,
   },
 ];
