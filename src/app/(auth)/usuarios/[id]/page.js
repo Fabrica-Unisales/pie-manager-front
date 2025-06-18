@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
 import { Form, Input, Button, Select } from "antd";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 const { Option } = Select;
 
-const EditUserForm = ({ params }) => {
+const EditUserForm = () => {
   const [form] = Form.useForm();
   const router = useRouter();
+  const params = useParams();
   const { id } = params;
 
   useEffect(() => {
