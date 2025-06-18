@@ -7,8 +7,7 @@ const projetos = [
     { label: 'Projeto 2', value: 2},
     { label: 'Projeto 3', value: 3},
     { label: 'Projeto 4', value: 4},
-    { label: 'Projeto 5', value: 5},
-    { label: 'Projeto 6', value: 6}
+    { label: 'Projeto 5', value: 5}
 ];
 
 const avaliadores = [
@@ -28,25 +27,25 @@ const AvaliacoesPage = () => {
   const [data, setAvaliacoes] = useState([]);
 
   const loadAvaliacoesFromLocalStorage = () => {
+
     const storedAvaliacoes = localStorage.getItem('avaliacoes');
 
-    if (storedAvaliacoes) {
-      try {
-        const parsedAvaliacoes = JSON.parse(storedAvaliacoes);
+    if (!storedAvaliacoes)
+      setAvaliacoes([]);
 
-        if (parsedAvaliacoes && Array.isArray(parsedAvaliacoes.data)) {
-          setAvaliacoes(parsedAvaliacoes.data);
+    try {
 
-        } else {
-          setAvaliacoes([]);
-        }
+      const parsedAvaliacoes = JSON.parse(storedAvaliacoes);
 
-      } catch (error) {
-        console.error("Erro ao parsear avaliações do localStorage:", error);
-        setAvaliacoes([]);
+      if (parsedAvaliacoes && Array.isArray(parsedAvaliacoes.data)) {
+        setAvaliacoes(parsedAvaliacoes.data);
+        return
       }
 
-    } else {
+      setAvaliacoes([]);
+
+    } catch (error) {
+      console.error("Erro ao parsear avaliações do localStorage:", error);
       setAvaliacoes([]);
     }
   }
@@ -107,8 +106,9 @@ const AvaliacoesPage = () => {
     },
   ];
 
-  const getProjetoName = (id) => {
-    const localStorageProjetos = localStorage.getItem('projetos') || [];
+  function getProjetoName(id){
+
+    const localStorageProjetos = JSON.parse(localStorage.getItem('projetos')).data || [];
     const msgAlternativa = 'Projeto desconhecido';
 
     if(localStorageProjetos.length == 0)
@@ -121,8 +121,9 @@ const AvaliacoesPage = () => {
     return projeto ? projeto.titulo : msgAlternativa;
   }
 
-  const getAvaliadorName = (id) => {
-    const localStorageAvaliadores = localStorage.getItem('avaliadores') || [];
+  function getAvaliadorName(id){
+
+    const localStorageAvaliadores = JSON.parse(localStorage.getItem('usuarios')).data || [];
     const msgAlternativa = 'Avaliador desconhecido';
 
     if(localStorageAvaliadores.length == 0)
@@ -137,9 +138,11 @@ const AvaliacoesPage = () => {
 
   const handleDelete = (id) => {
     try {
-    const localStorageAvaliacoes = localStorage.getItem('avaliacoes');
 
-    if (localStorageAvaliacoes) {
+      const localStorageAvaliacoes = localStorage.getItem('avaliacoes');
+
+      if (!localStorageAvaliacoes) return;
+
       let avaliacoesData = JSON.parse(localStorageAvaliacoes);
 
       avaliacoesData.data = avaliacoesData.data.filter(aval => aval.id !== id);
@@ -150,7 +153,6 @@ const AvaliacoesPage = () => {
       setAvaliacoes(avaliacoesData.data);
 
       message.success(`Avaliação ${id} excluída com sucesso!`);
-      }
       
     } catch (error) {
       message.error("Erro ao excluir avaliação.");

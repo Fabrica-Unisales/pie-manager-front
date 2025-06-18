@@ -3,10 +3,10 @@ import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Button, message, Select } from 'antd';
 
 const exampleAvaliacao = {
-    projeto_id: '',
-    avaliador_id: '',
+    projeto_id: null,
+    avaliador_id: null,
     nota: null,
-    comentario: '',
+    comentario: null,
 };
 
 const projetos = [
@@ -28,34 +28,39 @@ const avaliadores = [
 export default function EditAvaliacaoForm({ params }) {
 
     const [form] = Form.useForm();
-    const { id } = params;
+    const resolvedParams = React.use(params);
+    const id = resolvedParams.id;
 
     useEffect(() => {
-        if (id) {
-            const storedAvals = localStorage.getItem('avaliacoes');
 
-            if (storedAvals) {
-                try {
-                    const avaliacoes = JSON.parse(storedAvals).data;
-                    const avaliacaoToEdit = avaliacoes.find(aval => aval.id === id);
+        if(!id) return;
 
-                    if (avaliacaoToEdit) {
-                        form.setFieldsValue({
-                            ...avaliacaoToEdit,
-                            projeto_id: parseInt(avaliacaoToEdit.projeto_id, 10),
-                            avaliador_id: parseInt(avaliacaoToEdit.avaliador_id, 10)
-                        });
-                    } else {
-                        message.error('Avaliação não encontrada!');
-                        window.location.href = '/avaliacoes';
-                    }
-                    
-                } catch (error) {
-                    console.error("Erro ao fazer parse dos dados de avaliações do localStorage para edição:", error);
-                    message.error("Erro ao carregar dados da avaliação para edição.");
-                }
+        const storedAvals = localStorage.getItem('avaliacoes');
+
+        if(!storedAvals) return;
+
+        try {
+
+            const avaliacoes = JSON.parse(storedAvals).data;
+            const avaliacaoToEdit = avaliacoes.find(aval => aval.id === id);
+
+            if (!avaliacaoToEdit) {
+                message.error('Avaliação não encontrada!');
+                window.location.href = '/avaliacoes';
             }
+
+            form.setFieldsValue({
+                ...avaliacaoToEdit,
+                projeto_id: parseInt(avaliacaoToEdit.projeto_id, 10),
+                avaliador_id: parseInt(avaliacaoToEdit.avaliador_id, 10)
+            });
+
+            
+        } catch (error) {
+            console.error("Erro ao fazer parse dos dados de avaliações do localStorage para edição:", error);
+            message.error("Erro ao carregar dados da avaliação para edição.");
         }
+
     }, [id, form]);
 
     const onFinish = (values) => {
@@ -63,22 +68,23 @@ export default function EditAvaliacaoForm({ params }) {
         console.log(`Valores do formulário de edição para Avaliação ${id}:`, values);
 
         try {
+
             const storedAvals = localStorage.getItem('avaliacoes') || { data: [] };
 
-            if (storedAvals) {
-                let avaliacoesData = JSON.parse(storedAvals);
-                const index = avaliacoesData.data.findIndex(aval => aval.id === id);
+            if (!storedAvals) return;
 
-                if (index !== -1) {
-                    avaliacoesData.data[index] = { ...avaliacoesData.data[index], ...values };
-                    localStorage.setItem('avaliacoes', JSON.stringify(avaliacoesData));
+            let avaliacoesData = JSON.parse(storedAvals);
+            const index = avaliacoesData.data.findIndex(aval => aval.id === id);
 
-                    message.success(`Avaliação ${id} atualizada com sucesso!`);
-                    window.location.href = '/avaliacoes';
-                } else {
-                    message.error('Avaliação não encontrada para atualização!');
-                }
-            }
+            if (index === -1)
+                message.error('Avaliação não encontrada para atualização!');
+
+            avaliacoesData.data[index] = { ...avaliacoesData.data[index], ...values };
+            localStorage.setItem('avaliacoes', JSON.stringify(avaliacoesData));
+
+            message.success(`Avaliação ${id} atualizada com sucesso!`);
+            window.location.href = '/avaliacoes';
+
         } catch (error) {
             console.error("Erro ao atualizar avaliação no localStorage:", error);
             message.error("Erro ao atualizar avaliação.");
@@ -106,7 +112,7 @@ export default function EditAvaliacaoForm({ params }) {
                 name="avaliador_id"
                 rules={[{ required: true, message: 'Por favor, escolha um avaliador.' }]}
             >
-                <Select options={avaliadores} placeholder="Ex. James Alves" />
+                <Select options={avaliadores} placeholder="Ex. James Alves"/>
             </Form.Item>
 
             <Form.Item
@@ -135,7 +141,7 @@ export default function EditAvaliacaoForm({ params }) {
 
             <Form.Item>
                 <Button type="primary" htmlType="submit" block>
-                    Criar Avaliação
+                    Editar Avaliação
                 </Button>
             </Form.Item>
 

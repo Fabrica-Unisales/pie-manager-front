@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Tag, message } from 'antd';
+import { Space, Tag } from 'antd';
 
 const columns = [
   {

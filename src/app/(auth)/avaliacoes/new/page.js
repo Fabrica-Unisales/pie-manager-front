@@ -3,10 +3,10 @@ import React from 'react';
 import { Form, Input, InputNumber, Button, message, Select } from 'antd';
 
 const exampleAvaliacao = {
-    projeto_id: '',
-    avaliador_id: '',
+    projeto_id: null,
+    avaliador_id: null,
     nota: null,
-    comentario: '',
+    comentario: null,
 };
 
 const projetos = [
@@ -28,6 +28,7 @@ const avaliadores = [
 export default function NewAvaliacaoForm() {
 
     const [form] = Form.useForm();
+
 
     const onFinish = (values) => {
 
@@ -59,7 +60,6 @@ export default function NewAvaliacaoForm() {
             window.location.href = '/avaliacoes';
 
         } catch (error) {
-
             console.error("Erro ao salvar nova avaliação no localStorage:", error);
             message.error("Erro ao criar avaliação.");
         }
@@ -78,7 +78,7 @@ export default function NewAvaliacaoForm() {
                 name="projeto_id"
                 rules={[{ required: true, message: 'Por favor, escolha um projeto' }]}
             >
-                <Select options={projetos} placeholder="Ex. Matemágicas" />
+                <Select options={projetos} placeholder="Selecione um projeto"/>
             </Form.Item>
 
             <Form.Item
@@ -86,7 +86,7 @@ export default function NewAvaliacaoForm() {
                 name="avaliador_id"
                 rules={[{ required: true, message: 'Por favor, escolha um avaliador.' }]}
             >
-                <Select options={avaliadores} placeholder="Ex. James Alves" />
+                <Select options={avaliadores} placeholder="Selecione um avaliador" />
             </Form.Item>
 
             <Form.Item

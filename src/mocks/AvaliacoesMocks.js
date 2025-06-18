@@ -4,7 +4,7 @@ export default class AvaliacoesMocks {
             {
                 id: '1',
                 projeto_id: '1',
-                avaliador_id: '1',
+                avaliador_id: '2',
                 nota: 8.5,
                 comentario: 'Projeto bem estruturado e apresentado.'
             },
@@ -25,26 +25,19 @@ export default class AvaliacoesMocks {
             {
                 id: '4',
                 projeto_id: '4',
-                avaliador_id: '1',
+                avaliador_id: '4',
                 nota: 6.8,
                 comentario: 'Apresentação confusa, mas boa ideia.'
             },
             {
                 id: '5',
                 projeto_id: '5',
-                avaliador_id: '2',
+                avaliador_id: '5',
                 nota: 8.0,
                 comentario: 'Documentação completa e clara.'
-            },
-            {
-                id: '6',
-                projeto_id: '6',
-                avaliador_id: '3',
-                nota: 7.5,
-                comentario: 'Execução adequada, faltou inovação.'
             }
         ];
-        const avaliacoes = { data, nextId: 7, length: data.length };
+        const avaliacoes = { data, nextId: 6, length: data.length };
         localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
     }
 }
