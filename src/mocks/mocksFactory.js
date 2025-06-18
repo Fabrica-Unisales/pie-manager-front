@@ -11,6 +11,7 @@ builds.push(ItemsMocks);
 builds.push(mockCursos);
 builds.push(mockTurmas);
 builds.push(ControleAvaliacaoMocks);
+builds.push(ControleAvaliacaoMocks); 
 builds.push(ProjetoMocks);
 
 export function buildMocks() {

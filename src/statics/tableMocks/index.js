@@ -50,4 +50,52 @@ const columns = [
   },
 ];
 
-export {columns};
+const controleAvaliacoesColumns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    key: 'id',
+  },
+  {
+    title: 'Projeto ID',
+    dataIndex: 'projeto_id',
+    key: 'projeto_id',
+  },
+  {
+    title: 'Avaliador ID',
+    dataIndex: 'avaliador_id',
+    key: 'avaliador_id',
+  },
+  {
+    title: 'Nota',
+    dataIndex: 'nota',
+    key: 'nota',
+  },
+  {
+    title: 'Comentário',
+    dataIndex: 'comentario',
+    key: 'comentario',
+    render: (text) => text || '-',
+  },
+  {
+    title: 'Ações',
+    key: 'action',
+    render: (_, record) => (
+      <Space size="middle">
+        <a href={`/controleAvaliacoes/${record.id}`}>Editar</a>
+        <a
+        onClick={() => {
+          const saved = JSON.parse(localStorage.getItem('controleAvaliacao')) || { data: [] };
+          const atualizados = saved.data.filter((item) => item.id !== record.id);
+          localStorage.setItem('controleAvaliacao', JSON.stringify({ ...saved, data: atualizados }));
+          window.location.reload();
+        }}
+      >
+        Excluir
+      </a>
+      </Space>
+    ),
+  },
+];
+
+export { columns, controleAvaliacoesColumns };
