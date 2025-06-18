@@ -8,8 +8,6 @@ const CriarProjeto = () => {
   const [formulario] = Form.useForm();
   const router = useRouter();
 
-  const [listaTurmas, setListaTurmas] = useState([]);
-  const [docentes, setDocentes] = useState([]);
   const [alunosSistema, setAlunosSistema] = useState([]);
   const [alunosTurma, setAlunosTurma] = useState([]);
 
@@ -32,7 +30,7 @@ const CriarProjeto = () => {
 
   useEffect(() => {
     const cursosArmazenados = JSON.parse(localStorage.getItem('cursos')) || [];
-    const usuariosRaw = localStorage.getItem('users');
+    const usuariosRaw = localStorage.getItem('usuarios');
     let usuarios = { data: [] };
 
     try {
@@ -45,22 +43,23 @@ const CriarProjeto = () => {
 
     const alunos = usuarios.data.filter(u => u.tipo === 'Aluno');
     setAlunosSistema(alunos);
+    setAlunosTurma(alunos)
   }, []);
-////////////////////////
+
   const registrarProjeto = (dados) => {
     if (!dados.participantes || dados.participantes.length < 2 || dados.participantes.length > 5) {
       message.error('Selecione entre 2 e 5 alunos.');
       return;
     }
 
-    const projetosExistentes = JSON.parse(localStorage.getItem('projetos')) || { data: [], nextId: 1, length: 0 };
+    const projetosExistentes = JSON.parse(localStorage.getItem('projetos')) || { data: [], nextId: 1};
 
     const projetoNovo = {
-      id: projetosExistentes.nextId.toString(),
+      id: String(projetosExistentes.nextId),
       titulo: dados.titulo,
       descricao: dados.descricao,
       id_turma: dados.turma,
-      id_Professor: dados.professor,
+      id_professor: dados.professor,
       listaAlunos: dados.participantes
     };
 
@@ -90,23 +89,11 @@ const CriarProjeto = () => {
         </Form.Item>
 
         <Form.Item label="Turma" name="turma" rules={[{ required: true }]}>
-          <Select placeholder="Selecione a turma" onChange={aoSelecionarTurma}>
-            {listaTurmas.map(t => (
-              <Select.Option key={t.id} value={t.id}>
-                {t.curso_id} - {t.ano}/{t.semestre}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select placeholder="Selecione a turma" options={turmaOptions}></Select>
         </Form.Item>
 
         <Form.Item label="Professor Orientador" name="professor" rules={[{ required: true }]}>
-          <Select placeholder="Selecione o professor">
-            {docentes.map(p => (
-              <Select.Option key={p.id} value={p.id}>
-                {p.nome}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select placeholder="Selecione o professor" options={professorOptions}></Select>
         </Form.Item>
 
         <Form.Item label="Alunos Participantes (2 a 5)" name="participantes" rules={[{ required: true }]}>

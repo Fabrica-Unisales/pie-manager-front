@@ -33,11 +33,13 @@ const ProjetosPage = () => {
      { title: 'Descrição', dataIndex: 'descricao', key: 'descricao' },
      { title: 'ID da turma', dataIndex: 'id_turma', key: 'id_turma' },
      { title: 'ID do Professor', dataIndex: 'id_professor', key: 'id_professor' },
-     { title: 'Alunos do projeto', dataIndex: 'listaAlunos', key: 'listaAlunos', render: (_, record) => ( <span>
+     { title: 'Alunos do projeto', dataIndex: 'listaAlunos', key: 'listaAlunos', 
+        render: (_, record) => ( <span>
         {record.listaAlunos && Array.isArray(record.listaAlunos) 
-         ? record.listaAlunos.map(aluno => aluno?.nome || 'Nome não disponível').join(', ')
+         ? record.listaAlunos.map(aluno => aluno || 'Nome não disponível').join(', ')
          : 'Nenhum aluno'}
-      </span>)}, 
+        </span>)
+      }, 
      {
        title: 'Ações',
        key: 'action',

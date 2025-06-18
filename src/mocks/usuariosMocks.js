@@ -46,8 +46,12 @@ export default class UsuariosMocks {
                 usuario: 'admin',
                 tipo: 'Coordenador'
             },
+            {id: '6', nome: 'Maria', email: 'maria@email.com', senha: '1656', 
+            matricula: '2025551', usuario: 'maria', tipo: 'Aluno'},
+            {id: '7', nome: 'luiz', email: 'luiz@email.com', senha: '1656', 
+                matricula: '2025577', usuario: 'luiz', tipo: 'Aluno'},
         ];
-        const usuarios = { data, nextId: 6, length: data.length };
+        const usuarios = { data, nextId: 8, length: data.length };
         localStorage.setItem('usuarios', JSON.stringify(usuarios));
     }
 }

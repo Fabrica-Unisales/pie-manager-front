@@ -21,7 +21,7 @@ const turmaNomes = {
  const turmaOptions = Object.entries(turmaNomes).map(([id, nome]) => ({ value: id, label: nome }));
  const professorOptions = Object.entries(professorNomes).map(([id, nome]) => ({ value: id, label: nome }));
 
-const EditarProjeto = () => {
+const EditarProjetosPage = () => {
   const [formulario] = Form.useForm();
   const router = useRouter();
   const params = useParams();
@@ -47,30 +47,20 @@ const EditarProjeto = () => {
 
     const todosProjetos = JSON.parse(localStorage.getItem('projetos')) || { data: [] };
     const projetoExistente = todosProjetos.data.find((proj) => proj.id === projetoId);
-////////////////////////////////////////////////////////////////////
+
     if (projetoExistente) {
       const alunosProjeto = alunos.filter((a) => projetoExistente.listaAlunos.includes(a.id));
-      setAlunosFiltrados(alunosProjeto);
+      setAlunosFiltrados(alunos);
 
       formulario.setFieldsValue({
         titulo: projetoExistente.titulo,
         descricao: projetoExistente.descricao,
         turma: projetoExistente.id_turma,
-        professor: projetoExistente.id_Professor,
+        professor: projetoExistente.id_professor,
         participantes: projetoExistente.listaAlunos
       });
     }
   }, [projetoId, formulario]);
-
-  const atualizarAlunosDaTurma = (turmaSelecionadaId) => {
-    const turma = turmasDisponiveis.find((t) => t.id === turmaSelecionadaId);
-    if (turma && turma.listaAlunos) {
-      setAlunosFiltrados(turma.listaAlunos);
-      formulario.setFieldValue('participantes', []);
-    } else {
-      setAlunosFiltrados([]);
-    }
-  };
 
   const salvarProjeto = (valores) => {
     if (!valores.participantes || valores.participantes.length < 2 || valores.participantes.length > 5) {
@@ -84,7 +74,7 @@ const EditarProjeto = () => {
       titulo: valores.titulo,
       descricao: valores.descricao,
       id_turma: valores.turma,
-      id_Professor: valores.professor,
+      id_professor: valores.professor,
       listaAlunos: valores.participantes
     };
 
@@ -110,23 +100,11 @@ const EditarProjeto = () => {
         </Form.Item>
 
         <Form.Item label="Turma" name="turma" rules={[{ required: true }]}>
-          <Select placeholder="Selecione uma turma" onChange={atualizarAlunosDaTurma}>
-            {turmasDisponiveis.map((turma) => (
-              <Select.Option key={turma.id} value={turma.id}>
-                {turma.curso_id} - {turma.ano}/{turma.semestre}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select placeholder="Selecione uma turma" options={turmaOptions}></Select>
         </Form.Item>
 
         <Form.Item label="Professor Responsável" name="professor" rules={[{ required: true }]}>
-          <Select placeholder="Escolha o professor orientador">
-            {docentes.map((docente) => (
-              <Select.Option key={docente.id} value={docente.id}>
-                {docente.nome}
-              </Select.Option>
-            ))}
-          </Select>
+          <Select placeholder="Escolha o professor orientador" options={professorOptions}></Select>
         </Form.Item>
 
         <Form.Item label="Alunos Participantes (2 a 5)" name="participantes" rules={[{ required: true }]}>
@@ -150,4 +128,4 @@ const EditarProjeto = () => {
   );
 };
 
-export default EditarProjeto;
+export default EditarProjetosPage;
