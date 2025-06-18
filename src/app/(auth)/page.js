@@ -1,18 +1,12 @@
-"use client";
-import { useRouter } from "next/navigation";
+'use client';
+import React from 'react';
+import { Button } from 'antd';
 
-export default function Page() {
-  const router = useRouter();
+const Home = () => (
+  <div className="App">
+    this is the home page
+    <Button type="primary" onClick={()=>{console.log(`testes agora`)}}>Button</Button>
+  </div>
+);
 
-  return (
-    <div>
-      <h1>Gestão de Cursos e Turmas</h1>
-      <button onClick={() => router.push("/auth/controleCursosTurmas/cursos")}>
-        Gerenciar Cursos
-      </button>
-      <button onClick={() => router.push("/auth/controleCursosTurmas/turmas")}>
-        Gerenciar Turmas
-      </button>
-    </div>
-  );
-}
+export default Home;
