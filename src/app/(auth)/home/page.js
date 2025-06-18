@@ -1,17 +1,16 @@
-'use client';
-import React from 'react';
+"use client";
+import React from "react";
 
 const App = () => {
   const handleAddItem = () => {
-    window.location.href = '/novoItem';
+    window.location.href = "/novoItem";
   };
 
   return (
     <div style={{ padding: 24 }}>
-      <div style={{ marginBottom: 16, textAlign: 'right' }}>
-      </div>
+      <div style={{ marginBottom: 16, textAlign: "right" }}></div>
     </div>
   );
-}
+};
 
 export default App;

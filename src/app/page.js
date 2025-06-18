@@ -1,12 +1,19 @@
-'use client';
-import React from 'react';
-import { Button } from 'antd';
+"use client";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "antd";
 
-const Home = () => (
-  <div className="App">
-    this is the home page
-    <Button type="primary" onClick={()=>{console.log(`testes agora`)}}>Button</Button>
-  </div>
-);
+const Home = () => {
+  const router = useRouter();
+
+  return (
+    <div className="App">
+      this is the home page
+      <Button type="primary" onClick={() => router.push("/home")}>
+        Button
+      </Button>
+    </div>
+  );
+};
 
 export default Home;

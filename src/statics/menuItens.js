@@ -1,18 +1,34 @@
 "use client";
 import React from "react";
-import {
-  NotificationOutlined,
-} from "@ant-design/icons";
+import Link from "next/link";
+import { NotificationOutlined, UserOutlined } from "@ant-design/icons";
 
 export const items2 = [
   {
     key: "home",
     icon: React.createElement(NotificationOutlined),
-    label: <a href="/home" rel="home">Home</a>,
+    label: (
+      <Link href="/home" rel="home">
+        Home
+      </Link>
+    ),
   },
   {
-    key: "send",
+    key: "itens",
     icon: React.createElement(NotificationOutlined),
-    label: <a href="/itens" rel="itens">Itens</a>,
+    label: (
+      <Link href="/itens" rel="itens">
+        Itens
+      </Link>
+    ),
+  },
+  {
+    key: "usuarios",
+    icon: React.createElement(UserOutlined),
+    label: (
+      <a href="/usuarios" rel="usuarios">
+        Usuários
+      </a>
+    ),
   },
 ];
