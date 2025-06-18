@@ -39,7 +39,7 @@ export default function EditarCurso() {
 
   return (
     <div className="container" style={{ padding: "20px" }}>
-      <h1 style={{ marginBottom: "20px" }}>Editar Curso</h1>
+      <h1 style={{ marginBottom: "20px" }}>EDITAR CURSO</h1>
       <form
         onSubmit={handleSubmit}
         style={{
@@ -126,12 +126,12 @@ export default function EditarCurso() {
         </label>
 
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-          <button type="submit">Salvar</button>
+          <button type="submit">SALVAR</button>
           <button
             type="button"
             onClick={() => router.push("/controleCursosTurmas/cursos")}
           >
-            Cancelar
+            CANCELAR
           </button>
         </div>
       </form>

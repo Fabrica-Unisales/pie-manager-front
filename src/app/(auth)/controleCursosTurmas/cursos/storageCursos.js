@@ -2,7 +2,6 @@ import { MOCK_CURSOS } from "@/mocks/mockCursos";
 
 const STORAGE_KEY = "cursos";
 
-// Listar cursos
 export function listarCursos() {
   if (typeof window === "undefined") return [];
 
@@ -15,7 +14,6 @@ export function listarCursos() {
   }
 }
 
-// Salvar curso
 export function salvarCurso(curso) {
   const cursos = listarCursos();
   const index = cursos.findIndex((c) => c.id === curso.id);
@@ -27,7 +25,6 @@ export function salvarCurso(curso) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(cursos));
 }
 
-// Remover curso
 export function removerCurso(id) {
   const cursos = listarCursos();
   const atualizados = cursos.filter((c) => c.id !== id);

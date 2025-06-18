@@ -18,7 +18,7 @@ export default function ListaCursos() {
   };
 
   const handleExcluir = (id) => {
-    const confirmar = confirm('Tem certeza que deseja excluir este curso?');
+    const confirmar = confirm('TEM CERTEZA QUE DESEJA EXCLUIR ESTE CURSO?');
     if (confirmar) {
       removerCurso(id);
       const cursosAtualizados = listarCursos();
@@ -28,7 +28,7 @@ export default function ListaCursos() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Lista de Cursos</h1>
+      <h1>LISTA DE CURSOS</h1>
 
       <div style={{ marginBottom: '20px' }}>
         <button
@@ -43,7 +43,7 @@ export default function ListaCursos() {
             cursor: 'pointer',
           }}
         >
-          Voltar para Menu
+          VOLTAR PARA MENU
         </button>
 
         <button
@@ -57,7 +57,7 @@ export default function ListaCursos() {
             cursor: 'pointer',
           }}
         >
-          Novo Curso
+          NOVO CURSO
         </button>
       </div>
 
@@ -98,9 +98,9 @@ export default function ListaCursos() {
                     onClick={() => handleEditar(curso.id)}
                     style={{ marginRight: '8px' }}
                   >
-                    Editar
+                    EDITAR
                   </button>
-                  <button onClick={() => handleExcluir(curso.id)}>Excluir</button>
+                  <button onClick={() => handleExcluir(curso.id)}>EXCLUIR</button>
                 </td>
               </tr>
             ))}

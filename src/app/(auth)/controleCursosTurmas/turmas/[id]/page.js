@@ -27,7 +27,7 @@ export default function EditarTurma() {
     if (turmaEncontrada) {
       setTurma(turmaEncontrada);
     } else {
-      alert('Turma não encontrada!');
+      alert('TURMA NÃO ENCONTRADA!');
       router.push('/controleCursosTurmas/turmas');
     }
   }, [id, router]);
@@ -46,7 +46,7 @@ export default function EditarTurma() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Editar Turma</h1>
+      <h1>EDITAR TURMA</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -127,7 +127,7 @@ export default function EditarTurma() {
               cursor: 'pointer',
             }}
           >
-            Salvar
+            SALVAR
           </button>
           <button
             type="button"
@@ -141,7 +141,7 @@ export default function EditarTurma() {
               cursor: 'pointer',
             }}
           >
-            Cancelar
+            CANCELAR
           </button>
         </div>
       </form>

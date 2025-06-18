@@ -2,7 +2,6 @@ import { MOCK_TURMAS } from "@/mocks/mockTurmas";
 
 const STORAGE_KEY = "turmas";
 
-// Listar turmas
 export function listarTurmas() {
   if (typeof window === "undefined") return [];
 
@@ -15,7 +14,6 @@ export function listarTurmas() {
   }
 }
 
-// Salvar turma
 export function salvarTurma(turma) {
   const turmas = listarTurmas();
   const index = turmas.findIndex((t) => t.id === turma.id);
@@ -27,20 +25,17 @@ export function salvarTurma(turma) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(turmas));
 }
 
-// Remover turma
 export function removerTurma(id) {
   const turmas = listarTurmas();
   const atualizados = turmas.filter((t) => t.id !== id);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(atualizados));
 }
 
-// Buscar turma por ID
 export function getTurmaById(id) {
   const turmas = listarTurmas();
   return turmas.find((t) => t.id === id);
 }
 
-// Atualizar turma
 export function updateTurma(id, turmaAtualizada) {
   const turmas = listarTurmas();
   const index = turmas.findIndex((t) => t.id === id);

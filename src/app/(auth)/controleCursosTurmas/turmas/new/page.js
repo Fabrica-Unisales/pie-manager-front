@@ -31,7 +31,7 @@ export default function NovaTurma() {
     e.preventDefault();
 
     if (!turma.id || !turma.periodo || !turma.turno || !turma.curso) {
-      alert('Preencha todos os campos!');
+      alert('PREENCHA TODOS OS CAMPOS!');
       return;
     }
 
@@ -41,7 +41,7 @@ export default function NovaTurma() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Nova Turma</h1>
+      <h1>NOVA TURMA</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -122,7 +122,7 @@ export default function NovaTurma() {
               cursor: 'pointer',
             }}
           >
-            Salvar
+            SALVAR
           </button>
           <button
             type="button"
@@ -136,7 +136,7 @@ export default function NovaTurma() {
               cursor: 'pointer',
             }}
           >
-            Cancelar
+            CANCELAR
           </button>
         </div>
       </form>

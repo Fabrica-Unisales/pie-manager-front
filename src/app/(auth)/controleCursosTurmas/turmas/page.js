@@ -18,7 +18,7 @@ export default function ListaTurmas() {
   };
 
   const handleExcluir = (id) => {
-    const confirmar = confirm('Tem certeza que deseja excluir esta turma?');
+    const confirmar = confirm('TEM CEERTEZA QUE DESEJA EXCLUIR ESTA TURMA?');
     if (confirmar) {
       removerTurma(id);
       const turmasAtualizadas = listarTurmas();
@@ -28,21 +28,21 @@ export default function ListaTurmas() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Lista de Turmas</h1>
+      <h1>LISTA DE TURMAS</h1>
 
       <div style={{ marginBottom: '20px' }}>
         <button
           onClick={() => router.push('/controleCursosTurmas')}
           style={buttonStyle('#888')}
         >
-          Voltar para Menu
+          VOLTAR PARA MENU
         </button>
 
         <button
           onClick={() => router.push('/controleCursosTurmas/turmas/new')}
           style={buttonStyle('#0070f3')}
         >
-          Nova Turma
+          NOVA TURMA
         </button>
       </div>
 
@@ -71,9 +71,9 @@ export default function ListaTurmas() {
                     onClick={() => handleEditar(turma.id)}
                     style={{ marginRight: '8px' }}
                   >
-                    Editar
+                    EDITAR
                   </button>
-                  <button onClick={() => handleExcluir(turma.id)}>Excluir</button>
+                  <button onClick={() => handleExcluir(turma.id)}>EXCLUIR</button>
                 </td>
               </tr>
             ))}
@@ -84,7 +84,6 @@ export default function ListaTurmas() {
   );
 }
 
-// Estilos
 const tableStyle = {
   width: '100%',
   borderCollapse: 'collapse',

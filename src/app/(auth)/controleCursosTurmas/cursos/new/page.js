@@ -28,7 +28,7 @@ export default function NovoCurso() {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Novo Curso</h1>
+      <h1>NOVO CURSO</h1>
       <form 
         onSubmit={handleSubmit} 
         style={{ 
@@ -113,9 +113,9 @@ export default function NovoCurso() {
           </select>
         </label>
 
-        <button type="submit">Salvar</button>
+        <button type="submit">SALVAR</button>
         <button type="button" onClick={() => router.push('/controleCursosTurmas/cursos')}>
-          Cancelar
+          CANCELAR
         </button>
       </form>
     </div>
