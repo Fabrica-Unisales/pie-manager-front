@@ -4,8 +4,6 @@ import { Form, Input, Button, Checkbox } from 'antd';
 import 'antd/dist/reset.css';
 import {buildMocks} from '@/mocks/mocksFactory';
 
-
-
 const LoginPage = () => {
     const onFinish = (values) => {
         const users = JSON.parse(localStorage.getItem('users'));
