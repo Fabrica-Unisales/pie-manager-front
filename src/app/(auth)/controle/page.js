@@ -20,8 +20,7 @@ const { Title } = Typography;
 
 const ControlePage = () => {
   const [form] = Form.useForm();
-  const [projetos, setProjetos] = useState([]);
-  const [contadorId, setContadorId] = useState(0);
+  const [organizacoes, setOrganizacoes] = useState([]);
   const [formVisivel, setFormVisivel] = useState(false);
   const [editandoId, setEditandoId] = useState(null);
 
@@ -31,10 +30,12 @@ const ControlePage = () => {
     const coordenadorSelecionado = usuariosMocks.find(u => u.id === values.coordenador);
     const turmaSelecionada = turmasMocks.find(t => t.id === values.turma);
 
-    const baseId = Math.floor(Date.now() / 1000) + contadorId;
+    const novoId = organizacoes.length > 0
+      ? Math.max(...organizacoes.map(o => parseInt(o.id))) + 1
+      : 1;
 
-    const novoProjeto = {
-      id: `projeto-${baseId}`,
+    const novaOrganizacao = {
+      id: String(editandoId || novoId),
       nome: values.nome,
       coordenador_id: coordenadorSelecionado?.id,
       coordenador_nome: coordenadorSelecionado?.nome,
@@ -46,14 +47,13 @@ const ControlePage = () => {
     };
 
     if (editandoId) {
-      setProjetos(prev =>
-        prev.map(p => (p.id === editandoId ? { ...novoProjeto, id: editandoId } : p))
+      setOrganizacoes(prev =>
+        prev.map(p => (p.id === editandoId ? novaOrganizacao : p))
       );
-      message.success('Projeto editado com sucesso!');
+      message.success('Organização editada com sucesso!');
     } else {
-      setProjetos([...projetos, novoProjeto]);
-      setContadorId(contadorId + 1);
-      message.success('Projeto cadastrado com sucesso!');
+      setOrganizacoes([...organizacoes, novaOrganizacao]);
+      message.success('Organização cadastrada com sucesso!');
     }
 
     form.resetFields();
@@ -61,25 +61,30 @@ const ControlePage = () => {
     setEditandoId(null);
   };
 
-  const handleEditar = (projeto) => {
-    const turma = projeto.listaTurmas[0];
+  const handleEditar = (organizacao) => {
+    const turma = organizacao.listaTurmas[0];
     form.setFieldsValue({
-      nome: projeto.nome,
-      coordenador: projeto.coordenador_id,
+      nome: organizacao.nome,
+      coordenador: organizacao.coordenador_id,
       turma: turma.id,
     });
     setFormVisivel(true);
-    setEditandoId(projeto.id);
+    setEditandoId(organizacao.id);
   };
 
   const handleExcluir = (id) => {
-    setProjetos(prev => prev.filter(p => p.id !== id));
-    message.success('Projeto excluído');
+    setOrganizacoes(prev => prev.filter(p => p.id !== id));
+    message.success('Organização excluída');
   };
 
   const columns = [
     {
-      title: 'Projeto',
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Nome',
       dataIndex: 'nome',
       key: 'nome',
     },
@@ -134,11 +139,11 @@ const ControlePage = () => {
 
   return (
     <div style={{ padding: 24 }}>
-      <Title level={2}>Controle de Projetos</Title>
+      <Title level={2}>Controle de Organização de Cursos e Turmas</Title>
 
       {!formVisivel && (
         <Button type="primary" onClick={() => setFormVisivel(true)}>
-          Cadastrar Novo Projeto
+          Cadastrar Nova Organização
         </Button>
       )}
 
@@ -152,9 +157,9 @@ const ControlePage = () => {
             style={{ maxWidth: 600, marginTop: 24 }}
           >
             <Form.Item
-              label="Nome do Projeto"
+              label="Nome"
               name="nome"
-              rules={[{ required: true, message: 'Digite o nome do projeto' }]}
+              rules={[{ required: true, message: 'Digite o nome' }]}
             >
               <Input />
             </Form.Item>
@@ -190,7 +195,7 @@ const ControlePage = () => {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  {editandoId ? 'Salvar Alterações' : 'Cadastrar Projeto'}
+                  {editandoId ? 'Salvar Alterações' : 'Cadastrar Organização'}
                 </Button>
                 <Button onClick={() => { form.resetFields(); setFormVisivel(false); setEditandoId(null); }}>
                   Cancelar
@@ -203,10 +208,10 @@ const ControlePage = () => {
 
       <Divider />
 
-      <Title level={3}>Projetos Cadastrados</Title>
+      <Title level={3}>Organizações Cadastradas</Title>
 
       <Table
-        dataSource={projetos}
+        dataSource={organizacoes}
         columns={columns}
         rowKey="id"
         pagination={{ pageSize: 5 }}
