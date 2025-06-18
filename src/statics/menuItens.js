@@ -1,19 +1,22 @@
 import React from "react";
-import {
-  NotificationOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import Link from "next/link";
+import { NotificationOutlined, BookOutlined, TeamOutlined } from "@ant-design/icons";
 
 export const items2 = [
   {
     key: "home",
     icon: React.createElement(NotificationOutlined),
-    label: <a href="/home" rel="home">Home</a>,
+    label: <Link href="/home">Home</Link>,
   },
   {
-    key: "send",
+    key: "itens",
     icon: React.createElement(NotificationOutlined),
-    label: <a href="/itens" rel="itens">Itens</a>,
+    label: <Link href="/itens">Itens</Link>,
+  },
+  {
+    key: "cursosturmas",
+    icon: React.createElement(BookOutlined),
+    label: <Link href="/controleCursosTurmas">Cursos e Turmas</Link>,
   },
   {
     key: "users",
